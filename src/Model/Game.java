@@ -22,6 +22,8 @@ public class Game implements DeletableObserver {
 
         // Creating one Player at position (1,1)
         objects.add(new Player(10, 10, 3, 5));
+        objects.add(new Player(11, 11, 3, 5));
+
 
         // Map building
         for (int i = 0; i < size; i++) {
