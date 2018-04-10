@@ -39,7 +39,7 @@ public class Game implements DeletableObserver {
             int lifepoints = rand.nextInt(5) + 1;
             BlockBreakable block = new BlockBreakable(x, y, lifepoints);
             block.attachDeletable(this);
-            objects.add(block);
+            objects.add(block); //Boris pue vraiment la merde
         }
 
         window.setGameObjects(this.getGameObjects());
