@@ -22,7 +22,9 @@ public class Game implements DeletableObserver {
 
         // Creating one Player at position (1,1)
         objects.add(new Ninja(10, 10, 3));
-        objects.add(new Ninja(11, 11, 3));
+        Mob mob = new Mob(11, 11, 3);
+        mob.attachDeletable(this);
+        objects.add(mob);
 
 
         // Map building
@@ -48,7 +50,7 @@ public class Game implements DeletableObserver {
 
 
     public void movePlayer(int x, int y, int playerNumber) {
-        Player player = ((Player) objects.get(playerNumber));
+        Movable player = ((Movable) objects.get(playerNumber));
         int nextX = player.getPosX() + x;
         int nextY = player.getPosY() + y;
 
@@ -66,6 +68,36 @@ public class Game implements DeletableObserver {
             player.move(x, y);
         }
         notifyView();
+    }
+
+    public void followPlayer(int playerTarget, int playerObject){
+        Movable player1 = ((Movable) objects.get(playerTarget));
+        int TargetX = player1.getPosX();
+        int TargetY = player1.getPosY();
+
+        Movable player2 = ((Movable) objects.get(playerObject));
+        int ObjX = player2.getPosX();
+        int ObjY = player2.getPosY();
+
+        int diffX=TargetX-ObjX;
+        int diffY=TargetY-ObjY;
+
+        if (Math.abs(diffX)>Math.abs(diffY)){
+            if (diffX>0){
+                movePlayer(1, 0, playerObject);
+            }
+            else{
+                movePlayer(-1, 0, playerObject);
+            }
+        }
+        else {
+            if (diffY>0){
+                movePlayer(0, 1, playerObject);
+            }
+            else{
+                movePlayer(0, -1, playerObject);
+            }
+        }
     }
 
     public void action(int playerNumber) {

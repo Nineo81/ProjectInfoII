@@ -1,34 +1,43 @@
 package Model;
 
-public class Mob extends GameObject implements Directable,Runnable {
+import java.util.ArrayList;
 
-    int direction = EAST;
+public class Mob extends Movable implements Deletable, Activable {
 
-    public Mob(int x, int y){
-        super(x, y, 2);
+    private int lifepoints = 0;
+    private ArrayList<DeletableObserver> observers = new ArrayList<DeletableObserver>();
+
+    public Mob(int x, int y, int lifes){
+        super(x, y,0, lifes, 4);
+        this.lifepoints = lifes;
     }
 
-    public void move(int X, int Y) {
-        this.posX = this.posX + X;
-        this.posY = this.posY + Y;
+    public void activate(){
+        if (lifepoints == 1){
+            crush();
+        }
+        else {
+            lifepoints--;
+            this.color = lifepoints + 2; // pour éviter de retourner au gris
+        }
+    }
+
+    public void crush(){
+        notifyDeletableObserver();
+    }
+    // //////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public void attachDeletable(DeletableObserver po) {
+        observers.add(po);
     }
 
     @Override
-    public void run(){
-        try{
-            while(true){
-                Thread.sleep(100); //se met en attente
-            }
-        }catch(Exception e){};
-    }
-
-    @Override
-    public boolean isObstacle() {
-        return true;
-    }
-
-    @Override
-    public int getDirection() {
-        return direction;
+    public void notifyDeletableObserver() {
+        int i = 0;
+        for (DeletableObserver o : observers) {
+            i++;
+            o.delete(this, null);
+        }
     }
 }
