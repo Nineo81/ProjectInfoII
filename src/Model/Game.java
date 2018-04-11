@@ -70,7 +70,7 @@ public class Game implements DeletableObserver {
         notifyView();
     }
 
-    public void followPlayer(int playerTarget, int playerObject){
+    public void followPlayer(int playerTarget, int playerObject){  //Methode pour suivre le player
         Movable player1 = ((Movable) objects.get(playerTarget));
         int TargetX = player1.getPosX();
         int TargetY = player1.getPosY();
