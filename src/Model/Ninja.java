@@ -2,7 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
-public class Ninja extends Player implements DeletableObserver{
+public class Ninja extends Player {
 
     int life = 1;
     int direction = EAST;
