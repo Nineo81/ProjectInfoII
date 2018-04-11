@@ -57,12 +57,12 @@ public class Game implements DeletableObserver {
             if (object.isAtPosition(nextX, nextY)) {
                 obstacle = object.isObstacle();
             }
-            if (obstacle) {
+            if (obstacle == true) {
                 break;
             }
         }
         player.rotate(x, y);
-        if (!obstacle) {
+        if (obstacle == false) {
             player.move(x, y);
         }
         notifyView();
@@ -89,7 +89,7 @@ public class Game implements DeletableObserver {
         Player player = ((Player) objects.get(playerNumber));
         int frontX=player.getFrontX();
         int frontY=player.getFrontY();
-        Activable aimedObject ;
+        Activable aimedObject = null;
         for (GameObject object : objects) {
             if (object.isAtPosition(frontX, frontY)) {
                 if (object instanceof Activable) {
