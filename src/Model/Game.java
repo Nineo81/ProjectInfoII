@@ -21,8 +21,8 @@ public class Game implements DeletableObserver {
         this.window = window;
 
         // Creating one Player at position (1,1)
-        objects.add(new Player(10, 10, 3, 5));
-        objects.add(new Player(11, 11, 3, 5));
+        objects.add(new Ninja(10, 10, 3));
+        objects.add(new Ninja(11, 11, 3));
 
 
         // Map building
@@ -57,12 +57,12 @@ public class Game implements DeletableObserver {
             if (object.isAtPosition(nextX, nextY)) {
                 obstacle = object.isObstacle();
             }
-            if (obstacle == true) {
+            if (obstacle) {
                 break;
             }
         }
         player.rotate(x, y);
-        if (obstacle == false) {
+        if (!obstacle) {
             player.move(x, y);
         }
         notifyView();
@@ -85,7 +85,27 @@ public class Game implements DeletableObserver {
         
     }
 
-    private void notifyView() {
+    public void action2(int playerNumber) {
+        Player player = ((Player) objects.get(playerNumber));
+        int frontX=player.getFrontX();
+        int frontY=player.getFrontY();
+        Activable aimedObject ;
+        for (GameObject object : objects) {
+            if (object.isAtPosition(frontX, frontY)) {
+                if (object instanceof Activable) {
+                    aimedObject = (Activable) object;
+                    aimedObject.activate();
+                    notifyView();
+                }
+                return;
+
+            }
+        }
+        this.objects.add(new Projectile(frontX,frontY,player.getDirection(),objects,this));
+        return;
+    }
+
+    public void notifyView() {
         window.update();
     }
 

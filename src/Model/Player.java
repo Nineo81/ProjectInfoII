@@ -1,13 +1,13 @@
 package Model;
 
-public class Player extends GameObject implements Directable {
+public abstract class Player extends GameObject implements Directable, DeletableObserver {
 
-    int lifes = 0;
-    int direction = EAST;  
+    private int direction;
+    private int life;
 
-    public Player(int x, int y, int maxBomb, int lifes) {
+    public Player(int x, int y,  int life) {
         super(x, y, 2);
-        this.lifes = lifes;
+        this.life = life;
     }
 
     public void move(int X, int Y) {
@@ -27,6 +27,7 @@ public class Player extends GameObject implements Directable {
     }
 
    // //////////////////////////////////////////////////////////////////////////////////////
+
 
 
     @Override
