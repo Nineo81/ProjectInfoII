@@ -31,17 +31,14 @@ public class Projectile extends GameObject implements Deletable,  Directable, Ru
                 if (object.isAtPosition(this.getFrontX(), this.getFrontY())) {
                     if (object instanceof Activable) {
                         aimedObject = (Activable) object;
-                        System.out.println("i have something");
                     } else {
                         this.sleep(200);
                         this.crush();
-                        System.out.println("i hit a wall");
                         return;
                     }
                 }
             }
             if (aimedObject != null) {
-                System.out.println("i'm kicking it");
                 aimedObject.activate();
                 game.notifyView();
                 this.sleep(200);
@@ -50,7 +47,6 @@ public class Projectile extends GameObject implements Deletable,  Directable, Ru
                 return;
             } else {
                 this.sleep(300);
-                System.out.println("i'll move now...");
                 this.move();
                 game.notifyView();
             }

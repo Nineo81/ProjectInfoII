@@ -5,11 +5,13 @@ import java.util.ArrayList;
 public class Mob extends Movable implements Deletable, Activable {
 
     private int lifepoints = 0;
+    Game game;
     private ArrayList<DeletableObserver> observers = new ArrayList<DeletableObserver>();
 
-    public Mob(int x, int y, int lifes){
+    public Mob(Game game,int x, int y, int lifes){
         super(x, y,0, lifes, 4);
         this.lifepoints = lifes;
+        this.game=game;
     }
 
     public void activate(){
@@ -24,6 +26,7 @@ public class Mob extends Movable implements Deletable, Activable {
 
     public void crush(){
         notifyDeletableObserver();
+        game.mobDied();
     }
     // //////////////////////////////////////////////////////////////////////////////////////
 

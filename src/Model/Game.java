@@ -17,6 +17,7 @@ public class Game implements DeletableObserver {
     private Window window;
     private int size = 20;
     // private int bombTimer = 3000;
+    private int numberOfMobs=6;
     private int numberOfBreakableBlocks = 40;
     boolean pauseState = false;
 
@@ -25,9 +26,35 @@ public class Game implements DeletableObserver {
 
         // Creating one Player at position (1,1)
         objects.add(new Ninja(10, 10, 3));
-        Mob mob = new Mob(11, 11, 3);
+        /*Mob mob = new Mob(11, 11, 3);
         mob.attachDeletable(this);
-        objects.add(mob);
+        objects.add(mob); */
+
+        Random rand = new Random();
+        //mob spawning
+        int n=0;
+        boolean occupied=false;
+        while (n<numberOfMobs){
+            int x = rand.nextInt(16) + 2;
+            int y = rand.nextInt(16) + 2;
+            int lifepoints = rand.nextInt(3) + 3;
+            for(GameObject object : objects){
+                if(object.isAtPosition(x,y)){
+                    occupied=true;
+                    break;
+                }
+                if((Math.abs(10-x)+Math.abs(10-y))<4){
+                    occupied=true;
+                    break;
+                }
+            }
+            if (!occupied){
+                n++;
+                Mob mob = new Mob(this,x, y, lifepoints);
+                mob.attachDeletable(this);
+                objects.add(mob);
+            }
+        }
 
         //New Map building
         mapReader(mapCreator());
@@ -40,7 +67,6 @@ public class Game implements DeletableObserver {
             objects.add(new BlockUnbreakable(i, size - 1));
             objects.add(new BlockUnbreakable(size - 1, i));
         }
-        Random rand = new Random();
         for (int i = 0; i < numberOfBreakableBlocks; i++) {
             int x = rand.nextInt(16) + 2;
             int y = rand.nextInt(16) + 2;
@@ -49,6 +75,9 @@ public class Game implements DeletableObserver {
             block.attachDeletable(this);
             objects.add(block);
         }
+
+        Thread t1 = new Thread(new MyTimer(this));
+        t1.start();
 
         window.setGameObjects(this.getGameObjects());
         notifyView();*/
@@ -123,6 +152,7 @@ public class Game implements DeletableObserver {
         
     }
 
+
     public void action2(int playerNumber) {
         Player player = ((Player) objects.get(playerNumber));
         int frontX=player.getFrontX();
@@ -142,6 +172,13 @@ public class Game implements DeletableObserver {
         this.objects.add(new Projectile(frontX,frontY,player.getDirection(),objects,this));
         return;
     }
+
+    public int getMobCount(){
+        return numberOfMobs;
+    }
+
+    public void mobDied(){numberOfMobs--;};
+
 
     public void notifyView() {
         window.update();
