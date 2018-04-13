@@ -33,11 +33,11 @@ public class Game implements DeletableObserver {
         Random rand = new Random();
         //mob spawning
         int n=0;
-        boolean occupied=false;
         while (n<numberOfMobs){
             int x = rand.nextInt(16) + 2;
             int y = rand.nextInt(16) + 2;
             int lifepoints = rand.nextInt(3) + 3;
+            boolean occupied=false;
             for(GameObject object : objects){
                 if(object.isAtPosition(x,y)){
                     occupied=true;
@@ -71,9 +71,19 @@ public class Game implements DeletableObserver {
             int x = rand.nextInt(16) + 2;
             int y = rand.nextInt(16) + 2;
             int lifepoints = rand.nextInt(5) + 1;
-            BlockBreakable block = new BlockBreakable(x, y, lifepoints);
-            block.attachDeletable(this);
-            objects.add(block);
+            boolean occupied=false;
+            for(GameObject object : objects) {
+                if (object.isAtPosition(x, y)) {
+                    occupied = true;
+                    break;
+                }
+            }
+            if (!occupied) {
+                BlockBreakable block = new BlockBreakable(x, y, lifepoints);
+                block.attachDeletable(this);
+                objects.add(block);
+            }
+            else {i--;}
         }
 
         Thread t1 = new Thread(new MyTimer(this));
