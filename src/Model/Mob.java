@@ -14,13 +14,13 @@ public class Mob extends Movable implements Deletable, Activable {
         this.game=game;
     }
 
-    public void activate(){
-        if (lifepoints == 1){
+    public void activate(int dammage){
+        if (lifepoints <= dammage){
             crush();
         }
         else {
-            lifepoints--;
-            this.color = lifepoints + 2; // pour éviter de retourner au gris
+            lifepoints-=dammage;
+            //this.color = lifepoints + 2; // chiant
         }
     }
 

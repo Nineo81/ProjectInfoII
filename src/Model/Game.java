@@ -17,7 +17,7 @@ public class Game implements DeletableObserver {
     private Window window;
     private int size = 20;
     // private int bombTimer = 3000;
-    private int numberOfMobs=6;
+    private int numberOfMobs=5;
     private int numberOfBreakableBlocks = 40;
     boolean pauseState = false;
 
@@ -38,6 +38,9 @@ public class Game implements DeletableObserver {
             int y = rand.nextInt(16) + 2;
             int lifepoints = rand.nextInt(3) + 3;
             boolean occupied=false;
+
+
+
             for(GameObject object : objects){
                 if(object.isAtPosition(x,y)){
                     occupied=true;
@@ -147,40 +150,17 @@ public class Game implements DeletableObserver {
 
     public void action(int playerNumber) {
         Player player = ((Player) objects.get(playerNumber));
-        Activable aimedObject = null;
-		for(GameObject object : objects){
-			if(object.isAtPosition(player.getFrontX(),player.getFrontY())){
-			    if(object instanceof Activable){
-			        aimedObject = (Activable) object;
-			    }
-			}
-		}
-		if(aimedObject != null){
-		    aimedObject.activate();
-            notifyView();
-		}
         
     }
 
 
     public void action2(int playerNumber) {
-        Player player = ((Player) objects.get(playerNumber));
-        int frontX=player.getFrontX();
-        int frontY=player.getFrontY();
-        Activable aimedObject = null;
-        for (GameObject object : objects) {
-            if (object.isAtPosition(frontX, frontY)) {
-                if (object instanceof Activable) {
-                    aimedObject = (Activable) object;
-                    aimedObject.activate();
-                    notifyView();
-                }
-                return;
+        Powered player = ((Powered) objects.get(playerNumber));
+        player.action2(objects,this);
+    }
 
-            }
-        }
-        this.objects.add(new Projectile(frontX,frontY,player.getDirection(),objects,this));
-        return;
+    public void add(GameObject object){
+        objects.add(object);
     }
 
     public int getMobCount(){

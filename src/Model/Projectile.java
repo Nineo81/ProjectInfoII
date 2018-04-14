@@ -10,12 +10,14 @@ public class Projectile extends GameObject implements Deletable,  Directable, Ru
     private ArrayList<GameObject> objects;
     private Activable aimedObject = null;
     private Game game;
+    private int dammage;
 
-    public Projectile(int x, int y, int direction, ArrayList<GameObject> objects,Game game) {
-        super(x, y, 4);
+    public Projectile(int x, int y, int direction, ArrayList<GameObject> objects,Game game, int dammage) {
+        super(x, y, 5);
         this.direction=direction;
         this.objects = objects;
         this.game=game;
+        this.dammage=dammage;
         this.thread = new Thread(this);
         thread.start();
         game.notifyView();
@@ -39,7 +41,7 @@ public class Projectile extends GameObject implements Deletable,  Directable, Ru
                 }
             }
             if (aimedObject != null) {
-                aimedObject.activate();
+                aimedObject.activate(dammage);
                 game.notifyView();
                 this.sleep(200);
                 this.crush();

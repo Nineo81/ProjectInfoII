@@ -11,12 +11,12 @@ public class BlockBreakable extends Block implements Deletable, Activable {
         this.lifepoints = lifepoints; 
     }
     
-    public void activate(){
-        if (lifepoints == 1){
+    public void activate(int dammage){
+        if (lifepoints <= dammage){
             crush();
         }
         else {
-            lifepoints--;
+            lifepoints-=dammage;
             this.color = lifepoints + 2; // pour éviter de retourner au gris
         }
     }
