@@ -99,21 +99,35 @@ public class Game implements DeletableObserver {
 
     public void movePlayer(int x, int y, int playerNumber) {
         Movable player = ((Movable) objects.get(playerNumber));
-        int nextX = player.getPosX() + x;
-        int nextY = player.getPosY() + y;
+        int xPos= player.getPosX();
+        int yPos=player.getPosY();
+        int nextX = xPos + x;
+        int nextY = yPos + y;
 
-        boolean obstacle = false;
-        for (GameObject object : objects) {
-            if (object.isAtPosition(nextX, nextY)) {
-                obstacle = object.isObstacle();
+        boolean obstacle = true;
+        while (obstacle) {
+            obstacle=false;
+            for (GameObject object : objects) {
+                if (object.isAtPosition(nextX, nextY)) {
+                    obstacle = object.isObstacle();
+                }
+                if (obstacle == true) {
+                    break;
+                }
             }
-            if (obstacle == true) {
-                break;
+            player.rotate(x, y);
+            if (obstacle == false) {
+                player.move(x, y);
             }
-        }
-        player.rotate(x, y);
-        if (obstacle == false) {
-            player.move(x, y);
+            else{
+                if (x>0){ x--; }
+                if (x<0){ x++; }
+                if (y>0){ y--; }
+                if (y<0){ y++; }
+                if((x == 0) && (y == 0)){ return; }
+                nextX=xPos+x;
+                nextY=yPos+y;
+            }
         }
         notifyView();
     }
@@ -149,10 +163,14 @@ public class Game implements DeletableObserver {
     }
 
     public void action(int playerNumber) {
-        Player player = ((Player) objects.get(playerNumber));
-        
+        Powered player = ((Powered) objects.get(playerNumber));
+        player.action(objects, this);
     }
 
+    public void action1(int playerNumber) {
+        Powered player = ((Powered) objects.get(playerNumber));
+        player.action1(objects, this);
+    }
 
     public void action2(int playerNumber) {
         Powered player = ((Powered) objects.get(playerNumber));

@@ -34,6 +34,19 @@ public class Ninja extends Player implements DeletableObserver,Powered{
         }
     }
 
+    public void action1(ArrayList<GameObject> objects, Game game){
+        int x=0;
+        int y=0;
+        direction=this.getDirection();
+        if (direction % 2 == 0){
+            x += 3 - (3*direction);
+        }
+        else{
+            y += 3*direction - 6;
+        }
+        game.movePlayer(x,y,0);
+    }
+
     public void action2(ArrayList<GameObject> objects, Game game){
         int frontX=this.getFrontX();
         int frontY=this.getFrontY();
