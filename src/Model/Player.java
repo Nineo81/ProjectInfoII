@@ -4,7 +4,6 @@ public class Player extends Movable implements Activable, Runnable {
 
     private int maxLife;
     private int life;
-    package-
     protected int mana;
     protected int maxMana;
     private int globalDammageMultiplier=1;
