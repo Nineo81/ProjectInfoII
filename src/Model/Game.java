@@ -11,21 +11,24 @@ import java.io.FileReader;
 
 //import org.omg.CosNaming.IstringHelper;
 
-public class Game implements DeletableObserver {
+public class Game implements DeletableObserver, Runnable {
     private ArrayList<GameObject> objects = new ArrayList<GameObject>();
 
     private Window window;
+    private Thread sleepThread;
     private int size = 20;
     // private int bombTimer = 3000;
-    private int numberOfMobs=7;
+    private int numberOfMobs=4;
     private int numberOfBreakableBlocks = 40;
     boolean pauseState = false;
 
     public Game(Window window) {
         this.window = window;
+        this.sleepThread = new Thread(this);
+        sleepThread.start();
 
         // Creating one Player at position (1,1)
-        objects.add(new Ninja(10, 10, 10));
+        objects.add(new Ninja(10, 10, 10, 100));
         /*Mob mob = new Mob(11, 11, 3);
         mob.attachDeletable(this);
         objects.add(mob); */
@@ -197,6 +200,12 @@ public class Game implements DeletableObserver {
 
     public ArrayList<GameObject> getGameObjects() {
         return this.objects;
+    }
+
+    public void run(){
+        try {
+            this.sleepThread.sleep(3000);
+        } catch (Exception e){System.out.println("Something went wrong");}
     }
 
     @Override

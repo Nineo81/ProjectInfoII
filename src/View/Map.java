@@ -92,6 +92,8 @@ public class Map extends JPanel {
                     g.fillRect(x * 50 + 1, y * 50 + 2, Math.round(((float) life / (float) maxLife) * 46), 2);
                 }
                 if (object instanceof Player){
+                    int mana=((Player) object).getMana();
+                    int maxMana= ((Player) object).getMaxMana();
                     g.setFont(new Font("TimesRoman", Font.BOLD, 25));
                     g.setColor(Color.BLACK);
                     g.drawString("LIFE", 1050, 75);
@@ -99,6 +101,13 @@ public class Map extends JPanel {
                     g.fillRect(1050, 100, 250, 50);
                     g.setColor(Color.GREEN);
                     g.fillRect(1050, 100, Math.round(((float) life / (float) maxLife) * 250), 50);
+
+                    g.setColor(Color.BLACK);
+                    g.drawString("MANA", 1050, 225);
+                    g.setColor(Color.DARK_GRAY);
+                    g.fillRect(1050, 250, 250, 50);
+                    g.setColor(Color.BLUE);
+                    g.fillRect(1050, 250, Math.round(((float) mana / (float) maxMana) * 250), 50);
                 }
             }
         }
