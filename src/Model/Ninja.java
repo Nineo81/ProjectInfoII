@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Ninja extends Player implements DeletableObserver,Powered{
 
-    int life = 20;
     int direction = EAST;
 
 
@@ -12,10 +11,6 @@ public class Ninja extends Player implements DeletableObserver,Powered{
     public Ninja(int x, int y,int life) {
         super(x, y,life);
     }
-
-
-
-
 
 
 

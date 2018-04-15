@@ -5,22 +5,31 @@ import java.util.ArrayList;
 public class BlockBreakable extends Block implements Deletable, Activable {
 
     private ArrayList<DeletableObserver> observers = new ArrayList<DeletableObserver>();
-    private int lifepoints = 0;
+    private int maxLife;
+    private int life ;
     public BlockBreakable(int X, int Y, int lifepoints) {
         super(X, Y, 1);
-        this.lifepoints = lifepoints; 
+        this.life = lifepoints;
+        this.maxLife=lifepoints;
     }
     
     public void activate(int dammage){
-        if (lifepoints <= dammage){
+        if (life <= dammage){
             crush();
         }
         else {
-            lifepoints-=dammage;
-            this.color = lifepoints + 2; // pour éviter de retourner au gris
+            life-=dammage;
+            //this.color = life + 2; // chiant ici aussi (moins mais quand meme)
         }
     }
 
+    public int getLife(){
+        return life;
+    }
+
+    public int getMaxLife(){
+        return maxLife;
+    }
 
     public void crush(){
         notifyDeletableObserver();

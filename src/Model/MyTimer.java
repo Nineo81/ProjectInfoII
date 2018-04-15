@@ -67,7 +67,7 @@ public class MyTimer implements Runnable {
                     game.followPlayer(0, mobNumber + 1);
                     //moveRandom(1);
                 }
-                Thread.sleep(800); //se met en attente
+                Thread.sleep(1000); //se met en attente
             }
         }catch(Exception e){};
     }

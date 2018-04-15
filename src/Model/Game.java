@@ -17,7 +17,7 @@ public class Game implements DeletableObserver {
     private Window window;
     private int size = 20;
     // private int bombTimer = 3000;
-    private int numberOfMobs=5;
+    private int numberOfMobs=7;
     private int numberOfBreakableBlocks = 40;
     boolean pauseState = false;
 
@@ -25,7 +25,7 @@ public class Game implements DeletableObserver {
         this.window = window;
 
         // Creating one Player at position (1,1)
-        objects.add(new Ninja(10, 10, 3));
+        objects.add(new Ninja(10, 10, 10));
         /*Mob mob = new Mob(11, 11, 3);
         mob.attachDeletable(this);
         objects.add(mob); */
@@ -97,7 +97,7 @@ public class Game implements DeletableObserver {
     }
 
 
-    public void movePlayer(int x, int y, int playerNumber) {
+    public synchronized void movePlayer(int x, int y, int playerNumber) {
         Movable player = ((Movable) objects.get(playerNumber));
         int xPos= player.getPosX();
         int yPos=player.getPosY();
@@ -111,7 +111,10 @@ public class Game implements DeletableObserver {
                 if (object.isAtPosition(nextX, nextY)) {
                     obstacle = object.isObstacle();
                 }
-                if (obstacle == true) {
+                if (obstacle) {
+                    if ((player instanceof  Mob) && (object instanceof Activable) ){
+                        ((Activable) object).activate(1);
+                    }
                     break;
                 }
             }

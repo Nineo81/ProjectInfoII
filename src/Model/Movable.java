@@ -5,7 +5,7 @@ public class Movable extends GameObject implements Directable {
     int lifes = 0;
     int direction = EAST;
 
-    public Movable(int x, int y, int maxBomb, int lifes, int color) {
+    public Movable(int x, int y, int life, int color) {
         super(x, y, color);
         this.lifes = lifes;
     }

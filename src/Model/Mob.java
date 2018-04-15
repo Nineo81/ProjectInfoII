@@ -4,23 +4,25 @@ import java.util.ArrayList;
 
 public class Mob extends Movable implements Deletable, Activable {
 
-    private int lifepoints = 0;
+    private int maxLife;
+    private int life ;
     Game game;
     private ArrayList<DeletableObserver> observers = new ArrayList<DeletableObserver>();
 
-    public Mob(Game game,int x, int y, int lifes){
-        super(x, y,0, lifes, 4);
-        this.lifepoints = lifes;
+    public Mob(Game game,int x, int y, int life){
+        super(x, y, life, 4);
+        this.maxLife=life;
+        this.life = life;
         this.game=game;
     }
 
     public void activate(int dammage){
-        if (lifepoints <= dammage){
+        if (life <= dammage){
             crush();
         }
         else {
-            lifepoints-=dammage;
-            //this.color = lifepoints + 2; // chiant
+            life-=dammage;
+            //this.color = life + 2; // chiant
         }
     }
 
@@ -28,6 +30,18 @@ public class Mob extends Movable implements Deletable, Activable {
         notifyDeletableObserver();
         game.mobDied();
     }
+
+    public int getLife(){
+        return life;
+    }
+
+    public int getMaxLife(){
+        return maxLife;
+    }
+
+
+
+
     // //////////////////////////////////////////////////////////////////////////////////////
 
     @Override
@@ -43,4 +57,6 @@ public class Mob extends Movable implements Deletable, Activable {
             o.delete(this, null);
         }
     }
+
+
 }

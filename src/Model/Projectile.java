@@ -2,7 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
-public class Projectile extends GameObject implements Deletable,  Directable, Runnable {
+public class Projectile extends Movable implements Deletable,  Directable, Runnable {
 
 
     private int direction;
@@ -11,9 +11,10 @@ public class Projectile extends GameObject implements Deletable,  Directable, Ru
     private Activable aimedObject = null;
     private Game game;
     private int dammage;
+    private int projectileNumber;
 
     public Projectile(int x, int y, int direction, ArrayList<GameObject> objects,Game game, int dammage) {
-        super(x, y, 5);
+        super(x, y, 1, 5);
         this.direction=direction;
         this.objects = objects;
         this.game=game;
@@ -28,6 +29,7 @@ public class Projectile extends GameObject implements Deletable,  Directable, Ru
 
     @Override
     public void run() {
+        try{thread.sleep(200);} catch (Exception e){};
         while (true) {
             for (GameObject object : objects) {
                 if (object.isAtPosition(this.getFrontX(), this.getFrontY())) {
@@ -39,6 +41,9 @@ public class Projectile extends GameObject implements Deletable,  Directable, Ru
                         return;
                     }
                 }
+                if (object==this){
+                    projectileNumber=objects.indexOf(object);
+                }
             }
             if (aimedObject != null) {
                 aimedObject.activate(dammage);
@@ -48,16 +53,20 @@ public class Projectile extends GameObject implements Deletable,  Directable, Ru
                 game.notifyView();
                 return;
             } else {
-                this.sleep(300);
                 this.move();
                 game.notifyView();
+                this.sleep(200);
             }
         }
     }
 
     private void move() {
-        this.posX = getFrontX();
-        this.posY = getFrontY();
+        int x=0;
+        int y=0;
+        direction=this.getDirection();
+        if (direction % 2 == 0) x += 1 - direction;
+        else y += direction - 2;
+        game.movePlayer(x,y,projectileNumber);
     }
 
     private void crush(){

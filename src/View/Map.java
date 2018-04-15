@@ -1,5 +1,6 @@
 package View;
 
+import Model.Activable;
 import Model.Directable;
 import Model.GameObject;
 
@@ -79,6 +80,16 @@ public class Map extends JPanel {
                 int xCenter = x * spacing + (spacing - 2) / 2;
                 int yCenter = y * spacing + (spacing - 2) / 2;
                 g.drawLine(xCenter, yCenter, xCenter + deltaX, yCenter + deltaY);
+            }
+            if(object instanceof Activable) {
+                int life=((Activable) object).getLife();
+                int maxLife= ((Activable) object).getMaxLife();
+                if(maxLife!=life) {
+                    g.fillRect(x * 50 + 1, y * 50 + 2, 46, 2);
+                    g.setColor(Color.GREEN);
+                    g.fillRect(x * 50 + 1, y * 50 + 2, Math.round(((float) life / (float) maxLife) * 46), 2);
+                    g.setColor(Color.RED);
+                }
             }
         }
     }
