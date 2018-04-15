@@ -3,6 +3,7 @@ package View;
 import Model.Activable;
 import Model.Directable;
 import Model.GameObject;
+import Model.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -85,13 +86,23 @@ public class Map extends JPanel {
                 int life=((Activable) object).getLife();
                 int maxLife= ((Activable) object).getMaxLife();
                 if(maxLife!=life) {
+                    g.setColor(Color.DARK_GRAY);
                     g.fillRect(x * 50 + 1, y * 50 + 2, 46, 2);
                     g.setColor(Color.GREEN);
                     g.fillRect(x * 50 + 1, y * 50 + 2, Math.round(((float) life / (float) maxLife) * 46), 2);
-                    g.setColor(Color.RED);
+                }
+                if (object instanceof Player){
+                    g.setFont(new Font("TimesRoman", Font.BOLD, 25));
+                    g.setColor(Color.BLACK);
+                    g.drawString("LIFE", 1050, 75);
+                    g.setColor(Color.DARK_GRAY);
+                    g.fillRect(1050, 100, 250, 50);
+                    g.setColor(Color.GREEN);
+                    g.fillRect(1050, 100, Math.round(((float) life / (float) maxLife) * 250), 50);
                 }
             }
         }
+
     }
 
     public void setObjects(ArrayList<GameObject> objects) {

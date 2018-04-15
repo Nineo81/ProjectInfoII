@@ -46,7 +46,7 @@ public class Game implements DeletableObserver {
                     occupied=true;
                     break;
                 }
-                if((Math.abs(10-x)+Math.abs(10-y))<4){
+                if((Math.abs(10-x)+Math.abs(10-y))<6){
                     occupied=true;
                     break;
                 }

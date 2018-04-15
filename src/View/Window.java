@@ -1,30 +1,23 @@
 package View;
 
 import Model.GameObject;
-import Model.SizeableObserver;
 
 import java.awt.Color;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-public class Window implements SizeableObserver {
-    private Dimension size = new Dimension(1000,800);
-    private Map map = new Map(this.size);
-    private ResizeListener sizing = new ResizeListener();
+public class Window {
+    private Map map = new Map();
 
     public Window() {
         JFrame window = new JFrame("Game");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setBounds(0, 0, 1000, 1020);
-        window.addComponentListener(sizing);
-        sizing.attachSizeable(this);
+        window.setBounds(200, 0, 1400, 1020);
         window.getContentPane().setBackground(Color.gray);
         window.getContentPane().add(this.map);
         window.setVisible(true);
-        System.out.println(size);
     }
 
     public void setGameObjects(ArrayList<GameObject> objects) {
@@ -38,11 +31,5 @@ public class Window implements SizeableObserver {
 
     public void setKeyListener(KeyListener keyboard) {
         this.map.addKeyListener(keyboard);
-    }
-
-    public void newSize(Dimension s){
-        this.size=s;
-        update();
-        System.out.println(this.size);
     }
 }
