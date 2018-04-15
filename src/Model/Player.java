@@ -2,12 +2,13 @@ package Model;
 
 public class Player extends Movable implements Activable, Runnable {
 
-    int maxLife;
-    int life;
-    int mana;
-    int maxMana;
-    int globalDammageMultiplier=1;
-    int baseDammageMultiplier = 1;
+    private int maxLife;
+    private int life;
+    package-
+    protected int mana;
+    protected int maxMana;
+    private int globalDammageMultiplier=1;
+    private int baseDammageMultiplier = 1;
     int weaponDammage= 0;
     int baseDammage;
     private Thread thread;
@@ -48,7 +49,7 @@ public class Player extends Movable implements Activable, Runnable {
                 if (mana < maxMana) {
                     mana += 1;
                 }
-                this.thread.sleep(100);
+                this.thread.sleep(150);
             }
         } catch (Exception e){System.out.println("Something went wrong");}
     }
