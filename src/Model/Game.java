@@ -2,8 +2,10 @@ package Model;
 
 import View.Window;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.io.FileReader;
 
 //import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
@@ -154,11 +156,24 @@ public class Game implements DeletableObserver {
         notifyView();
     }
 
+    public void mapCreator () {
+        int[][][] room = {
+                {{0,0},{20,0}},
+                {{0,1},{0,20}},
+                {{1,20},{20,20}},
+                {{20,1},{20,19}}
+        };
+        int x=0;
+        int y=0;
+        for (int[][] i:room){
+            for (int[] j:i){
+                switch (j){
 
-    public void playerPos(int playerNumber) {
-        Player player = ((Player) objects.get(playerNumber));
-        System.out.println(player.getPosX() + ":" + player.getPosY());
-        
+                }
+                x++;
+            }
+            y++;
+        }
     }
 
 }
