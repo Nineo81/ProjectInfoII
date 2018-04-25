@@ -28,8 +28,11 @@ public class Game implements DeletableObserver {
         mob.attachDeletable(this);
         objects.add(mob);
 
+        //New Map building
+        mapReader(mapCreator());
 
-        // Map building
+
+        /*Map building
         for (int i = 0; i < size; i++) {
             objects.add(new BlockUnbreakable(i, 0));
             objects.add(new BlockUnbreakable(0, i));
@@ -43,11 +46,11 @@ public class Game implements DeletableObserver {
             int lifepoints = rand.nextInt(5) + 1;
             BlockBreakable block = new BlockBreakable(x, y, lifepoints);
             block.attachDeletable(this);
-            objects.add(block); //Boris pue vraiment la merde
+            objects.add(block);
         }
 
         window.setGameObjects(this.getGameObjects());
-        notifyView();
+        notifyView();*/
     }
 
 
@@ -156,24 +159,96 @@ public class Game implements DeletableObserver {
         notifyView();
     }
 
-    public void mapCreator () {
-        int[][][] room = {
-                {{0,0},{20,0}},
-                {{0,1},{0,20}},
-                {{1,20},{20,20}},
-                {{20,1},{20,19}}
-        };
+    public void mapReader (int[][] room) {
         int x=0;
         int y=0;
-        for (int[][] i:room){
-            for (int[] j:i){
+        for (int[] i:room){
+            for (int j:i){
                 switch (j){
-
+                    case 1:
+                        objects.add(new BlockUnbreakable(x, y));
+                        break;
+                    case 2:
+                        BlockBreakable block = new BlockBreakable(x, y, 3);
+                        block.attachDeletable(this);
+                        objects.add(block);
                 }
                 x++;
             }
+            x=0;
             y++;
         }
+        window.setGameObjects(this.getGameObjects());
+        notifyView();
+    }
+
+    public int[][] matrixGenerator(int num,int dimension){
+        int[][] matrix = new int[dimension][dimension];
+        for (int i=0;i<dimension;i++){
+            for(int j=0;j<dimension;j++){
+                matrix[i][j]=num;
+            }
+        }
+        return matrix;
+    }
+
+    public int[][] mapCreator(){
+        Random rand = new Random();
+        int dimension =20,
+                maxTunnels = 70,
+                maxLength = 10,
+                currentRow = rand.nextInt(dimension),
+                currentColumn = rand.nextInt(dimension),
+                randomLength,
+                tunnelLength;
+        int[][] map = matrixGenerator(1,dimension),
+                directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        int[] lastDirection = new int[2],
+                randomDirection;
+
+        // Start of algorithm
+        while(maxTunnels != 0) {
+
+            //Check if the new direction does go back on track and if so, choose a new one
+            do {
+                randomDirection = directions[rand.nextInt(4)];
+            } while (randomDirection[0] == -lastDirection[0] && randomDirection[1] == -lastDirection[1]);
+
+            randomLength = rand.nextInt(maxLength);
+            tunnelLength =0;
+
+            //Constructing tunnel
+            while(tunnelLength<randomLength){
+
+                //break the loop if it is going out of the map
+                if (((currentRow == 1) && (randomDirection[0] == -1)) ||
+                        ((currentColumn == 1) && (randomDirection[1] == -1)) ||
+                        ((currentRow == dimension - 2) && (randomDirection[0] == 1)) ||
+                        ((currentColumn == dimension - 2) && (randomDirection[1] == 1))) {
+                    break;
+                }
+                else{
+                    map[currentRow][currentColumn] = 0;
+                    currentRow += randomDirection[0];
+                    currentColumn += randomDirection[1];
+                    tunnelLength++;
+                }
+            }
+
+            //Prevent a tunnel without length
+            if(tunnelLength != 0){
+                lastDirection=randomDirection;
+                maxTunnels--;
+            }
+        }
+
+        return map;
+    }
+
+    public void playerPos(int playerNumber) {
+        Player player = ((Player) objects.get(playerNumber));
+        System.out.println(player.getPosX() + ":" + player.getPosY());
+
     }
 
 }
