@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 public class Map extends JPanel {
     private ArrayList<GameObject> objects = null;
+    private int spacing = 30;
 
     public Map() {
         this.setFocusable(true);
@@ -18,14 +19,14 @@ public class Map extends JPanel {
     }
 
     public void paint(Graphics g) {
-        for (int i = 0; i < 20; i++) { // Virer la valeur 20 et parametrer ca
+        for (int i = 0; i < 20; i++) { // base grid
             for (int j = 0; j < 20; j++) {
                 int x = i;
                 int y = j;
                 g.setColor(Color.LIGHT_GRAY);
-                g.fillRect(x * 50, y * 50, 48, 48);
+                g.fillRect(x * spacing, y * spacing, spacing-2, spacing-2);
                 g.setColor(Color.BLACK);
-                g.drawRect(x * 50, y * 50, 48, 48);
+                g.drawRect(x * spacing, y * spacing, spacing-2, spacing-2);
             }
         }
 
@@ -48,9 +49,9 @@ public class Map extends JPanel {
                 g.setColor(Color.ORANGE);
             }
 
-            g.fillRect(x * 50, y * 50, 48, 48);
+            g.fillRect(x * spacing, y * spacing, spacing-2, spacing-2);
             g.setColor(Color.BLACK);
-            g.drawRect(x * 50, y * 50, 48, 48);
+            g.drawRect(x * spacing, y * spacing, spacing-2, spacing-2);
             
             // Decouper en fontions
             if(object instanceof Directable) {
@@ -61,21 +62,21 @@ public class Map extends JPanel {
                 
                 switch (direction) {
                 case Directable.EAST:
-                    deltaX = +24;
+                    deltaX = +(spacing-2)/2;
                     break;
                 case Directable.NORTH:
-                    deltaY = -24;
+                    deltaY = -(spacing-2)/2;
                     break;
                 case Directable.WEST:
-                    deltaX = -24;
+                    deltaX = -(spacing-2)/2;
                     break;
                 case Directable.SOUTH:
-                    deltaY = 24;
+                    deltaY = (spacing-2)/2;
                     break;
                 }
 
-                int xCenter = x * 50 + 24;
-                int yCenter = y * 50 + 24;
+                int xCenter = x * spacing + (spacing-2)/2;
+                int yCenter = y * spacing + (spacing-2)/2;
                 g.drawLine(xCenter, yCenter, xCenter + deltaX, yCenter + deltaY);
             }
         }
@@ -87,5 +88,13 @@ public class Map extends JPanel {
 
     public void redraw() {
         this.repaint();
+    }
+
+    public void levelLayout(int width, int heigth){
+
+        ArrayList<Integer> pointSet = null;
+        do{
+
+        }while (pointSet.size()<4);
     }
 }
