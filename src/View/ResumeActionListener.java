@@ -8,16 +8,15 @@ import java.util.ArrayList;
 
 public class ResumeActionListener implements ActionListener {
 
-    Window menu;
+    private ArrayList<Game> gameList = null;
+    private Game game;
 
-    public  ResumeActionListener(Window menu){
-        this.menu=menu;
+    public  ResumeActionListener(){
+        //for(Game game : this.gameList) this.game = game;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        menu.resumeGame();
+        //game.resume();
     }
-
-
 }

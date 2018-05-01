@@ -18,37 +18,34 @@ public class Keyboard implements KeyListener {
     public void keyPressed(KeyEvent event) {
         int key = event.getKeyCode();
 
-        switch(key){
-            case KeyEvent.VK_ESCAPE:
-                game.pauseGame();
-                //faire une classe menu pause
-        }
-        if(game.getPauseState()==false){
         switch (key) {
         case KeyEvent.VK_A:
-                 game.action1(player1);
+             if (game.running()){game.action1(player1);}
              break;
         case KeyEvent.VK_Z:
-                game.action2(player1);
+            if (game.running()){game.action2(player1);}
+            break;
+        case KeyEvent.VK_ESCAPE:
+            if (game.running()){game.pause();}
+            else {game.resume();}
             break;
         case KeyEvent.VK_RIGHT:
-            game.movePlayer(1, 0, player1);
+            if (game.running()){game.movePlayer(1, 0, player1);}
             break;
         case KeyEvent.VK_LEFT:
-            game.movePlayer(-1, 0, player1);
+            if (game.running()){game.movePlayer(-1, 0, player1);}
             break;
         case KeyEvent.VK_DOWN:
-            game.movePlayer(0, 1, player1);
+            if (game.running()){game.movePlayer(0, 1, player1);}
             break;
         case KeyEvent.VK_UP:
-            game.movePlayer(0, -1, player1);
+            if (game.running()){game.movePlayer(0, -1, player1);}
              break;
         case KeyEvent.VK_SPACE:
-             game.action(player1);
-             break;
+            if (game.running()){game.action(player1);}
+            break;
         case KeyEvent.VK_P:
-             game.playerPos(player1);
-        }
+            if (game.running()){game.playerPos(player1);}
         }
     }
 
