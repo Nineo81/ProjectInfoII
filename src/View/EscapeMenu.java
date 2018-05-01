@@ -19,7 +19,7 @@ public class EscapeMenu  extends JPanel {
     private JButton skillTreeButton;
     private JButton quitButton;
 
-    public  EscapeMenu(Window menu){
+    public  EscapeMenu(){
         this.setFocusable(true);
         this.requestFocusInWindow();
 
@@ -27,7 +27,7 @@ public class EscapeMenu  extends JPanel {
 
         resumeButton = new JButton("Resume");
         resumeButton.setBounds(500, 320,  400, 80);
-        resumeButton.addActionListener(new ResumeActionListener(menu));
+        resumeButton.addActionListener(new ResumeActionListener());
 
         inventoryButton = new JButton("Inventory");
         inventoryButton.setBounds(500, 420,  400, 80);
