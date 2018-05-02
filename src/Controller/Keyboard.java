@@ -18,6 +18,12 @@ public class Keyboard implements KeyListener {
     public void keyPressed(KeyEvent event) {
         int key = event.getKeyCode();
 
+        switch(key){
+            case KeyEvent.VK_ESCAPE:
+                game.pauseGame();
+                //faire une classe menu pause
+        }
+        if(game.getPauseState()==false){
         switch (key) {
         case KeyEvent.VK_C:
              game.action2(player1);
@@ -34,11 +40,12 @@ public class Keyboard implements KeyListener {
         case KeyEvent.VK_UP:
             game.movePlayer(0, -1, player1);
              break;
-         case KeyEvent.VK_SPACE:
+        case KeyEvent.VK_SPACE:
              game.action(player1);
              break;
         case KeyEvent.VK_P:
              game.playerPos(player1);
+        }
         }
     }
 
