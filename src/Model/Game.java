@@ -18,6 +18,7 @@ public class Game implements DeletableObserver {
     private int size = 20;
     // private int bombTimer = 3000;
     private int numberOfBreakableBlocks = 40;
+    boolean pauseState = false;
 
     public Game(Window window) {
         this.window = window;
@@ -243,6 +244,14 @@ public class Game implements DeletableObserver {
         }
 
         return map;
+    }
+
+    public void pauseGame (){
+        this.pauseState = !this.pauseState;
+    }
+
+    public boolean getPauseState(){
+        return pauseState;
     }
 
     public void playerPos(int playerNumber) {

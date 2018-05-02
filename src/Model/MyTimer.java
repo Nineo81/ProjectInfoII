@@ -62,9 +62,11 @@ public class MyTimer implements Runnable {
     public void run(){
         try{
             while(true){
-                game.followPlayer(0,1);
-                //moveRandom(1);
-                Thread.sleep(1000); //se met en attente
+                if(game.getPauseState()==false) {
+                    game.followPlayer(0, 1);
+                    //moveRandom(1);
+                }
+                    Thread.sleep(1000); //se met en attente
             }
         }catch(Exception e){};
     }
