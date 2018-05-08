@@ -26,7 +26,7 @@ public class Projectile extends Movable implements Deletable,  Directable, Runna
     @Override
     public synchronized void run() {
         try{thread.sleep(200);} catch (Exception e){};
-        while (game.running()) {
+        while (true) {
             objects=game.getGameObjects();
             for (GameObject object : objects) {
                 if (object.isAtPosition(this.getFrontX(), this.getFrontY())) {

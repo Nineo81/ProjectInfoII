@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 
 public class Map extends JPanel {
     private ArrayList<GameObject> objects = null;
+    private int spacing = 50;
 
     public Map() {
         this.setFocusable(true);
@@ -25,14 +26,14 @@ public class Map extends JPanel {
     }
 
     public void paint(Graphics g) {
-        for (int i = 0; i < 20; i++) { // Virer la valeur 20 et parametrer ca
+        for (int i = 0; i < 20; i++) { // base grid
             for (int j = 0; j < 20; j++) {
                 int x = i;
                 int y = j;
                 g.setColor(Color.LIGHT_GRAY);
-                g.fillRect(x * 50, y * 50, 48, 48);
+                g.fillRect(x * spacing, y * spacing, spacing-2, spacing-2);
                 g.setColor(Color.BLACK);
-                g.drawRect(x * 50, y * 50, 48, 48);
+                g.drawRect(x * spacing, y * spacing, spacing-2, spacing-2);
             }
         }
 
@@ -55,20 +56,39 @@ public class Map extends JPanel {
                 g.setColor(Color.ORANGE);
             }
 
-            g.fillRect(x * 50, y * 50, 48, 48);
+            g.fillRect(x * spacing, y * spacing, spacing - 2, spacing - 2);
             g.setColor(Color.BLACK);
-            g.drawRect(x * 50, y * 50, 48, 48);
+            g.drawRect(x * spacing, y * spacing, spacing - 2, spacing - 2);
 
             // Decouper en fontions
-            if(object instanceof Directable) {
-                if(object instanceof  Player){
-                    int direction = ((Directable) object).getDirection();
+            if (object instanceof Directable) {
+                int direction = ((Directable) object).getDirection();
+
+                int deltaX = 0;
+                int deltaY = 0;
+
+                switch (direction) {
+                    case Directable.EAST:
+                        deltaX = +(spacing - 2) / 2;
+                        break;
+                    case Directable.NORTH:
+                        deltaY = -(spacing - 2) / 2;
+                        break;
+                    case Directable.WEST:
+                        deltaX = -(spacing - 2) / 2;
+                        break;
+                    case Directable.SOUTH:
+                        deltaY = (spacing - 2) / 2;
+                        break;
+                }
+                if (object instanceof Player) {
+                    //int direction = ((Directable) object).getDirection();
 
                     switch (direction) {
                         case Directable.EAST:
                             try {
                                 Image picture = ImageIO.read(new File("images/right_knight.png"));
-                                g.drawImage(picture, x*50, y*50,null);
+                                g.drawImage(picture, x * spacing, y * spacing, null);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -77,7 +97,7 @@ public class Map extends JPanel {
                         case Directable.NORTH:
                             try {
                                 Image picture = ImageIO.read(new File("images/back_knight.png"));
-                                g.drawImage(picture, x*50, y*50,null);
+                                g.drawImage(picture, x * spacing, y * spacing, null);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -86,7 +106,7 @@ public class Map extends JPanel {
                         case Directable.WEST:
                             try {
                                 Image picture = ImageIO.read(new File("images/left_knight.png"));
-                                g.drawImage(picture, x*50, y*50,null);
+                                g.drawImage(picture, x * spacing, y * spacing, null);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -95,7 +115,7 @@ public class Map extends JPanel {
                         case Directable.SOUTH:
                             try {
                                 Image picture = ImageIO.read(new File("images/front_knight.png"));
-                                g.drawImage(picture, x*50, y*50,null);
+                                g.drawImage(picture, x * spacing, y * spacing, null);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -103,14 +123,13 @@ public class Map extends JPanel {
                             break;
                     }
 
-                    //g.drawImage(picture, x*50, y*50,null);
+                    //g.drawImage(picture, x*spacing, y*spacing,null);
 
-                }
-                else {
-                    int direction = ((Directable) object).getDirection();
+                } else {
+                    //int direction = ((Directable) object).getDirection();
 
-                    int deltaX = 0;
-                    int deltaY = 0;
+                    //int deltaX = 0;
+                    //int deltaY = 0;
 
                     switch (direction) {
                         case Directable.EAST:
@@ -127,52 +146,51 @@ public class Map extends JPanel {
                             break;
                     }
 
-                    int xCenter = x * 50 + 24;
-                    int yCenter = y * 50 + 24;
+                    int xCenter = x * spacing + (spacing - 2) / 2;
+                    int yCenter = y * spacing + (spacing - 2) / 2;
                     g.drawLine(xCenter, yCenter, xCenter + deltaX, yCenter + deltaY);
                 }
-            }
-            if(object instanceof Activable) {
-                int life=((Activable) object).getLife();
-                int maxLife= ((Activable) object).getMaxLife();
-                if(maxLife!=life) {
-                    g.setColor(Color.DARK_GRAY);
-                    g.fillRect(x * 50 + 1, y * 50 + 2, 46, 2);
-                    g.setColor(Color.GREEN);
-                    g.fillRect(x * 50 + 1, y * 50 + 2, Math.round(((float) life / (float) maxLife) * 46), 2);
-                }
-                if (object instanceof Player){
-                    int mana=((Player) object).getMana();
-                    int maxMana= ((Player) object).getMaxMana();
-                    int xp=((Player) object).getXp();
-                    int level= ((Player) object).getLevel();
-                    int levelXp= ((Player) object).getLevelXp();
+                if (object instanceof Activable) {
+                    int life = ((Activable) object).getLife();
+                    int maxLife = ((Activable) object).getMaxLife();
+                    if (maxLife != life) {
+                        g.setColor(Color.DARK_GRAY);
+                        g.fillRect(x * spacing + 1, y * spacing + 2, (spacing-4), 2);
+                        g.setColor(Color.GREEN);
+                        g.fillRect(x * spacing + 1, y * spacing + 2, Math.round(((float) life / (float) maxLife) * (spacing-4)), 2);
+                    }
+                    if (object instanceof Player) {
+                        int mana = ((Player) object).getMana();
+                        int maxMana = ((Player) object).getMaxMana();
+                        int xp = ((Player) object).getXp();
+                        int level = ((Player) object).getLevel();
+                        int levelXp = ((Player) object).getLevelXp();
 
-                    g.setFont(new Font("TimesRoman", Font.BOLD, 25));
-                    g.setColor(Color.BLACK);
-                    g.drawString("LIFE", 1050, 85);
-                    g.setColor(Color.DARK_GRAY);
-                    g.fillRect(1050, 100, 250, 50);
-                    g.setColor(Color.GREEN);
-                    g.fillRect(1050, 100, Math.round(((float) life / (float) maxLife) * 250), 50);
+                        g.setFont(new Font("TimesRoman", Font.BOLD, 25));
+                        g.setColor(Color.BLACK);
+                        g.drawString("LIFE", 1050, 85);
+                        g.setColor(Color.DARK_GRAY);
+                        g.fillRect(1050, 100, 250, 50);
+                        g.setColor(Color.GREEN);
+                        g.fillRect(1050, 100, Math.round(((float) life / (float) maxLife) * 250), 50);
 
-                    g.setColor(Color.BLACK);
-                    g.drawString("MANA", 1050, 235);
-                    g.setColor(Color.DARK_GRAY);
-                    g.fillRect(1050, 250, 250, 50);
-                    g.setColor(Color.BLUE);
-                    g.fillRect(1050, 250, Math.round(((float) mana / (float) maxMana) * 250), 50);
+                        g.setColor(Color.BLACK);
+                        g.drawString("MANA", 1050, 235);
+                        g.setColor(Color.DARK_GRAY);
+                        g.fillRect(1050, 250, 250, 50);
+                        g.setColor(Color.BLUE);
+                        g.fillRect(1050, 250, Math.round(((float) mana / (float) maxMana) * 250), 50);
 
-                    g.setColor(Color.BLACK);
-                    g.drawString("LEVEL : "+String.valueOf(level), 1050, 900);
-                    g.setColor(Color.DARK_GRAY);
-                    g.fillRect(1050, 915, 250, 5);
-                    g.setColor(Color.YELLOW);
-                    g.fillRect(1050, 915, Math.round(((float) xp / (float) levelXp) * 250), 5);
+                        g.setColor(Color.BLACK);
+                        g.drawString("LEVEL : " + String.valueOf(level), 1050, 900);
+                        g.setColor(Color.DARK_GRAY);
+                        g.fillRect(1050, 915, 250, 5);
+                        g.setColor(Color.YELLOW);
+                        g.fillRect(1050, 915, Math.round(((float) xp / (float) levelXp) * 250), 5);
+                    }
                 }
             }
         }
-
     }
 
     public void setObjects(ArrayList<GameObject> objects) {
@@ -181,6 +199,14 @@ public class Map extends JPanel {
 
     public void redraw() {
         this.repaint();
+    }
+
+    public void levelLayout(int width, int heigth){
+
+        ArrayList<Integer> pointSet = null;
+        do{
+
+        }while (pointSet.size()<4);
     }
 
 

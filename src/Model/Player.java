@@ -62,7 +62,7 @@ public class Player extends Movable implements Activable, Runnable {
 
     public void run(){
         try{
-            while (game.running()) {
+            while (true) {
                 if (mana < maxMana) {
                     mana += 1;
                 }

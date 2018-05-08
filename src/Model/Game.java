@@ -2,14 +2,16 @@ package Model;
 
 import View.Window;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.io.FileReader;
 
 //import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 //import org.omg.CosNaming.IstringHelper;
 
-public class Game implements DeletableObserver, Runnable {
+public class Game implements DeletableObserver {
     private ArrayList<GameObject> objects;
 
     private Window window;
@@ -22,20 +24,13 @@ public class Game implements DeletableObserver, Runnable {
 
     public Game(Window window) {
         this.window = window;
-        this.sleepThread = new Thread(this);
-        sleepThread.start();
         objects = new ArrayList<GameObject>();
-    }
-
-    public void run(){
-        try {
-            this.sleepThread.sleep(1000);
 
             // Creating one Player at position (1,1)
             objects.add(new Ninja(10, 10, 10, 100, this));
-        /*Mob mob = new Mob(11, 11, 3);
-        mob.attachDeletable(this);
-        objects.add(mob); */
+        //Mob mob = new Mob(11, 11, 3);
+        //mob.attachDeletable(this);
+        //objects.add(mob);
 
             Random rand = new Random();
             //mob spawning
@@ -64,43 +59,19 @@ public class Game implements DeletableObserver, Runnable {
                     objects.add(mob);
                 }
             }
-            // Map building
-            for (int i = 0; i < size; i++) {
-                objects.add(new BlockUnbreakable(i, 0));
-                objects.add(new BlockUnbreakable(0, i));
-                objects.add(new BlockUnbreakable(i, size - 1));
-                objects.add(new BlockUnbreakable(size - 1, i));
-            }
-            for (int i = 0; i < numberOfBreakableBlocks; i++) {
-                int x = rand.nextInt(16) + 2;
-                int y = rand.nextInt(16) + 2;
-                int lifepoints = rand.nextInt(5) + 1;
-                boolean occupied=false;
-                for(GameObject object : objects) {
-                    if (object.isAtPosition(x, y)) {
-                        occupied = true;
-                        break;
-                    }
-                }
-                if (!occupied) {
-                    BlockBreakable block = new BlockBreakable(x, y, lifepoints);
-                    block.attachDeletable(this);
-                    objects.add(block);
-                }
-                else {i--;}
-            }
+
+            //New Map building
+            mapReader(mapCreator());
+
 
             Thread t1 = new Thread(new MyTimer(this));
             t1.start();
 
-            window.setGameObjects(this.getGameObjects());
+            //window.setGameObjects(this.getGameObjects());
 
-            while (true){
-                this.sleepThread.sleep(16,666);
-                notifyView();
-            }
 
-        } catch (Exception e){System.out.println("Something went wrong");}
+
+
     }
 
 
@@ -139,6 +110,7 @@ public class Game implements DeletableObserver, Runnable {
                 nextY=yPos+y;
             }
         }
+        notifyView();
     }
 
     public void followPlayer(int playerTarget, int playerObject){  //Methode pour suivre le player
@@ -174,11 +146,13 @@ public class Game implements DeletableObserver, Runnable {
     public void action(int playerNumber) {
         Powered player = ((Powered) objects.get(playerNumber));
         player.action(objects);
+        notifyView();
     }
 
     public void action1(int playerNumber) {
         Powered player = ((Powered) objects.get(playerNumber));
         player.action1(objects);
+        notifyView();
     }
 
     public void action2(int playerNumber) {
@@ -190,22 +164,15 @@ public class Game implements DeletableObserver, Runnable {
         objects.add(object);
     }
 
-    public int getMobCount(){
-        return numberOfMobs;
-    }
-
-    public void mobDied(){numberOfMobs--;};
-
-
     public void notifyView() {
-        window.update(running);
+        window.update(true);
     }
 
     public ArrayList<GameObject> getGameObjects() {
         return this.objects;
     }
 
-
+/* OLD PAUSING SYSTEM
     public void pause(){
         running=false;
         window.openEscapeMenu();
@@ -215,23 +182,109 @@ public class Game implements DeletableObserver, Runnable {
         window.closeEscapeMenu();
         running=true;
     }
-
+*/
     @Override
     public synchronized void delete(Deletable ps, ArrayList<GameObject> loot) {
         objects.remove(ps);
         if (loot != null) {
             objects.addAll(loot);
         }
+        notifyView();
     }
 
+    public void mapReader (int[][] room) {
+        int x=0;
+        int y=0;
+        for (int[] i:room){
+            for (int j:i){
+                switch (j){
+                    case 1:
+                        objects.add(new BlockUnbreakable(x, y));
+                        break;
+                    case 2:
+                        BlockBreakable block = new BlockBreakable(x, y, 3);
+                        block.attachDeletable(this);
+                        objects.add(block);
+                }
+                x++;
+            }
+            x=0;
+            y++;
+        }
+        window.setGameObjects(this.getGameObjects());
+        notifyView();
+    }
+
+    public int[][] matrixGenerator(int num,int dimension){
+        int[][] matrix = new int[dimension][dimension];
+        for (int i=0;i<dimension;i++){
+            for(int j=0;j<dimension;j++){
+                matrix[i][j]=num;
+            }
+        }
+        return matrix;
+    }
+
+    public int[][] mapCreator(){
+        Random rand = new Random();
+        int dimension =20,
+                maxTunnels = 70,
+                maxLength = 10,
+                currentRow = rand.nextInt(dimension),
+                currentColumn = rand.nextInt(dimension),
+                randomLength,
+                tunnelLength;
+        int[][] map = matrixGenerator(1,dimension),
+                directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        int[] lastDirection = new int[2],
+                randomDirection;
+
+        // Start of algorithm
+        while(maxTunnels != 0) {
+
+            //Check if the new direction does go back on track and if so, choose a new one
+            do {
+                randomDirection = directions[rand.nextInt(4)];
+            } while (randomDirection[0] == -lastDirection[0] && randomDirection[1] == -lastDirection[1]);
+
+            randomLength = rand.nextInt(maxLength);
+            tunnelLength =0;
+
+            //Constructing tunnel
+            while(tunnelLength<randomLength){
+
+                //break the loop if it is going out of the map
+                if (((currentRow == 1) && (randomDirection[0] == -1)) ||
+                        ((currentColumn == 1) && (randomDirection[1] == -1)) ||
+                        ((currentRow == dimension - 2) && (randomDirection[0] == 1)) ||
+                        ((currentColumn == dimension - 2) && (randomDirection[1] == 1))) {
+                    break;
+                }
+                else{
+                    map[currentRow][currentColumn] = 0;
+                    currentRow += randomDirection[0];
+                    currentColumn += randomDirection[1];
+                    tunnelLength++;
+                }
+            }
+
+            //Prevent a tunnel without length
+            if(tunnelLength != 0){
+                lastDirection=randomDirection;
+                maxTunnels--;
+            }
+        }
+
+        return map;
+    }
 
     public void playerPos(int playerNumber) {
         Player player = ((Player) objects.get(playerNumber));
         System.out.println(player.getPosX() + ":" + player.getPosY());
-        
+
     }
 
-    public boolean running(){return running;}
+    //public boolean running(){return running;}
 
 
 }

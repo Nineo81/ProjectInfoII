@@ -20,32 +20,50 @@ public class Keyboard implements KeyListener {
 
         switch (key) {
         case KeyEvent.VK_A:
-             if (game.running()){game.action1(player1);}
+             //if (game.running()){
+                 game.action1(player1);
+             //}
              break;
         case KeyEvent.VK_Z:
-            if (game.running()){game.action2(player1);}
+            //if (game.running()){
+                game.action2(player1);
+            //}
             break;
         case KeyEvent.VK_ESCAPE:
-            if (game.running()){game.pause();}
-            else {game.resume();}
+            //if (game.running()){
+            //    game.pause();
+            //}
+            //else {game.resume();}
             break;
         case KeyEvent.VK_RIGHT:
-            if (game.running()){game.movePlayer(1, 0, player1);}
+            //if (game.running()){
+                game.movePlayer(1, 0, player1);
+            //}
             break;
         case KeyEvent.VK_LEFT:
-            if (game.running()){game.movePlayer(-1, 0, player1);}
+            //if (game.running()){
+                game.movePlayer(-1, 0, player1);
+            //}
             break;
         case KeyEvent.VK_DOWN:
-            if (game.running()){game.movePlayer(0, 1, player1);}
+            //if (game.running()){
+                game.movePlayer(0, 1, player1);
+            //}
             break;
         case KeyEvent.VK_UP:
-            if (game.running()){game.movePlayer(0, -1, player1);}
+            //if (game.running()){
+                game.movePlayer(0, -1, player1);
+            //}
              break;
         case KeyEvent.VK_SPACE:
-            if (game.running()){game.action(player1);}
+            //if (game.running()){
+                game.action(player1);
+            //}
             break;
         case KeyEvent.VK_P:
-            if (game.running()){game.playerPos(player1);}
+            //if (game.running()){
+                game.playerPos(player1);
+            //}
         }
     }
 

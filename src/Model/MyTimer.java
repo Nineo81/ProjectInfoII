@@ -62,11 +62,11 @@ public class MyTimer implements Runnable {
     public void run(){
         try{
             int i=0;
-            while(game.running()){
-                int mobCount = game.getMobCount();
+            while(true){
+                int mobCount = 6;
                 for (int mobNumber = 0; mobNumber<mobCount; mobNumber++ ) {
                     if (mobNumber==mobCount-1){
-                        if (mobCount!=game.getMobCount()){
+                        if (mobCount!=6){
                             break;
                         }
                     }
