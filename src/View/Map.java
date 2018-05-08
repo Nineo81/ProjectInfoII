@@ -3,9 +3,9 @@ package View;
 import Model.Directable;
 import Model.GameObject;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Observer;
 
 import javax.swing.JPanel;
 
@@ -13,9 +13,10 @@ public class Map extends JPanel {
     private ArrayList<GameObject> objects = null;
     private int spacing = 30;
 
-    public Map() {
+    public Map(Dimension size) {
         this.setFocusable(true);
         this.requestFocusInWindow();
+        this.spacing = size.height / 20;
     }
 
     public void paint(Graphics g) {
@@ -24,9 +25,9 @@ public class Map extends JPanel {
                 int x = i;
                 int y = j;
                 g.setColor(Color.LIGHT_GRAY);
-                g.fillRect(x * spacing, y * spacing, spacing-2, spacing-2);
+                g.fillRect(x * spacing, y * spacing, spacing - 2, spacing - 2);
                 g.setColor(Color.BLACK);
-                g.drawRect(x * spacing, y * spacing, spacing-2, spacing-2);
+                g.drawRect(x * spacing, y * spacing, spacing - 2, spacing - 2);
             }
         }
 
@@ -49,34 +50,34 @@ public class Map extends JPanel {
                 g.setColor(Color.ORANGE);
             }
 
-            g.fillRect(x * spacing, y * spacing, spacing-2, spacing-2);
+            g.fillRect(x * spacing, y * spacing, spacing - 2, spacing - 2);
             g.setColor(Color.BLACK);
-            g.drawRect(x * spacing, y * spacing, spacing-2, spacing-2);
-            
+            g.drawRect(x * spacing, y * spacing, spacing - 2, spacing - 2);
+
             // Decouper en fontions
-            if(object instanceof Directable) {
+            if (object instanceof Directable) {
                 int direction = ((Directable) object).getDirection();
-                
+
                 int deltaX = 0;
                 int deltaY = 0;
-                
+
                 switch (direction) {
-                case Directable.EAST:
-                    deltaX = +(spacing-2)/2;
-                    break;
-                case Directable.NORTH:
-                    deltaY = -(spacing-2)/2;
-                    break;
-                case Directable.WEST:
-                    deltaX = -(spacing-2)/2;
-                    break;
-                case Directable.SOUTH:
-                    deltaY = (spacing-2)/2;
-                    break;
+                    case Directable.EAST:
+                        deltaX = +(spacing - 2) / 2;
+                        break;
+                    case Directable.NORTH:
+                        deltaY = -(spacing - 2) / 2;
+                        break;
+                    case Directable.WEST:
+                        deltaX = -(spacing - 2) / 2;
+                        break;
+                    case Directable.SOUTH:
+                        deltaY = (spacing - 2) / 2;
+                        break;
                 }
 
-                int xCenter = x * spacing + (spacing-2)/2;
-                int yCenter = y * spacing + (spacing-2)/2;
+                int xCenter = x * spacing + (spacing - 2) / 2;
+                int yCenter = y * spacing + (spacing - 2) / 2;
                 g.drawLine(xCenter, yCenter, xCenter + deltaX, yCenter + deltaY);
             }
         }
@@ -90,11 +91,11 @@ public class Map extends JPanel {
         this.repaint();
     }
 
-    public void levelLayout(int width, int heigth){
+    public void levelLayout(int width, int heigth) {
 
         ArrayList<Integer> pointSet = null;
-        do{
+        do {
 
-        }while (pointSet.size()<4);
+        } while (pointSet.size() < 4);
     }
 }
