@@ -11,8 +11,8 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 
 public class Window implements SizeableObserver {
-    private Dimension size = new Dimension(1000,800);
-    private Map map = new Map(this.size);
+    private Dimension size;
+    private Map map = new Map();
     private ResizeListener sizing = new ResizeListener();
 
     public Window() {
@@ -24,7 +24,6 @@ public class Window implements SizeableObserver {
         window.getContentPane().setBackground(Color.gray);
         window.getContentPane().add(this.map);
         window.setVisible(true);
-        System.out.println(size);
     }
 
     public void setGameObjects(ArrayList<GameObject> objects) {
@@ -42,7 +41,7 @@ public class Window implements SizeableObserver {
 
     public void newSize(Dimension s){
         this.size=s;
+        map.setSize(size);
         update();
-        System.out.println(this.size);
     }
 }

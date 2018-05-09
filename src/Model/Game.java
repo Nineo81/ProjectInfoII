@@ -230,6 +230,13 @@ public class Game implements DeletableObserver {
                 }
                 else{
                     map[currentRow][currentColumn] = 0;
+                    for(int i=-1;i<=1;i++){
+                        for(int j=-1;j<=1;j++){
+                            if(map[currentRow+i][currentColumn+j]!=0){
+                                map[currentRow+i][currentColumn+j]=2;
+                            }
+                        }
+                    }
                     currentRow += randomDirection[0];
                     currentColumn += randomDirection[1];
                     tunnelLength++;

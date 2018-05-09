@@ -12,14 +12,15 @@ import javax.swing.JPanel;
 public class Map extends JPanel {
     private ArrayList<GameObject> objects = null;
     private int spacing = 30;
+    private Dimension size = new Dimension(1000,800);
 
-    public Map(Dimension size) {
+    public Map() {
         this.setFocusable(true);
         this.requestFocusInWindow();
-        this.spacing = size.height / 20;
     }
 
     public void paint(Graphics g) {
+        this.spacing = (size.height-30 )/ 20;
         for (int i = 0; i < 20; i++) { // base grid
             for (int j = 0; j < 20; j++) {
                 int x = i;
@@ -97,5 +98,9 @@ public class Map extends JPanel {
         do {
 
         } while (pointSet.size() < 4);
+    }
+
+    public void setSize(Dimension size){
+        this.size=size;
     }
 }
