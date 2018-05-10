@@ -11,92 +11,78 @@ import java.io.FileReader;
 
 //import org.omg.CosNaming.IstringHelper;
 
-public class Game implements DeletableObserver, Runnable {
-    private ArrayList<GameObject> objects = new ArrayList<GameObject>();
+public class Game implements DeletableObserver, MovingObserver {
+    private ArrayList<GameObject> objects;
 
     private Window window;
     private Thread sleepThread;
     private int size = 20;
     // private int bombTimer = 3000;
-    private int numberOfMobs=4;
+    private int numberOfMobs=6;
+    private boolean running=true;
     private int numberOfBreakableBlocks = 40;
     boolean pauseState = false;
 
     public Game(Window window) {
         this.window = window;
-        this.sleepThread = new Thread(this);
-        sleepThread.start();
-
-        // Creating one Player at position (1,1)
-        objects.add(new Ninja(10, 10, 10, 100));
-        /*Mob mob = new Mob(11, 11, 3);
-        mob.attachDeletable(this);
-        objects.add(mob); */
+        objects = new ArrayList<GameObject>();
 
         Random rand = new Random();
-        //mob spawning
-        int n=0;
-        while (n<numberOfMobs){
-            int x = rand.nextInt(16) + 2;
-            int y = rand.nextInt(16) + 2;
-            int lifepoints = rand.nextInt(3) + 3;
-            boolean occupied=false;
+        // Creating one Player at position (1,1)
+        objects.add(new Ninja(0, 0, 10, 100, this));
 
-
-
-            for(GameObject object : objects){
-                if(object.isAtPosition(x,y)){
-                    occupied=true;
-                    break;
-                }
-                if((Math.abs(10-x)+Math.abs(10-y))<6){
-                    occupied=true;
-                    break;
-                }
-            }
-            if (!occupied){
-                n++;
-                Mob mob = new Mob(this,x, y, lifepoints);
-                mob.attachDeletable(this);
-                objects.add(mob);
-            }
-        }
-
-        //New Map building
+        window.setGameObjects(this.getGameObjects());
         mapReader(mapCreator());
 
 
-        /*Map building
-        for (int i = 0; i < size; i++) {
-            objects.add(new BlockUnbreakable(i, 0));
-            objects.add(new BlockUnbreakable(0, i));
-            objects.add(new BlockUnbreakable(i, size - 1));
-            objects.add(new BlockUnbreakable(size - 1, i));
+        //placing player
+        int px=10; int py=10; boolean occupied=true;
+        while (occupied){
+            occupied=false;
+            for (GameObject object : objects) {
+                if (object.isAtPosition(px, py)) {
+                    occupied=true;
+                    break;
+                }
+            }
+            if (occupied){
+                px=rand.nextInt(6) + 7;
+                py=rand.nextInt(6) + 7;
+            }
         }
-        for (int i = 0; i < numberOfBreakableBlocks; i++) {
+
+        ((Player)objects.get(0)).move(px,py);
+
+        //mob spawning
+        int n=0;
+        while (n<numberOfMobs) {
             int x = rand.nextInt(16) + 2;
             int y = rand.nextInt(16) + 2;
-            int lifepoints = rand.nextInt(5) + 1;
-            boolean occupied=false;
-            for(GameObject object : objects) {
+            int lifepoints = rand.nextInt(3) + 3;
+            occupied = false;
+
+
+            for (GameObject object : objects) {
                 if (object.isAtPosition(x, y)) {
+                    occupied = true;
+                    break;
+                }
+                if ((Math.abs(px - x) + Math.abs(py - y)) < 6) {
                     occupied = true;
                     break;
                 }
             }
             if (!occupied) {
-                BlockBreakable block = new BlockBreakable(x, y, lifepoints);
-                block.attachDeletable(this);
-                objects.add(block);
+                n++;
+                Mob mob = new Mob( x, y, lifepoints);
+                mob.attachDeletable(this); mob.attachMoving(this);
+                objects.add(mob);
             }
-            else {i--;}
         }
 
-        Thread t1 = new Thread(new MyTimer(this));
-        t1.start();
 
-        window.setGameObjects(this.getGameObjects());
-        notifyView();*/
+
+
     }
 
 
@@ -122,7 +108,7 @@ public class Game implements DeletableObserver, Runnable {
                 }
             }
             player.rotate(x, y);
-            if (obstacle == false) {
+            if (!obstacle) {
                 player.move(x, y);
             }
             else{
@@ -138,61 +124,33 @@ public class Game implements DeletableObserver, Runnable {
         notifyView();
     }
 
-    public void followPlayer(int playerTarget, int playerObject){  //Methode pour suivre le player
-        Movable player1 = ((Movable) objects.get(playerTarget));
-        int TargetX = player1.getPosX();
-        int TargetY = player1.getPosY();
-
-        Movable player2 = ((Movable) objects.get(playerObject));
-        int ObjX = player2.getPosX();
-        int ObjY = player2.getPosY();
-
-        int diffX=TargetX-ObjX;
-        int diffY=TargetY-ObjY;
-
-        if (Math.abs(diffX)>Math.abs(diffY)){
-            if (diffX>0){
-                movePlayer(1, 0, playerObject);
-            }
-            else{
-                movePlayer(-1, 0, playerObject);
-            }
-        }
-        else {
-            if (diffY>0){
-                movePlayer(0, 1, playerObject);
-            }
-            else{
-                movePlayer(0, -1, playerObject);
-            }
-        }
-    }
 
     public void action(int playerNumber) {
         Powered player = ((Powered) objects.get(playerNumber));
-        player.action(objects, this);
+        player.action(objects);
+        notifyView();
     }
 
     public void action1(int playerNumber) {
         Powered player = ((Powered) objects.get(playerNumber));
-        player.action1(objects, this);
+        player.action1(objects);
+        notifyView();
     }
 
     public void action2(int playerNumber) {
         Powered player = ((Powered) objects.get(playerNumber));
-        player.action2(objects,this);
+        player.action2(objects);
     }
 
     public void add(GameObject object){
         objects.add(object);
+        if (object instanceof Deletable){
+            ((Deletable) object).attachDeletable(this);
+        }
+        if (object instanceof Moving){
+            ((Moving) object).attachMoving(this);
+        }
     }
-
-    public int getMobCount(){
-        return numberOfMobs;
-    }
-
-    public void mobDied(){numberOfMobs--;};
-
 
     public void notifyView() {
         window.update();
@@ -202,14 +160,8 @@ public class Game implements DeletableObserver, Runnable {
         return this.objects;
     }
 
-    public void run(){
-        try {
-            this.sleepThread.sleep(3000);
-        } catch (Exception e){System.out.println("Something went wrong");}
-    }
-
     @Override
-    synchronized public void delete(Deletable ps, ArrayList<GameObject> loot) {
+    public synchronized void delete(Deletable ps, ArrayList<GameObject> loot) {
         objects.remove(ps);
         if (loot != null) {
             objects.addAll(loot);
@@ -303,8 +255,18 @@ public class Game implements DeletableObserver, Runnable {
         return map;
     }
 
+    public GameObject detect(int x, int y){
+        for (GameObject object : objects) {
+            if (object.isAtPosition(x, y)) {
+                return object;
+            }
+        }
+        return null;
+    }
+
     public void pauseGame (){
         this.pauseState = !this.pauseState;
+        window.pause(pauseState);
     }
 
     public boolean getPauseState(){
@@ -316,5 +278,16 @@ public class Game implements DeletableObserver, Runnable {
         System.out.println(player.getPosX() + ":" + player.getPosY());
 
     }
+
+    public int getPlayerX(){
+        int posX = ((Player) objects.get(0)).getPosX();
+        return posX;
+    }
+    public int getPlayerY(){
+        int posY = ((Player) objects.get(0)).getPosY();
+        return posY;
+    }
+
+
 
 }

@@ -1,7 +1,6 @@
 import Controller.Keyboard;
 import Model.Game;
 import View.Window;
-import Model.MyTimer;
 
 public class Main {
     public static void main(String[] args) {

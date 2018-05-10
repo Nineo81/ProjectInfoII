@@ -1,8 +1,8 @@
 package Model;
 
 public interface Activable {
-    public void activate(int dammage);
-    public int getLife();
-    public int getMaxLife();
+    int activate(int dammage);
+    int getLife();
+    int getMaxLife();
 
 }

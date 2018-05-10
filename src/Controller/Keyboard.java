@@ -26,10 +26,10 @@ public class Keyboard implements KeyListener {
         if(game.getPauseState()==false){
         switch (key) {
         case KeyEvent.VK_A:
-             game.action1(player1);
+                 game.action1(player1);
              break;
         case KeyEvent.VK_Z:
-            game.action2(player1);
+                game.action2(player1);
             break;
         case KeyEvent.VK_RIGHT:
             game.movePlayer(1, 0, player1);

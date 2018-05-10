@@ -8,17 +8,22 @@ public class Player extends Movable implements Activable, Runnable {
     protected int maxMana;
     private int globalDammageMultiplier=1;
     private int baseDammageMultiplier = 1;
-    int weaponDammage= 0;
+    private int weaponDammage= 0;
     int baseDammage;
+    private int xp=0;
+    private int level=1;
+    private int levelXp=100;
     private Thread thread;
+    Game game;
 
-    public Player(int x, int y,int life, int mana) {
+    public Player(int x, int y,int life, int mana, Game game) {
         super(x, y, life, 2);
         this.maxLife=life;
         this.life = life;
         this.maxMana=mana;
         this.mana=mana;
         this.updateDammage();
+        this.game=game;
         this.thread = new Thread(this);
         thread.start();
     }
@@ -27,20 +32,33 @@ public class Player extends Movable implements Activable, Runnable {
         this.baseDammage=(1+weaponDammage)*globalDammageMultiplier*baseDammageMultiplier;
     }
 
-    public void activate(int dammage){
+    public int activate(int dammage){
         if (life <= dammage){
+            life=0;
             lose();
         }
         else {
             life-=dammage;
             //this.color = lifepoints + 2; // chiant
         }
+        return 0;
     }
 
     private void lose(){
         super.color=4;
         System.out.println("You diededed");
     }
+
+
+    public void xp(int xp){
+        this.xp+=xp;
+        if (this.xp>=levelXp){
+            this.xp-=levelXp;
+            level++;
+            levelXp=levelXp*4;
+        }
+    }
+
 
     public void run(){
         try{
@@ -68,5 +86,13 @@ public class Player extends Movable implements Activable, Runnable {
     public int getMaxMana(){
         return maxMana;
     }
+
+    public int getXp(){
+        return xp;
+    }
+
+    public int getLevel(){ return level; }
+
+    public int getLevelXp(){ return levelXp; }
 
 }

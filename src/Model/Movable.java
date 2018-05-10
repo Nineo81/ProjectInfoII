@@ -11,8 +11,8 @@ public class Movable extends GameObject implements Directable {
     }
 
     public void move(int X, int Y) {
-        this.posX = this.posX + X;
-        this.posY = this.posY + Y;
+        this.posX = this.posX+X;
+        this.posY = this.posY+Y;
     }
 
     public void rotate(int x, int y) {
