@@ -27,12 +27,10 @@ public class Window implements SizeableObserver {
         sizing.attachSizeable(this);
         window.getContentPane().setBackground(Color.gray);
         window.getContentPane().add(this.map);
-        window.getContentPane().add(this.escapeMenu);
-        this.escapeMenu.setOpaque(false);
-        this.escapeMenu.setVisible(true);
+        //window.getContentPane().add(this.escapeMenu);
+        //this.escapeMenu.setOpaque(false);
+        //this.escapeMenu.setVisible(true);
         window.setVisible(true);
-        this.map.setVisible(true);
-        window.getContentPane().add(this.escapeMenu);
     }
 
     public void setGameObjects(ArrayList<GameObject> objects) {
@@ -65,7 +63,6 @@ public class Window implements SizeableObserver {
     public void pause(boolean pauseState){
         if (pauseState){
             openEscapeMenu();
-            System.out.println("opening menu");
         }
         else{
             closeEscapeMenu();
