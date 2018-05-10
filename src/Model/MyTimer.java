@@ -6,16 +6,15 @@ import java.lang.Math;
 
 public class MyTimer implements Runnable {
 
-    private Game game;
     private Random rand = new Random();
+    Game game;
+    private ArrayList<DeletableObserver> observers = new ArrayList<DeletableObserver>();
 
 
     private static final int mob1 = 1;
 
-    public MyTimer(Game game){
-        this.game = game;
-    }
-
+    public MyTimer(Game game){this.game = game;}
+/*
     public void moveRandom(int mobNumber){
         int pos = rand.nextInt(4);
         switch(pos) {
@@ -33,7 +32,7 @@ public class MyTimer implements Runnable {
         }
     }
 
-    /*public void moveFollow2(int mobNumber){
+    /public void moveFollow2(int mobNumber){
 
         ArrayList<Integer> posPlayer = game.playerPos(0);
         ArrayList<Integer> posMob = game.playerPos(mobNumber);
@@ -70,11 +69,15 @@ public class MyTimer implements Runnable {
                             break;
                         }
                     }
-                    game.followPlayer(0, mobNumber + 1);
+                    //game.followPlayer(0, mobNumber + 1);
                     //moveRandom(1);
                 }
                 Thread.sleep(1000); //se met en attente
             }
         }catch(Exception e){};
     }
+
+    /*@Override
+    public void attachMoving(MovingObserver mo) {observers.add(mo);}
+    */
 }
