@@ -1,24 +1,34 @@
 package View;
 
 import Model.GameObject;
+import Model.SizeableObserver;
 
 import java.awt.Color;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-public class Window {
-    private Map map = new Map();
-    private EscapeMenu escapeMenu= new EscapeMenu();
+
+public class Window implements SizeableObserver {
+    private Dimension size = new Dimension(1000, 800);
+    private Map map = new Map(this.size);
+
+    private EscapeMenu escapeMenu = new EscapeMenu();
     JFrame window = new JFrame("Game");
+    private ResizeListener sizing = new ResizeListener();
 
     public Window() {
+        JFrame window = new JFrame("Game");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setBounds(200, 0, 1400, 1020);
+        window.addComponentListener(sizing);
+        sizing.attachSizeable(this);
         window.getContentPane().setBackground(Color.gray);
         window.getContentPane().add(this.map);
         window.setVisible(true);
+        System.out.println(size);
     }
 
     public void setGameObjects(ArrayList<GameObject> objects) {
@@ -26,22 +36,25 @@ public class Window {
         this.map.redraw();
     }
 
-    public void update(boolean running) {
-        if (running) {
-            this.map.redraw();
-        }
-        else {this.escapeMenu.redraw();}
+    public void update() {
+        this.map.redraw();
     }
 
     public void setKeyListener(KeyListener keyboard) {
         this.map.addKeyListener(keyboard);
     }
 
-    public void openEscapeMenu(){
+    public void openEscapeMenu() {
         window.getContentPane().add(this.escapeMenu);
     }
 
-    public void closeEscapeMenu(){
+    public void closeEscapeMenu() {
         window.getContentPane().remove(this.escapeMenu);
+    }
+
+    public void newSize(Dimension s) {
+        this.size = s;
+        update();
+        System.out.println(this.size);
     }
 }

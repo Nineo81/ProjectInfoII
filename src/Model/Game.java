@@ -11,7 +11,7 @@ import java.io.FileReader;
 
 //import org.omg.CosNaming.IstringHelper;
 
-public class Game implements DeletableObserver {
+public class Game implements DeletableObserver, MovingObserver {
     private ArrayList<GameObject> objects;
 
     private Window window;
@@ -21,54 +21,70 @@ public class Game implements DeletableObserver {
     private int numberOfMobs=6;
     private boolean running=true;
     private int numberOfBreakableBlocks = 40;
+    boolean pauseState = false;
 
     public Game(Window window) {
         this.window = window;
         objects = new ArrayList<GameObject>();
 
-            // Creating one Player at position (1,1)
-            objects.add(new Ninja(10, 10, 10, 100, this));
-        //Mob mob = new Mob(11, 11, 3);
-        //mob.attachDeletable(this);
-        //objects.add(mob);
+        Random rand = new Random();
+        // Creating one Player at position (1,1)
+        objects.add(new Ninja(0, 0, 10, 100, this));
 
-            Random rand = new Random();
-            //mob spawning
-            int n=0;
-            while (n<numberOfMobs) {
-                int x = rand.nextInt(16) + 2;
-                int y = rand.nextInt(16) + 2;
-                int lifepoints = rand.nextInt(3) + 3;
-                boolean occupied = false;
+        window.setGameObjects(this.getGameObjects());
+        mapReader(mapCreator());
 
 
-                for (GameObject object : objects) {
-                    if (object.isAtPosition(x, y)) {
-                        occupied = true;
-                        break;
-                    }
-                    if ((Math.abs(10 - x) + Math.abs(10 - y)) < 6) {
-                        occupied = true;
-                        break;
-                    }
-                }
-                if (!occupied) {
-                    n++;
-                    Mob mob = new Mob(this, x, y, lifepoints);
-                    mob.attachDeletable(this);
-                    objects.add(mob);
+        //placing player
+        int px=10; int py=10; boolean occupied=true;
+        while (occupied){
+            occupied=false;
+            for (GameObject object : objects) {
+                if (object.isAtPosition(px, py)) {
+                    occupied=true;
+                    break;
                 }
             }
+            if (occupied){
+                px=rand.nextInt(6) + 7;
+                py=rand.nextInt(6) + 7;
+            }
+        }
 
-            //New Map building
-            mapReader(mapCreator());
+        ((Player)objects.get(0)).move(px,py);
+
+        //mob spawning
+        int n=0;
+        while (n<numberOfMobs) {
+            int x = rand.nextInt(16) + 2;
+            int y = rand.nextInt(16) + 2;
+            int lifepoints = rand.nextInt(3) + 3;
+            occupied = false;
 
 
-            Thread t1 = new Thread(new MyTimer(this));
-            t1.start();
+            for (GameObject object : objects) {
+                if (object.isAtPosition(x, y)) {
+                    occupied = true;
+                    break;
+                }
+                if ((Math.abs(px - x) + Math.abs(py - y)) < 6) {
+                    occupied = true;
+                    break;
+                }
+            }
+            if (!occupied) {
+                n++;
+                Mob mob = new Mob( x, y, lifepoints);
+                mob.attachDeletable(this); mob.attachMoving(this);
+                objects.add(mob);
+            }
+        }
 
-            //window.setGameObjects(this.getGameObjects());
 
+        /*
+        Thread t1 = new Thread(new MyTimer(this));
+        t1.start();
+        */
 
 
 
@@ -112,7 +128,7 @@ public class Game implements DeletableObserver {
         }
         notifyView();
     }
-
+/*
     public void followPlayer(int playerTarget, int playerObject){  //Methode pour suivre le player
         Movable player1 = ((Movable) objects.get(playerTarget));
         int TargetX = player1.getPosX();
@@ -142,6 +158,7 @@ public class Game implements DeletableObserver {
             }
         }
     }
+    */
 
     public void action(int playerNumber) {
         Powered player = ((Powered) objects.get(playerNumber));
@@ -165,24 +182,13 @@ public class Game implements DeletableObserver {
     }
 
     public void notifyView() {
-        window.update(true);
+        window.update();
     }
 
     public ArrayList<GameObject> getGameObjects() {
         return this.objects;
     }
 
-/* OLD PAUSING SYSTEM
-    public void pause(){
-        running=false;
-        window.openEscapeMenu();
-    }
-
-    public void resume(){
-        window.closeEscapeMenu();
-        running=true;
-    }
-*/
     @Override
     public synchronized void delete(Deletable ps, ArrayList<GameObject> loot) {
         objects.remove(ps);
@@ -278,13 +284,38 @@ public class Game implements DeletableObserver {
         return map;
     }
 
+    public GameObject detect(int x, int y){
+        for (GameObject object : objects) {
+            if (object.isAtPosition(x, y)) {
+                return object;
+            }
+        }
+        return null;
+    }
+
+    public void pauseGame (){
+        this.pauseState = !this.pauseState;
+    }
+
+    public boolean getPauseState(){
+        return pauseState;
+    }
+
     public void playerPos(int playerNumber) {
         Player player = ((Player) objects.get(playerNumber));
         System.out.println(player.getPosX() + ":" + player.getPosY());
 
     }
 
-    //public boolean running(){return running;}
+    public int getPlayerX(){
+        int posX = ((Player) objects.get(0)).getPosX();
+        return posX;
+    }
+    public int getPlayerY(){
+        int posY = ((Player) objects.get(0)).getPosY();
+        return posY;
+    }
+
 
 
 }

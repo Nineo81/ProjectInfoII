@@ -6,6 +6,4 @@ public interface MovingObserver {
     int getPlayerX();
     int getPlayerY();
     void notifyView();
-
-    boolean getPauseState();
 }

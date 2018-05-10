@@ -66,7 +66,7 @@ public class Ninja extends Player implements DeletableObserver,Powered{
                 }
             }
             mana-=25;
-            game.add(new Projectile(frontX, frontY, this.getDirection(), 2 * baseDammage,this));
+            game.add(new Projectile(frontX, frontY, this.getDirection(), 2 * baseDammage,this, game));
         }
     }
 
