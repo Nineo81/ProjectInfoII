@@ -11,7 +11,6 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 
 public class Window implements SizeableObserver {
-    private Dimension size;
     private Map map = new Map();
     private ResizeListener sizing = new ResizeListener();
 
@@ -40,8 +39,7 @@ public class Window implements SizeableObserver {
     }
 
     public void newSize(Dimension s){
-        this.size=s;
-        map.setSize(size);
+        map.setSize(s);
         update();
     }
 }

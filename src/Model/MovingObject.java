@@ -1,11 +1,11 @@
 package Model;
 
-public class Movable extends GameObject implements Directable {
+public class MovingObject extends GameObject implements Directable {
 
     int lifes = 0;
     int direction = EAST;
 
-    public Movable(int x, int y, int maxBomb, int lifes, int color) {
+    public MovingObject(int x, int y, int maxBomb, int lifes, int color) {
         super(x, y, color);
         this.lifes = lifes;
     }

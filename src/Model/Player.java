@@ -1,6 +1,6 @@
 package Model;
 
-public class Player extends Movable {
+public class Player extends MovingObject {
 
     int lifes = 0;
 

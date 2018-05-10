@@ -2,14 +2,17 @@ package Model;
 
 import java.util.ArrayList;
 
-public class Mob extends Movable implements Deletable, Activable {
+public class Mob extends MovingObject implements Deletable, Activable {
 
+    private int x,y;
     private int lifepoints = 0;
     private ArrayList<DeletableObserver> observers = new ArrayList<DeletableObserver>();
 
     public Mob(int x, int y, int lifes){
         super(x, y,0, lifes, 4);
         this.lifepoints = lifes;
+        this.x=x;
+        this.y=y;
     }
 
     public void activate(){
