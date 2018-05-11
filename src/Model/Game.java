@@ -4,6 +4,7 @@ import View.Window;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.function.*;
 import java.util.Random;
 import java.io.FileReader;
 
@@ -13,6 +14,7 @@ import java.io.FileReader;
 
 public class Game implements DeletableObserver, LevelableObserver, MovingObserver {
     private ArrayList<GameObject> objects = new ArrayList<GameObject>();
+    SamplePredicate<GameObject> filter = new SamplePredicate<>();
 
     private Window window;
     private Thread sleepThread;
@@ -24,6 +26,9 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
 
     public Game(Window window) {
         this.window = window;
+        Ninja player = new Ninja(0, 0, 10, 100, this);
+        objects.add(player);
+        filter.varc1 = player;
         nextLevel();
         //Thread t1 = new Thread(new MyTimer(this));
         //t1.start();
@@ -143,10 +148,7 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
     }
 
     public void nextLevel(){
-        objects = new ArrayList<GameObject>();
-
-        // Creating one Player at position (1,1)
-        objects.add(new Ninja(0, 0, 10, 100, this));
+        objects.removeIf(filter);
 
         window.setGameObjects(this.getGameObjects());
         //New Map building
@@ -194,7 +196,7 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
             if (!occupied) {
                 n++;
                 Mob mob = new Mob( x, y, lifepoints);
-                mob.attachDeletable(this);
+                mob.attachDeletable(this); mob.attachMoving(this);
                 objects.add(mob);
             }
         }

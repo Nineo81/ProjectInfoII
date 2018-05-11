@@ -138,6 +138,7 @@ public class Mob extends MovingObject implements Deletable, Activable, Moving, R
                     }
                 }
             }
+            System.out.println("bite");
             refresh();
             try{thread.sleep(1000);} catch (Exception e){}
         }
