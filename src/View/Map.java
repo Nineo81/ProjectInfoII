@@ -252,6 +252,16 @@ public class Map extends JPanel {
                 }
             }
 
+            if (object instanceof Stair){
+                try {
+                    Image picture = ImageIO.read(new File("images/stone_stairs_down.png"));
+                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
             // Decouper en fontions
             if (object instanceof Directable) {
                 int direction = ((Directable) object).getDirection();
@@ -428,6 +438,8 @@ public class Map extends JPanel {
     }
 
     public void wallConstructor(){
+        this.wallMatrix.clear();
+
         for(GameObject wall:this.objects){
             if(wall instanceof BlockBreakable){
                 int x = wall.getPosX();
