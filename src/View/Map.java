@@ -88,7 +88,8 @@ public class Map extends JPanel {
                         case Directable.EAST:
                             try {
                                 Image picture = ImageIO.read(new File("images/right_knight.png"));
-                                g.drawImage(picture, x * spacing, y * spacing, null);
+                                Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                g.drawImage(scaled, x * spacing, y * spacing, null);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -97,7 +98,8 @@ public class Map extends JPanel {
                         case Directable.NORTH:
                             try {
                                 Image picture = ImageIO.read(new File("images/back_knight.png"));
-                                g.drawImage(picture, x * spacing, y * spacing, null);
+                                Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                g.drawImage(scaled, x * spacing, y * spacing, null);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -106,7 +108,8 @@ public class Map extends JPanel {
                         case Directable.WEST:
                             try {
                                 Image picture = ImageIO.read(new File("images/left_knight.png"));
-                                g.drawImage(picture, x * spacing, y * spacing, null);
+                                Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                g.drawImage(scaled, x * spacing, y * spacing, null);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -115,7 +118,8 @@ public class Map extends JPanel {
                         case Directable.SOUTH:
                             try {
                                 Image picture = ImageIO.read(new File("images/front_knight.png"));
-                                g.drawImage(picture, x * spacing, y * spacing, null);
+                                Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                g.drawImage(scaled, x * spacing, y * spacing, null);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
