@@ -47,11 +47,11 @@ public class Window implements SizeableObserver {
     }
 
     public void openEscapeMenu() {
-        this.escapeMenu.setVisible(true);
+        //this.escapeMenu.setVisible(true);
     }
 
     public void closeEscapeMenu() {
-        this.escapeMenu.setVisible(false);
+        //this.escapeMenu.setVisible(false);
     }
 
     public void newSize(Dimension s) {

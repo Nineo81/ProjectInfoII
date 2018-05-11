@@ -12,6 +12,7 @@ public class ResumeActionListener implements ActionListener {
     private Game game;
 
     public  ResumeActionListener(){
+        System.out.println("I exist");
         //for(Game game : this.gameList) this.game = game;
     }
 
