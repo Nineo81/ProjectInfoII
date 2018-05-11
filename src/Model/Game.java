@@ -157,7 +157,7 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
 
         Random rand = new Random();
 
-        int px=10; int py=10; boolean occupied=true;
+        int px=getPlayerX(); int py=getPlayerY(); boolean occupied=true;
         while (occupied){
             occupied=false;
             for (GameObject object : objects) {
@@ -167,8 +167,8 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
                 }
             }
             if (occupied){
-                px=rand.nextInt(6) + 7;
-                py=rand.nextInt(6) + 7;
+                px=rand.nextInt(10);
+                py=rand.nextInt(10);
             }
         }
 
