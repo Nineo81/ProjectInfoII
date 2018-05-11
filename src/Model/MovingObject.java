@@ -5,14 +5,14 @@ public class MovingObject extends GameObject implements Directable {
     int lifes = 0;
     int direction = EAST;
 
-    public MovingObject(int x, int y, int maxBomb, int lifes, int color) {
+    public MovingObject(int x, int y, int life, int color) {
         super(x, y, color);
         this.lifes = lifes;
     }
 
     public void move(int X, int Y) {
-        this.posX = this.posX + X;
-        this.posY = this.posY + Y;
+        this.posX = this.posX+X;
+        this.posY = this.posY+Y;
     }
 
     public void rotate(int x, int y) {

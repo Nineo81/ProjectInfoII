@@ -11,7 +11,7 @@ import java.io.FileReader;
 
 //import org.omg.CosNaming.IstringHelper;
 
-public class Game implements DeletableObserver, LevelableObserver {
+public class Game implements DeletableObserver, LevelableObserver, MovingObserver {
     private ArrayList<GameObject> objects = new ArrayList<GameObject>();
 
     private Window window;
@@ -25,33 +25,50 @@ public class Game implements DeletableObserver, LevelableObserver {
     public Game(Window window) {
         this.window = window;
         nextLevel();
-        Thread t1 = new Thread(new MyTimer(this));
-        t1.start();
+        //Thread t1 = new Thread(new MyTimer(this));
+        //t1.start();
     }
 
 
-    public void movePlayer(int x, int y, int playerNumber) {
+    public synchronized void movePlayer(int x, int y, int playerNumber) {
         MovingObject player = ((MovingObject) objects.get(playerNumber));
-        int nextX = player.getPosX() + x;
-        int nextY = player.getPosY() + y;
+        int xPos= player.getPosX();
+        int yPos=player.getPosY();
+        int nextX = xPos + x;
+        int nextY = yPos + y;
 
-        boolean obstacle = false;
-        for (GameObject object : objects) {
-            if (object.isAtPosition(nextX, nextY)) {
-                obstacle = object.isObstacle();
+        boolean obstacle = true;
+        while (obstacle) {
+            obstacle=false;
+            for (GameObject object : objects) {
+                if (object.isAtPosition(nextX, nextY)) {
+                    obstacle = object.isObstacle();
+                }
+                if (obstacle) {
+                    if ((player instanceof  Mob) && (object instanceof Activable) ){
+                        ((Activable) object).activate(1);
+                    }
+                    break;
+                }
             }
-            if (obstacle == true) {
-                break;
+            player.rotate(x, y);
+            if (!obstacle) {
+                player.move(x, y);
             }
-        }
-        player.rotate(x, y);
-        if (obstacle == false) {
-            player.move(x, y);
+            else{
+                if (x>0){ x--; }
+                if (x<0){ x++; }
+                if (y>0){ y--; }
+                if (y<0){ y++; }
+                if((x == 0) && (y == 0)){ return; }
+                nextX=xPos+x;
+                nextY=yPos+y;
+            }
         }
         notifyView();
     }
 
-    public void followPlayer(int playerTarget, int playerObject){  //Methode pour suivre le player
+    /*public void followPlayer(int playerTarget, int playerObject){  //Methode pour suivre le player
         MovingObject player1 = ((MovingObject) objects.get(playerTarget));
         int TargetX = player1.getPosX();
         int TargetY = player1.getPosY();
@@ -79,43 +96,33 @@ public class Game implements DeletableObserver, LevelableObserver {
                 movePlayer(0, -1, playerObject);
             }
         }
-    }
+    }*/
 
     public void action(int playerNumber) {
-        Player player = ((Player) objects.get(playerNumber));
-        Activable aimedObject = null;
-		for(GameObject object : objects){
-			if(object.isAtPosition(player.getFrontX(),player.getFrontY())){
-			    if(object instanceof Activable){
-			        aimedObject = (Activable) object;
-			    }
-			}
-		}
-		if(aimedObject != null){
-		    aimedObject.activate();
-            notifyView();
-		}
-        
+        Powered player = ((Powered) objects.get(playerNumber));
+        player.action(objects);
+        notifyView();
+    }
+
+    public void action1(int playerNumber) {
+        Powered player = ((Powered) objects.get(playerNumber));
+        player.action1(objects);
+        notifyView();
     }
 
     public void action2(int playerNumber) {
-        Player player = ((Player) objects.get(playerNumber));
-        int frontX=player.getFrontX();
-        int frontY=player.getFrontY();
-        Activable aimedObject = null;
-        for (GameObject object : objects) {
-            if (object.isAtPosition(frontX, frontY)) {
-                if (object instanceof Activable) {
-                    aimedObject = (Activable) object;
-                    aimedObject.activate();
-                    notifyView();
-                }
-                return;
+        Powered player = ((Powered) objects.get(playerNumber));
+        player.action2(objects);
+    }
 
-            }
+    public void add(GameObject object){
+        objects.add(object);
+        if (object instanceof Deletable){
+            ((Deletable) object).attachDeletable(this);
         }
-        this.objects.add(new Projectile(frontX,frontY,player.getDirection(),objects,this));
-        return;
+        if (object instanceof Moving){
+            ((Moving) object).attachMoving(this);
+        }
     }
 
     public void notifyView() {
@@ -139,16 +146,39 @@ public class Game implements DeletableObserver, LevelableObserver {
         objects = new ArrayList<GameObject>();
 
         // Creating one Player at position (1,1)
-        objects.add(new Ninja(10, 10, 3));
+        objects.add(new Ninja(0, 0, 10, 100, this));
+
+        window.setGameObjects(this.getGameObjects());
+        //New Map building
+        Level level = new Level();
+        mapReader(level.getLevelMap());
 
         Random rand = new Random();
+
+        int px=10; int py=10; boolean occupied=true;
+        while (occupied){
+            occupied=false;
+            for (GameObject object : objects) {
+                if (object.isAtPosition(px, py)) {
+                    occupied=true;
+                    break;
+                }
+            }
+            if (occupied){
+                px=rand.nextInt(6) + 7;
+                py=rand.nextInt(6) + 7;
+            }
+        }
+
+        ((Player)objects.get(0)).move(px,py);
+
         //mob spawning
         int n=0;
         while (n<numberOfMobs) {
             int x = rand.nextInt(16) + 2;
             int y = rand.nextInt(16) + 2;
             int lifepoints = rand.nextInt(3) + 3;
-            boolean occupied = false;
+            occupied = false;
 
 
             for (GameObject object : objects) {
@@ -169,9 +199,6 @@ public class Game implements DeletableObserver, LevelableObserver {
             }
         }
 
-        //New Map building
-        Level level = new Level();
-        mapReader(level.getLevelMap());
         Stair stair = new Stair(10,10);
         stair.attachLevelable(this);
         objects.add(stair);
@@ -200,6 +227,15 @@ public class Game implements DeletableObserver, LevelableObserver {
         notifyView();
     }
 
+    public GameObject detect(int x, int y){
+        for (GameObject object : objects) {
+            if (object.isAtPosition(x, y)) {
+                return object;
+            }
+        }
+        return null;
+    }
+
     public void pauseGame (){
         this.pauseState = !this.pauseState;
     }
@@ -212,6 +248,15 @@ public class Game implements DeletableObserver, LevelableObserver {
         Player player = ((Player) objects.get(playerNumber));
         System.out.println(player.getPosX() + ":" + player.getPosY());
 
+    }
+
+    public int getPlayerX(){
+        int posX = ((Player) objects.get(0)).getPosX();
+        return posX;
+    }
+    public int getPlayerY(){
+        int posY = ((Player) objects.get(0)).getPosY();
+        return posY;
     }
 
 }

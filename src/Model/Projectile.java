@@ -2,64 +2,65 @@ package Model;
 
 import java.util.ArrayList;
 
-public class Projectile extends GameObject implements Deletable,  Directable, Runnable {
+public class Projectile extends MovingObject implements Deletable,  Directable, Runnable, Moving {
 
 
     private int direction;
     private Thread thread;
-    private ArrayList<GameObject> objects;
-    private Activable aimedObject = null;
-    private Game game;
+    private int dammage;
+    private ArrayList<DeletableObserver> observers = new ArrayList<DeletableObserver>();
+    private ArrayList<MovingObserver> observers2 = new ArrayList<MovingObserver>();
+    Powered launcher;
 
-    public Projectile(int x, int y, int direction, ArrayList<GameObject> objects,Game game) {
-        super(x, y, 4);
+    public Projectile(int x, int y, int direction, int dammage, Powered launcher) {
+        super(x, y, 1, 5);
         this.direction=direction;
-        this.objects = objects;
-        this.game=game;
+        this.dammage=dammage;
+        this.launcher=launcher;
         this.thread = new Thread(this);
         thread.start();
-        game.notifyView();
-
-
     }
 
 
     @Override
-    public void run() {
+    public synchronized void run() {
+        try{thread.sleep(200);} catch (Exception e){}
         while (true) {
-            for (GameObject object : objects) {
-                if (object.isAtPosition(this.getFrontX(), this.getFrontY())) {
-                    if (object instanceof Activable) {
-                        aimedObject = (Activable) object;
-                        System.out.println("i have something");
+            if (!askPauseState()) {
+                int frontX = this.getFrontX();
+                int frontY = this.getFrontY();
+                GameObject target = askMovingObserver(frontX, frontY);
+                if (target instanceof Activable) {
+                    if (launcher instanceof Player) {
+                        int xp = ((Activable) target).activate(dammage);
+                        ((Player) launcher).xp(xp);
                     } else {
-                        this.sleep(200);
-                        this.crush();
-                        System.out.println("i hit a wall");
-                        return;
+                        ((Activable) target).activate(dammage);
                     }
+
                 }
-            }
-            if (aimedObject != null) {
-                System.out.println("i'm kicking it");
-                aimedObject.activate();
-                game.notifyView();
-                this.sleep(200);
-                this.crush();
-                game.notifyView();
-                return;
-            } else {
-                this.sleep(300);
-                System.out.println("i'll move now...");
-                this.move();
-                game.notifyView();
+                if (target == null) {
+                    this.move();
+                    refresh();
+                    this.sleep(200);
+                } else {
+                    this.sleep(200);
+                    this.crush();
+                    refresh();
+                    return;
+                }
             }
         }
     }
 
     private void move() {
-        this.posX = getFrontX();
-        this.posY = getFrontY();
+        int x=0;
+        int y=0;
+        direction=this.getDirection();
+        if (direction % 2 == 0) x += 1 - direction;
+        else y += direction - 2;
+        posX +=x;
+        posY+=y;
     }
 
     private void crush(){
@@ -93,7 +94,7 @@ public class Projectile extends GameObject implements Deletable,  Directable, Ru
         if (direction % 2 == 0){
             delta += 1 - direction;
         }
-        return this.posX + delta;
+        return (this.posX + delta);
     }
 
     public int getFrontY() {
@@ -101,19 +102,46 @@ public class Projectile extends GameObject implements Deletable,  Directable, Ru
         if (direction % 2 != 0){
             delta += direction - 2;
         }
-        return this.posY + delta;
+        return (this.posY + delta);
     }
 
 
 
     @Override
     public void attachDeletable(DeletableObserver po) {
-
+        observers.add(po);
     }
 
     @Override
     public void notifyDeletableObserver() {
-        game.delete(this, null);
+        int i = 0;
+        for (DeletableObserver o : observers) {
+            i++;
+            o.delete(this, null);
+        }
+    }
+
+    @Override
+    public GameObject askMovingObserver(int x,int y){
+        return (observers2.get(0)).detect(x,y);
+    }
+
+    @Override
+    public void refresh() {
+        (observers2.get(0)).notifyView();
+    }
+
+    @Override
+    public void attachMoving(MovingObserver mo){observers2.add(mo);}
+
+    @Override
+    public int askPX(){return (observers2.get(0)).getPlayerX();}
+    @Override
+    public int askPY(){return (observers2.get(0)).getPlayerY();}
+
+    @Override
+    public boolean askPauseState(){
+        return (observers2.get(0)).getPauseState();
     }
 
 }

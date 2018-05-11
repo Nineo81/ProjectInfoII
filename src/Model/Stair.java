@@ -9,8 +9,9 @@ public class Stair extends Block implements Levelable, Activable{
         super(X, Y, 3);
     }
 
-    public void activate(){
+    public int activate(int damage){
         notifyLevelableObserver();
+        return 0;
     }
 
     @Override
@@ -26,5 +27,11 @@ public class Stair extends Block implements Levelable, Activable{
         for(LevelableObserver o:observers){
             o.nextLevel();
         }
+    }
+    public int getLife(){
+        return 0;
+    }
+    public int getMaxLife(){
+        return 0;
     }
 }
