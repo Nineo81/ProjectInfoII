@@ -1,5 +1,6 @@
 package Model;
 
+import View.Resumer;
 import View.Window;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.io.FileReader;
 
 //import org.omg.CosNaming.IstringHelper;
 
-public class Game implements DeletableObserver, MovingObserver {
+public class Game implements DeletableObserver, MovingObserver, ResumerObserver {
     private ArrayList<GameObject> objects;
 
     private Window window;
@@ -22,6 +23,8 @@ public class Game implements DeletableObserver, MovingObserver {
     private boolean running=true;
     private int numberOfBreakableBlocks = 40;
     boolean pauseState = false;
+
+    Window escapeMenu;
 
     public Game(Window window) {
         this.window = window;
@@ -266,7 +269,11 @@ public class Game implements DeletableObserver, MovingObserver {
 
     public void pauseGame (){
         this.pauseState = !this.pauseState;
-        window.pause(pauseState);
+        if (pauseState){
+            escapeMenu = new Window(2);
+            this.escapeMenu.attachResumer(this);
+        }
+
     }
 
     public boolean getPauseState(){
@@ -275,8 +282,6 @@ public class Game implements DeletableObserver, MovingObserver {
 
     public void playerPos(int playerNumber) {
         Player player = ((Player) objects.get(playerNumber));
-        System.out.println(player.getPosX() + ":" + player.getPosY());
-
     }
 
     public int getPlayerX(){
@@ -288,6 +293,9 @@ public class Game implements DeletableObserver, MovingObserver {
         return posY;
     }
 
+    public void resume(){
+        pauseGame();
+    }
 
 
 }
