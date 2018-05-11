@@ -74,6 +74,8 @@ public class Mob extends MovingObject implements Deletable, Activable, Moving, R
                 int y; //x if diffx<diffY
                 px = askPX();
                 py = askPY();
+                this.previousPosX = this.posX;
+                this.previousPosY = this.posY;
                 int diffX = px - this.posX;
                 int diffY = py - this.posY;
                 GameObject obstacle;
@@ -138,7 +140,6 @@ public class Mob extends MovingObject implements Deletable, Activable, Moving, R
                     }
                 }
             }
-            System.out.println("bite");
             refresh();
             try{thread.sleep(1000);} catch (Exception e){}
         }
