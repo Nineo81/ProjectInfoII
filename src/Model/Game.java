@@ -226,6 +226,7 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
             y++;
         }
         window.setGameObjects(this.getGameObjects());
+        window.drawWall();
         notifyView();
     }
 

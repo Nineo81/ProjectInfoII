@@ -1,15 +1,11 @@
 package View;
 
-import Model.Activable;
-import Model.Directable;
-import Model.GameObject;
-import Model.Player;
+import Model.*;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Observer;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -18,6 +14,7 @@ public class Map extends JPanel {
     private ArrayList<GameObject> objects = null;
     private int spacing = 30;
     private Dimension size = new Dimension(1000,800);
+    private ArrayList<int[]> wallMatrix = new ArrayList<int[]>();
 
     public Map() {
         this.setFocusable(true);
@@ -26,14 +23,18 @@ public class Map extends JPanel {
 
     public void paint(Graphics g) {
         this.spacing=(this.size.height-30)/20;
+        int n=0;
         for (int i = 0; i < 20; i++) { // base grid
             for (int j = 0; j < 20; j++) {
                 int x = i;
                 int y = j;
-                g.setColor(Color.LIGHT_GRAY);
-                g.fillRect(x * spacing, y * spacing, spacing - 2, spacing - 2);
-                g.setColor(Color.BLACK);
-                g.drawRect(x * spacing, y * spacing, spacing - 2, spacing - 2);
+                try {
+                    Image picture = ImageIO.read(new File("images/Ground.png"));
+                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -42,7 +43,7 @@ public class Map extends JPanel {
             int y = object.getPosY();
             int color = object.getColor();
 
-            if (color == 0) {
+            /*if (color == 0) {
                 g.setColor(Color.DARK_GRAY);
             } else if (color == 1) {
                 g.setColor(Color.GRAY);
@@ -58,7 +59,198 @@ public class Map extends JPanel {
 
             g.fillRect(x * spacing, y * spacing, spacing - 2, spacing - 2);
             g.setColor(Color.BLACK);
-            g.drawRect(x * spacing, y * spacing, spacing - 2, spacing - 2);
+            g.drawRect(x * spacing, y * spacing, spacing - 2, spacing - 2);*/
+
+            if (object instanceof BlockBreakable){
+                int[] wallType = wallMatrix.get(n);
+                if(wallType[0]==1){
+                    if(wallType[1]==1){
+                        if(wallType[2]==1){
+                            //Cas {1,1,1,0}
+                            try {
+                                Image picture = ImageIO.read(new File("images/WallDown.png"));
+                                Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                g.drawImage(scaled, x * spacing, y * spacing, null);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        else{
+                            if(wallType[3]==1){
+                                //Cas {1,1,0,1}
+                                try {
+                                    Image picture = ImageIO.read(new File("images/WallUp.png"));
+                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            else{
+                                //Cas {1,1,0,0}
+                                try {
+                                    Image picture = ImageIO.read(new File("images/NarrowHorizontal.png"));
+                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                    else{
+                        if(wallType[2]==1){
+                            if(wallType[3]==1){
+                                //Cas {1,0,1,1}
+                                try {
+                                    Image picture = ImageIO.read(new File("images/WallLeft.png"));
+                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            else{
+                                //Cas {1,0,1,0}
+                                try {
+                                    Image picture = ImageIO.read(new File("images/CornerUpLeft.png"));
+                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        else{
+                            if(wallType[3]==1){
+                                //Cas {1,0,0,1}
+                                try {
+                                    Image picture = ImageIO.read(new File("images/CornerDownLeft.png"));
+                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            else{
+                                //Cas {1,0,0,0}
+                                try {
+                                    Image picture = ImageIO.read(new File("images/NarrowCornerLeft.png"));
+                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                }
+                else{
+                    if(wallType[1]==1){
+                        if(wallType[2]==1){
+                            if(wallType[3]==1){
+                                //Cas {0,1,1,1}
+                                try {
+                                    Image picture = ImageIO.read(new File("images/WallRight.png"));
+                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            else{
+                                //Cas {0,1,1,0}
+                                try {
+                                    Image picture = ImageIO.read(new File("images/CornerUpRight.png"));
+                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        else{
+                            if(wallType[3]==1){
+                                //Cas {0,1,0,1}
+                                try {
+                                    Image picture = ImageIO.read(new File("images/CornerDownRight.png"));
+                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            else{
+                                //Cas {0,1,0,0}
+                                try {
+                                    Image picture = ImageIO.read(new File("images/NarrowCornerRight.png"));
+                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                    else{
+                        if(wallType[2]==1){
+                            if(wallType[3]==1){
+                                //Cas {0,0,1,1}
+                                try {
+                                    Image picture = ImageIO.read(new File("images/NarrowVertical.png"));
+                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            else{
+                                //Cas {0,0,1,0}
+                                try {
+                                    Image picture = ImageIO.read(new File("images/NarrowCornerDown.png"));
+                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        else{
+                            if(wallType[3]==1){
+                                //Cas {0,0,0,1}
+                                try {
+                                    Image picture = ImageIO.read(new File("images/NarrowCornerUp.png"));
+                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            else{
+                                //Cas {0,0,0,0}
+                                try {
+                                    Image picture = ImageIO.read(new File("images/Pillar.png"));
+                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                }
+                n++;
+            }
+
+            if (object instanceof BlockUnbreakable){
+                try {
+                    Image picture = ImageIO.read(new File("images/Void.png"));
+                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
             // Decouper en fontions
             if (object instanceof Directable) {
@@ -129,7 +321,19 @@ public class Map extends JPanel {
 
                     //g.drawImage(picture, x*spacing, y*spacing,null);
 
-                } else {
+                }
+
+                if(object instanceof Mob){
+                    try {
+                        Image picture = ImageIO.read(new File("images/Orc.png"));
+                        Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                        g.drawImage(scaled, x * spacing, y * spacing, null);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                else {
                     //int direction = ((Directable) object).getDirection();
 
                     //int deltaX = 0;
@@ -221,5 +425,29 @@ public class Map extends JPanel {
 
     public void setSize(Dimension size){
         this.size=size;
+    }
+
+    public void wallConstructor(){
+        for(GameObject wall:this.objects){
+            if(wall instanceof BlockBreakable){
+                int x = wall.getPosX();
+                int y = wall.getPosY();
+                int[][] neighbor = {{1,0},{-1,0},{0,1},{0,-1}};
+                int[] wallType = {0,0,0,0};
+                int j=0;
+                for (int[] i:neighbor){
+                    for(GameObject adjacent:this.objects){
+                        if(adjacent.isAtPosition(x+i[0], y+i[1])){
+                            if(adjacent instanceof BlockBreakable){
+                                wallType[j]=1;
+                            }
+                        }
+                    }
+                    j++;
+                }
+                this.wallMatrix.add(wallType);
+            }
+        }
+
     }
 }

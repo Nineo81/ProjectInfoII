@@ -30,6 +30,8 @@ public class Window implements SizeableObserver {
         this.map.redraw();
     }
 
+    public void drawWall(){this.map.wallConstructor();}
+
     public void update() {
         this.map.redraw();
     }
