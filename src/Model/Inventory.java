@@ -18,7 +18,9 @@ public class Inventory implements Modifier{
     }
 
     @Override
-    public void notifyModifierObserver() {
-
+    public void notifyModifierObserver(int[] stats) {
+        for (ModifierObserver o:observers){
+            o.statsUpdate(stats);
+        }
     }
 }

@@ -1,8 +1,6 @@
 package View;
 
-import Model.GameObject;
-import Model.SizeableObserver;
-import Model.ResumerObserver;
+import Model.*;
 
 import java.awt.Color;
 import java.awt.event.KeyListener;
@@ -15,6 +13,7 @@ import javax.swing.*;
 public class Window implements SizeableObserver, Resumer {
     private Dimension size = new Dimension(1000, 800);
     private Map map = new Map();
+    private Inventory inventory;
 
     private EscapeMenu escapeMenu = new EscapeMenu(this);
     JFrame window = new JFrame("Game");
@@ -50,6 +49,7 @@ public class Window implements SizeableObserver, Resumer {
 
     public void setGameObjects(Vector<GameObject> objects) {
         this.map.setObjects(objects);
+        this.inventory=((Player)objects.get(0)).getInventory();
         this.map.redraw();
     }
 

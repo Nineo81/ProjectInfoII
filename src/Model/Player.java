@@ -99,7 +99,22 @@ public class Player extends MovingObject implements Activable, Runnable, Modifie
 
     public Inventory getInventory(){return inventory;}
 
-    public void statsUpdate(Modifier m){
-
+    public void statsUpdate(int[] modifier){
+        if(this.life + modifier[0] <= this.maxLife){
+            this.life += modifier[0];
+        }
+        else{
+            this.life = this.maxLife;
+        }
+        this.maxLife += modifier[1];
+        if(this.mana + modifier[2] <= this.maxMana){
+            this.mana += modifier[2];
+        }
+        else{
+            this.mana = this.maxMana;
+        }
+        this.maxMana += modifier[3];
+        xp(modifier[4]);
+        this.weaponDammage = modifier[5];
     }
 }

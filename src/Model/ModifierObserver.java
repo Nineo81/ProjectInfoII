@@ -1,5 +1,5 @@
 package Model;
 
 public interface ModifierObserver {
-    void statsUpdate(Modifier m);
+    void statsUpdate(int[] modifier);
 }
