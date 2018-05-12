@@ -70,9 +70,23 @@ public class Ninja extends Player implements DeletableObserver,Powered{
         }
     }
 
+    public void action3(ArrayList<GameObject> objects){
+        int x = this.getPosX();
+        int y = this.getPosY();
+        for(GameObject object : objects){
+            if (object.isAtPosition(x,y)){
+                if (object instanceof Loot){
+                    ((Loot) object).pickUp();
+                }
+                else if (object instanceof Stair){
+                    ((Stair) object).takeIt();
+                }
+            }
+        }
+    }
 
     @Override
-    public void delete(Deletable d, ArrayList<GameObject> loot) {
+    public void delete(Deletable d, GameObject loot) {
 
     }
 }

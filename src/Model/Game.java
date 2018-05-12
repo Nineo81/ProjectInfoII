@@ -120,6 +120,12 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
         player.action2(objects);
     }
 
+    public void action3(int playerNumber) {
+        Powered player = ((Powered) objects.get(playerNumber));
+        player.action3(objects);
+        notifyView();
+    }
+
     public void add(GameObject object){
         objects.add(object);
         if (object instanceof Deletable){
@@ -139,10 +145,13 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
     }
 
     @Override
-    synchronized public void delete(Deletable ps, ArrayList<GameObject> loot) {
+    synchronized public void delete(Deletable ps, GameObject loot) {
         objects.remove(ps);
-        if (loot != null) {
-            objects.addAll(loot);
+        if(loot!=null){
+            Random rand = new Random();
+            if(rand.nextInt(2)==1){
+                objects.add(loot);
+            }
         }
         notifyView();
     }
