@@ -1,5 +1,6 @@
 package Model;
 
+import View.Resumer;
 import View.Window;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.io.FileReader;
 
 //import org.omg.CosNaming.IstringHelper;
 
-public class Game implements DeletableObserver, LevelableObserver, MovingObserver {
+public class Game implements DeletableObserver, LevelableObserver, MovingObserver, ResumerObserver {
     private Vector<GameObject> objects = new Vector<GameObject>();
     SamplePredicate<GameObject> filter = new SamplePredicate<>();
 
@@ -24,6 +25,8 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
     private int numberOfMobs=6;
     private boolean running=true;
     boolean pauseState = false;
+
+    Window escapeMenu;
 
     public Game(Window window) {
         this.window = window;
@@ -74,35 +77,6 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
         notifyView();
     }
 
-    /*public void followPlayer(int playerTarget, int playerObject){  //Methode pour suivre le player
-        MovingObject player1 = ((MovingObject) objects.get(playerTarget));
-        int TargetX = player1.getPosX();
-        int TargetY = player1.getPosY();
-
-        MovingObject player2 = ((MovingObject) objects.get(playerObject));
-        int ObjX = player2.getPosX();
-        int ObjY = player2.getPosY();
-
-        int diffX=TargetX-ObjX;
-        int diffY=TargetY-ObjY;
-
-        if (Math.abs(diffX)>Math.abs(diffY)){
-            if (diffX>0){
-                movePlayer(1, 0, playerObject);
-            }
-            else{
-                movePlayer(-1, 0, playerObject);
-            }
-        }
-        else {
-            if (diffY>0){
-                movePlayer(0, 1, playerObject);
-            }
-            else{
-                movePlayer(0, -1, playerObject);
-            }
-        }
-    }*/
 
     public void action(int playerNumber) {
         Powered player = ((Powered) objects.get(playerNumber));
@@ -146,7 +120,7 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
     }
 
     @Override
-    synchronized public void delete(Deletable ps, GameObject loot) {
+    public synchronized void delete(Deletable ps, GameObject loot) {
         objects.remove(ps);
         if(loot!=null){
             Random rand = new Random();
@@ -251,6 +225,11 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
 
     public void pauseGame (){
         this.pauseState = !this.pauseState;
+        if (pauseState){
+            escapeMenu = new Window(2);
+            this.escapeMenu.attachResumer(this);
+        }
+
     }
 
     public boolean getPauseState(){
@@ -259,8 +238,6 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
 
     public void playerPos(int playerNumber) {
         Player player = ((Player) objects.get(playerNumber));
-        System.out.println(player.getPosX() + ":" + player.getPosY());
-
     }
 
     public int getPlayerX(){
@@ -271,5 +248,10 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
         int posY = ((Player) objects.get(0)).getPosY();
         return posY;
     }
+
+    public void resume(){
+        pauseGame();
+    }
+
 
 }
