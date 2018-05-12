@@ -9,5 +9,7 @@ public interface Moving {
 
     int askPX();
     int askPY();
+
+    boolean askPauseState();
 }
 
