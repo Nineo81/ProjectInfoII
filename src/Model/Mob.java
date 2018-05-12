@@ -61,7 +61,9 @@ public class Mob extends MovingObject implements Deletable, Activable, Moving, R
         int i = 0;
         for (DeletableObserver o : observers) {
             i++;
-            o.delete(this, null);
+            Bow bow = new Bow(this.posX,this.posY,1);
+            bow.attachDeletable(o);
+            o.delete(this, bow);
         }
     }
 
