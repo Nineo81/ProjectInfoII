@@ -11,6 +11,7 @@ public class Player extends MovingObject implements Activable, Runnable, Modifie
     private int weaponDammage= 0;
     int baseDammage;
     private Inventory inventory=new Inventory();
+    private SkillTree skillTree=new SkillTree();
     private int xp=0;
     private int level=1;
     private int levelXp=100;
@@ -98,6 +99,8 @@ public class Player extends MovingObject implements Activable, Runnable, Modifie
     public int getLevelXp(){ return levelXp; }
 
     public Inventory getInventory(){return inventory;}
+
+    public SkillTree getSkillTree(){return skillTree;}
 
     public void statsUpdate(int[] modifier){
         if(this.life + modifier[0] <= this.maxLife){

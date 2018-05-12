@@ -18,7 +18,7 @@ public class Window implements SizeableObserver, Resumer {
 
 
     private EscapeMenu escapeMenu = new EscapeMenu(this);
-    private SkillTree skillTree = new SkillTree(this);
+    private SkillTreePanel skillTreePanel = new SkillTreePanel(this);
     private View.InventoryPanel inventoryPanel = new View.InventoryPanel(this);
     JFrame window = new JFrame("Game");
     private ResizeListener sizing = new ResizeListener();
@@ -56,7 +56,7 @@ public class Window implements SizeableObserver, Resumer {
             skillTree.addComponentListener(sizing);
             sizing.attachSizeable(this);
             skillTree.getContentPane().setBackground(Color.gray);
-            skillTree.getContentPane().add(this.skillTree);
+            skillTree.getContentPane().add(this.skillTreePanel);
             skillTree.setVisible(true);
             this.window = skillTree;
         }
