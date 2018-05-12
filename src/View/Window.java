@@ -13,25 +13,30 @@ import javax.swing.*;
 public class Window implements SizeableObserver, Resumer {
     private Dimension size = new Dimension(1000, 800);
     private Map map = new Map();
+    int type;
     private Inventory inventory;
 
+
     private EscapeMenu escapeMenu = new EscapeMenu(this);
+    private SkillTree skillTree = new SkillTree(this);
+    private View.InventoryPanel inventory = new View.InventoryPanel(this);
     JFrame window = new JFrame("Game");
     private ResizeListener sizing = new ResizeListener();
 
     private Vector<ResumerObserver> observers = new Vector<ResumerObserver>();
 
     public Window(int type) { //type 1= game - type 2 = menu
-        if (type==1){
-        JFrame window = new JFrame("Game");
-        this.window=window;
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setBounds(200, 0, 1400, 1020);
-        window.addComponentListener(sizing);
-        sizing.attachSizeable(this);
-        window.getContentPane().setBackground(Color.gray);
-        window.getContentPane().add(this.map);
-        window.setVisible(true);
+        this.type=type;
+        if (type==1) {
+            JFrame window = new JFrame("Game");
+            this.window = window;
+            window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            window.setBounds(200, 0, 1400, 1020);
+            window.addComponentListener(sizing);
+            sizing.attachSizeable(this);
+            window.getContentPane().setBackground(Color.gray);
+            window.getContentPane().add(this.map);
+            window.setVisible(true);
         }
         else if (type==2) {
             JFrame pause = new JFrame("Pause");
@@ -44,7 +49,28 @@ public class Window implements SizeableObserver, Resumer {
             pause.setVisible(true);
             this.window=pause;
         }
-
+        else if(type==3) {
+            JFrame skillTree = new JFrame("Skill Tree");
+            skillTree.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            skillTree.setBounds(200, 0, 1400, 1020);
+            skillTree.addComponentListener(sizing);
+            sizing.attachSizeable(this);
+            skillTree.getContentPane().setBackground(Color.gray);
+            skillTree.getContentPane().add(this.skillTree);
+            skillTree.setVisible(true);
+            this.window = skillTree;
+        }
+        else if(type==4) {
+            JFrame inventory = new JFrame("Inventory");
+            inventory.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            inventory.setBounds(200, 0, 1400, 1020);
+            inventory.addComponentListener(sizing);
+            sizing.attachSizeable(this);
+            inventory.getContentPane().setBackground(Color.gray);
+            inventory.getContentPane().add(this.inventory);
+            inventory.setVisible(true);
+            this.window = inventory;
+        }
     }
 
     public void setGameObjects(Vector<GameObject> objects) {
@@ -64,8 +90,18 @@ public class Window implements SizeableObserver, Resumer {
 
 
     public void newSize(Dimension s) {
-        this.map.setSize(s);
-        update();
+        if (type==1) {
+            this.map.setSize(s);
+            update();
+        }
+        else if (type==2){
+            //dicks
+        }
+        else if (type==3){
+            //more dicks
+        }
+
+
     }
 
     public void close(){
@@ -80,7 +116,9 @@ public class Window implements SizeableObserver, Resumer {
     @Override
     public void resumeGame(){
         close();
-        (observers.get(0)).resume();
+        if (observers.size()>0) {
+            (observers.get(0)).resume();
+        }
     }
 
     @Override
