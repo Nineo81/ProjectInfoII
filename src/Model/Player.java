@@ -1,6 +1,6 @@
 package Model;
 
-public class Player extends MovingObject implements Activable, Runnable {
+public class Player extends MovingObject implements Activable, Runnable, ModifierObserver{
 
     private int maxLife;
     private int life;
@@ -10,6 +10,7 @@ public class Player extends MovingObject implements Activable, Runnable {
     private int baseDammageMultiplier = 1;
     private int weaponDammage= 0;
     int baseDammage;
+    private Inventory inventory=new Inventory();
     private int xp=0;
     private int level=1;
     private int levelXp=100;
@@ -18,6 +19,7 @@ public class Player extends MovingObject implements Activable, Runnable {
 
     public Player(int x, int y,int life, int mana, Game game) {
         super(x, y, life, 2);
+        inventory.attachModifier(this);
         this.maxLife=life;
         this.life = life;
         this.maxMana=mana;
@@ -95,4 +97,9 @@ public class Player extends MovingObject implements Activable, Runnable {
 
     public int getLevelXp(){ return levelXp; }
 
+    public Inventory getInventory(){return inventory;}
+
+    public void statsUpdate(Modifier m){
+
+    }
 }

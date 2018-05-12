@@ -64,9 +64,8 @@ public class Window implements SizeableObserver, Resumer {
 
 
     public void newSize(Dimension s) {
-        this.size = s;
+        this.map.setSize(s);
         update();
-        System.out.println(this.size);
     }
 
     public void close(){
