@@ -19,7 +19,7 @@ public class Window implements SizeableObserver, Resumer {
 
     private EscapeMenu escapeMenu = new EscapeMenu(this);
     private SkillTree skillTree = new SkillTree(this);
-    private View.InventoryPanel inventory = new View.InventoryPanel(this);
+    private View.InventoryPanel inventoryPanel = new View.InventoryPanel(this);
     JFrame window = new JFrame("Game");
     private ResizeListener sizing = new ResizeListener();
 
@@ -61,15 +61,15 @@ public class Window implements SizeableObserver, Resumer {
             this.window = skillTree;
         }
         else if(type==4) {
-            JFrame inventory = new JFrame("Inventory");
-            inventory.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            inventory.setBounds(200, 0, 1400, 1020);
-            inventory.addComponentListener(sizing);
+            JFrame inventoryPanel = new JFrame("Inventory");
+            inventoryPanel.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            inventoryPanel.setBounds(200, 0, 1400, 1020);
+            inventoryPanel.addComponentListener(sizing);
             sizing.attachSizeable(this);
-            inventory.getContentPane().setBackground(Color.gray);
-            inventory.getContentPane().add(this.inventory);
-            inventory.setVisible(true);
-            this.window = inventory;
+            inventoryPanel.getContentPane().setBackground(Color.gray);
+            inventoryPanel.getContentPane().add(this.inventoryPanel);
+            inventoryPanel.setVisible(true);
+            this.window = inventoryPanel;
         }
     }
 
