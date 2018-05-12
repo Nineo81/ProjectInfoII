@@ -21,14 +21,15 @@ public class Map extends JPanel {
     private Dimension size = new Dimension(1000,800);
     private ArrayList<int[]> wallMatrix = new ArrayList<int[]>();
 
+    Image ground,left_knight,right_knight,back_knight,front_knight,bow,stairs,empty,WallUp,WallDown,WallLeft,WallRight,orc,CornerDownLeft,CornerDownRight,CornerUpLeft,CornerUpRight,NarrowCornerDown,NarrowCornerLeft,NarrowCornerRight,NarrowCornerUp,NarrowHorizontal,NarrowVertical,Pillar;
+
     public Map() {
         this.setFocusable(true);
         this.requestFocusInWindow();
+
     }
 
     public void paint(Graphics g) {
-        this.spacing=(this.size.height-30)/20;
-
         int n=0;
 
         for (int i = 0; i < 20; i++) { // base grid
@@ -36,13 +37,7 @@ public class Map extends JPanel {
             for (int j = 0; j < 20; j++) {
                 int x = i;
                 int y = j;
-                try {
-                    Image picture = ImageIO.read(new File("images/Ground.png"));
-                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                    g.drawImage(scaled, x * spacing, y * spacing, null);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                g.drawImage(ground, x * spacing, y * spacing, null);
             }
         }
 
@@ -76,171 +71,63 @@ public class Map extends JPanel {
 
                 switch(Arrays.toString(wallType)){
                     case "[0, 0, 0, 0]":
-                        try {
-                            Image picture = ImageIO.read(new File("images/Pillar.png"));
-                            Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                            g.drawImage(scaled, x * spacing, y * spacing, null);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        g.drawImage(Pillar, x * spacing, y * spacing, null);
                         break;
                     case "[1, 0, 0, 0]":
-                        try {
-                            Image picture = ImageIO.read(new File("images/NarrowCornerLeft.png"));
-                            Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                            g.drawImage(scaled, x * spacing, y * spacing, null);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        g.drawImage(NarrowCornerLeft, x * spacing, y * spacing, null);
                         break;
                     case "[1, 1, 0, 0]":
-                        try {
-                            Image picture = ImageIO.read(new File("images/NarrowHorizontal.png"));
-                            Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                            g.drawImage(scaled, x * spacing, y * spacing, null);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        g.drawImage(NarrowHorizontal, x * spacing, y * spacing, null);
                         break;
                     case "[1, 1, 1, 0]":
-                        try {
-                            Image picture = ImageIO.read(new File("images/WallDown.png"));
-                            Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                            g.drawImage(scaled, x * spacing, y * spacing, null);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        g.drawImage(WallDown, x * spacing, y * spacing, null);
                         break;
                     case "[0, 1, 0, 0]":
-                        try {
-                            Image picture = ImageIO.read(new File("images/NarrowCornerRight.png"));
-                            Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                            g.drawImage(scaled, x * spacing, y * spacing, null);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        g.drawImage(NarrowCornerRight, x * spacing, y * spacing, null);
                         break;
                     case "[0, 1, 1, 0]":
-                        try {
-                            Image picture = ImageIO.read(new File("images/CornerUpRight.png"));
-                            Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                            g.drawImage(scaled, x * spacing, y * spacing, null);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        g.drawImage(CornerUpRight, x * spacing, y * spacing, null);
                         break;
                     case "[0, 1, 1, 1]":
-                        try {
-                            Image picture = ImageIO.read(new File("images/WallRight.png"));
-                            Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                            g.drawImage(scaled, x * spacing, y * spacing, null);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        g.drawImage(WallRight, x * spacing, y * spacing, null);
                         break;
                     case "[0, 1, 0, 1]":
-                        try {
-                            Image picture = ImageIO.read(new File("images/CornerDownRight.png"));
-                            Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                            g.drawImage(scaled, x * spacing, y * spacing, null);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        g.drawImage(CornerDownRight, x * spacing, y * spacing, null);
                         break;
                     case "[0, 0, 1, 0]":
-                        try {
-                            Image picture = ImageIO.read(new File("images/NarrowCornerDown.png"));
-                            Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                            g.drawImage(scaled, x * spacing, y * spacing, null);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        g.drawImage(NarrowCornerDown, x * spacing, y * spacing, null);
                         break;
                     case "[0, 0, 1, 1]":
-                        try {
-                            Image picture = ImageIO.read(new File("images/NarrowVertical.png"));
-                            Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                            g.drawImage(scaled, x * spacing, y * spacing, null);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        g.drawImage(NarrowVertical, x * spacing, y * spacing, null);
                         break;
                     case "[0, 0, 0, 1]":
-                        try {
-                            Image picture = ImageIO.read(new File("images/NarrowCornerUp.png"));
-                            Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                            g.drawImage(scaled, x * spacing, y * spacing, null);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        g.drawImage(NarrowCornerUp, x * spacing, y * spacing, null);
                         break;
                     case "[1, 0, 1, 0]":
-                        try {
-                            Image picture = ImageIO.read(new File("images/CornerUpLeft.png"));
-                            Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                            g.drawImage(scaled, x * spacing, y * spacing, null);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        g.drawImage(CornerUpLeft, x * spacing, y * spacing, null);
                         break;
                     case "[1, 0, 1, 1]":
-                        try {
-                            Image picture = ImageIO.read(new File("images/WallLeft.png"));
-                            Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                            g.drawImage(scaled, x * spacing, y * spacing, null);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        g.drawImage(WallLeft, x * spacing, y * spacing, null);
                         break;
                     case "[1, 1, 0, 1]":
-                        try {
-                            Image picture = ImageIO.read(new File("images/WallUp.png"));
-                            Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                            g.drawImage(scaled, x * spacing, y * spacing, null);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        g.drawImage(WallUp, x * spacing, y * spacing, null);
                         break;
                     case "[1, 0, 0, 1]":
-                        try {
-                            Image picture = ImageIO.read(new File("images/CornerDownLeft.png"));
-                            Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                            g.drawImage(scaled, x * spacing, y * spacing, null);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        g.drawImage(CornerDownLeft, x * spacing, y * spacing, null);
                 }
                 n++;
             }
 
             if (object instanceof BlockUnbreakable){
-                try {
-                    Image picture = ImageIO.read(new File("images/Void.png"));
-                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                    g.drawImage(scaled, x * spacing, y * spacing, null);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                g.drawImage(empty, x * spacing, y * spacing, null);
             }
 
             if (object instanceof Stair){
-                try {
-                    Image picture = ImageIO.read(new File("images/stone_stairs_down.png"));
-                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                    g.drawImage(scaled, x * spacing, y * spacing, null);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                g.drawImage(stairs, x * spacing, y * spacing, null);
             }
 
             if (object instanceof Bow){
-                try {
-                    Image picture = ImageIO.read(new File("images/bow1.png"));
-                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                    g.drawImage(scaled, x * spacing, y * spacing, null);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                g.drawImage(bow, x * spacing, y * spacing, null);
             }
 
             // Decouper en fontions
@@ -269,43 +156,20 @@ public class Map extends JPanel {
 
                     switch (direction) {
                         case Directable.EAST:
-                            try {
-                                Image picture = ImageIO.read(new File("images/right_knight.png"));
-                                Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                g.drawImage(scaled, x * spacing, y * spacing, null);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                                g.drawImage(right_knight, x * spacing, y * spacing, null);
 
                             break;
                         case Directable.NORTH:
-                            try {
-                                Image picture = ImageIO.read(new File("images/back_knight.png"));
-                                Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                g.drawImage(scaled, x * spacing, y * spacing, null);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                                g.drawImage(back_knight, x * spacing, y * spacing, null);
 
                             break;
                         case Directable.WEST:
-                            try {
-                                Image picture = ImageIO.read(new File("images/left_knight.png"));
-                                Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                g.drawImage(scaled, x * spacing, y * spacing, null);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+
+                                g.drawImage(left_knight, x * spacing, y * spacing, null);
 
                             break;
                         case Directable.SOUTH:
-                            try {
-                                Image picture = ImageIO.read(new File("images/front_knight.png"));
-                                Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                g.drawImage(scaled, x * spacing, y * spacing, null);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                                g.drawImage(front_knight, x * spacing, y * spacing, null);
 
                             break;
                     }
@@ -315,13 +179,7 @@ public class Map extends JPanel {
                 }
 
                 if(object instanceof Mob){
-                    try {
-                        Image picture = ImageIO.read(new File("images/Orc.png"));
-                        Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                        g.drawImage(scaled, x * spacing, y * spacing, null);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    g.drawImage(orc, x * spacing, y * spacing, null);
                 }
 
                 else {
@@ -407,6 +265,8 @@ public class Map extends JPanel {
 
     public void setSize(Dimension size){
         this.size=size;
+        this.spacing=(this.size.height-30)/20;
+        loadImages();
     }
 
     public void wallConstructor(){
@@ -432,6 +292,37 @@ public class Map extends JPanel {
                 this.wallMatrix.add(wallType);
             }
         }
+
+    }
+
+    private void loadImages(){
+        try{this.left_knight = (ImageIO.read(new File("images/left_knight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+            try{this.back_knight = (ImageIO.read(new File("images/back_knight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.right_knight = (ImageIO.read(new File("images/right_knight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.front_knight = (ImageIO.read(new File("images/front_knight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.bow = (ImageIO.read(new File("images/bow1.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+            try{this.ground = (ImageIO.read(new File("images/Ground.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.orc = (ImageIO.read(new File("images/Orc.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+            try{this.stairs = (ImageIO.read(new File("images/stone_stairs_down.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+                try{this.empty = (ImageIO.read(new File("images/void.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+                    try{this.WallDown = (ImageIO.read(new File("images/WallDown.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+                        try{this.WallUp = (ImageIO.read(new File("images/WallUp.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){System.out.print("bite");}
+                            try{this.WallLeft = (ImageIO.read(new File("images/WallLeft.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+                                try{this.WallRight = (ImageIO.read(new File("images/WallRight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.CornerDownLeft = (ImageIO.read(new File("images/CornerDownLeft.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.CornerDownRight = (ImageIO.read(new File("images/CornerDownRight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.CornerUpLeft = (ImageIO.read(new File("images/CornerUpLeft.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.CornerUpRight = (ImageIO.read(new File("images/CornerUpRight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.NarrowCornerDown = (ImageIO.read(new File("images/NarrowCornerDown.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.NarrowCornerLeft = (ImageIO.read(new File("images/NarrowCornerLeft.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.NarrowCornerRight = (ImageIO.read(new File("images/NarrowCornerRight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.NarrowCornerUp = (ImageIO.read(new File("images/NarrowCornerUp.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.NarrowHorizontal = (ImageIO.read(new File("images/NarrowHorizontal.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){System.out.print("penis");}
+        try{this.NarrowVertical = (ImageIO.read(new File("images/NarrowVertical.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.Pillar = (ImageIO.read(new File("images/Pillar.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+
+
+
 
     }
 }
