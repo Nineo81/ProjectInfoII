@@ -365,27 +365,27 @@ public class Map extends JPanel {
                         int level = ((Player) object).getLevel();
                         int levelXp = ((Player) object).getLevelXp();
 
-                        g.setFont(new Font("TimesRoman", Font.BOLD, 25));
+                        g.setFont(new Font("TimesRoman", Font.BOLD, spacing));
                         g.setColor(Color.BLACK);
-                        g.drawString("LIFE", 1050, 85);
+                        g.drawString("LIFE", 22*spacing, spacing);
                         g.setColor(Color.DARK_GRAY);
-                        g.fillRect(1050, 100, 250, 50);
+                        g.fillRect(22*spacing, 2*spacing, 8*spacing, spacing);
                         g.setColor(Color.GREEN);
-                        g.fillRect(1050, 100, Math.round(((float) life / (float) maxLife) * 250), 50);
+                        g.fillRect(22*spacing, 2*spacing, Math.round(((float) life / (float) maxLife) * 8*spacing), spacing);
 
                         g.setColor(Color.BLACK);
-                        g.drawString("MANA", 1050, 235);
+                        g.drawString("MANA", 22*spacing, 4*spacing);
                         g.setColor(Color.DARK_GRAY);
-                        g.fillRect(1050, 250, 250, 50);
+                        g.fillRect(22*spacing, 5*spacing, 8*spacing, spacing);
                         g.setColor(Color.BLUE);
-                        g.fillRect(1050, 250, Math.round(((float) mana / (float) maxMana) * 250), 50);
+                        g.fillRect(22*spacing, 5*spacing, Math.round(((float) mana / (float) maxMana) * 8*spacing), spacing);
 
                         g.setColor(Color.BLACK);
-                        g.drawString("LEVEL : " + String.valueOf(level), 1050, 900);
+                        g.drawString("LEVEL : " + String.valueOf(level), 22*spacing, 7*spacing);
                         g.setColor(Color.DARK_GRAY);
-                        g.fillRect(1050, 915, 250, 5);
+                        g.fillRect(22*spacing, 8*spacing, 8*spacing, spacing/4);
                         g.setColor(Color.YELLOW);
-                        g.fillRect(1050, 915, Math.round(((float) xp / (float) levelXp) * 250), 5);
+                        g.fillRect(22*spacing, 8*spacing, Math.round(((float) xp / (float) levelXp) * 8*spacing), spacing/4);
                     }
                 }
             }
@@ -399,15 +399,6 @@ public class Map extends JPanel {
     public void redraw() {
         this.repaint();
     }
-
-    public void levelLayout(int width, int heigth) {
-
-        ArrayList<Integer> pointSet = null;
-        do {
-
-        } while (pointSet.size() < 4);
-    }
-
 
     protected void paintComponent(Graphics g,Image image, int x, int y) {
         super.paintComponent(g);

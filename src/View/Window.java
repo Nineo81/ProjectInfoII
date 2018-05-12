@@ -1,8 +1,6 @@
 package View;
 
-import Model.GameObject;
-import Model.SizeableObserver;
-import Model.ResumerObserver;
+import Model.*;
 
 import java.awt.Color;
 import java.awt.event.KeyListener;
@@ -16,6 +14,8 @@ public class Window implements SizeableObserver, Resumer {
     private Dimension size = new Dimension(1000, 800);
     private Map map = new Map();
     int type;
+    private Inventory inventory;
+
 
     private EscapeMenu escapeMenu = new EscapeMenu(this);
     private SkillTree skillTree = new SkillTree(this);
@@ -75,6 +75,7 @@ public class Window implements SizeableObserver, Resumer {
 
     public void setGameObjects(Vector<GameObject> objects) {
         this.map.setObjects(objects);
+        this.inventory=((Player)objects.get(0)).getInventory();
         this.map.redraw();
     }
 
@@ -99,6 +100,7 @@ public class Window implements SizeableObserver, Resumer {
         else if (type==3){
             //more dicks
         }
+
 
     }
 
