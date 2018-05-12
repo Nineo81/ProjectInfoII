@@ -2,7 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
-public class Projectile extends Movable implements Deletable,  Directable, Runnable, Moving {
+public class Projectile extends MovingObject implements Deletable,  Directable, Runnable, Moving {
 
 
     private int direction;

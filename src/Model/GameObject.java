@@ -3,6 +3,8 @@ package Model;
 public abstract class GameObject {
     protected int posX;
     protected int posY;
+    protected int previousPosX;
+    protected int previousPosY;
     protected int color;
 
     public GameObject(int X, int Y, int color) {
@@ -18,6 +20,10 @@ public abstract class GameObject {
     public int getPosY() {
         return this.posY;
     }
+
+    public int getPreviousPosX(){return this.previousPosX;}
+
+    public int getPreviousPosY(){return this.previousPosY;}
 
     public int getColor() {
         return this.color;

@@ -1,6 +1,6 @@
 package Model;
 
-public class Player extends Movable implements Activable, Runnable {
+public class Player extends MovingObject implements Activable, Runnable {
 
     private int maxLife;
     private int life;

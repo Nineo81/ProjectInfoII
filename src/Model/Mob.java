@@ -3,7 +3,7 @@ package Model;
 import java.util.ArrayList;
 import java.util.Observer;
 
-public class Mob extends Movable implements Deletable, Activable, Moving, Runnable{
+public class Mob extends MovingObject implements Deletable, Activable, Moving, Runnable{
 
     private int maxLife;
     private int life ;
@@ -74,6 +74,8 @@ public class Mob extends Movable implements Deletable, Activable, Moving, Runnab
                 int y; //x if diffx<diffY
                 px = askPX();
                 py = askPY();
+                this.previousPosX = this.posX;
+                this.previousPosY = this.posY;
                 int diffX = px - this.posX;
                 int diffY = py - this.posY;
                 GameObject obstacle;
