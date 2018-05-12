@@ -1,6 +1,8 @@
 package View;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -31,9 +33,19 @@ public class EscapeMenu  extends JPanel {
 
         inventoryButton = new JButton("Inventory");
         inventoryButton.setBounds(500, 420,  400, 80);
+        inventoryButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                Window inventory= new Window(4);
+            }
+        });
 
         skillTreeButton = new JButton("Skill Tree");
         skillTreeButton.setBounds(500, 520,  400, 80);
+        skillTreeButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                Window skillTree= new Window(3);
+            }
+        });
 
         quitButton = new JButton("Quit to main menu");
         quitButton.setBounds(500, 620,  400, 80);
