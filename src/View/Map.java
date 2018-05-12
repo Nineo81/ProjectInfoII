@@ -28,19 +28,27 @@ public class Map extends JPanel {
 
     public void paint(Graphics g) {
         this.spacing=(this.size.height-30)/20;
+
         int n=0;
+
         for (int i = 0; i < 20; i++) { // base grid
+
             for (int j = 0; j < 20; j++) {
                 int x = i;
                 int y = j;
-                g.setColor(Color.LIGHT_GRAY);
-                g.fillRect(x * spacing, y * spacing, spacing - 2, spacing - 2);
-                g.setColor(Color.BLACK);
-                g.drawRect(x * spacing, y * spacing, spacing - 2, spacing - 2);
+                try {
+                    Image picture = ImageIO.read(new File("images/Ground.png"));
+                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
         for (GameObject object : this.objects) {
+
+
             int x = object.getPosX();
             int y = object.getPosY();
             int color = object.getColor();

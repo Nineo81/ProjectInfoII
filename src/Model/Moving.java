@@ -12,4 +12,3 @@ public interface Moving {
 
     boolean askPauseState();
 }
-

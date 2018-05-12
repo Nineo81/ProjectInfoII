@@ -120,7 +120,7 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
     }
 
     @Override
-    public synchronized void delete(Deletable ps, ArrayList<GameObject> loot) {
+    public synchronized void delete(Deletable ps, GameObject loot) {
         objects.remove(ps);
         if(loot!=null){
             Random rand = new Random();
