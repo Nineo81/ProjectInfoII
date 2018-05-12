@@ -198,7 +198,7 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
                     occupied = true;
                     break;
                 }
-                if ((Math.abs(10 - x) + Math.abs(10 - y)) < 6) {
+                if ((Math.abs(this.getPlayerX() - x) + Math.abs(this.getPlayerY() - y)) < 6) {
                     occupied = true;
                     break;
                 }
