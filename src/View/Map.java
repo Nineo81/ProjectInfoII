@@ -6,8 +6,8 @@ import Model.GameObject;
 import Model.Player;
 
 import java.awt.*;
-import java.awt.image.ImageObserver;
 import java.util.ArrayList;
+import java.util.Observer;
 
 import javax.swing.JPanel;
 
@@ -18,11 +18,12 @@ import javax.imageio.ImageIO;
 
 public class Map extends JPanel {
     private ArrayList<GameObject> objects = null;
-    private int spacing = 50;
+    private int spacing = 30;
 
-    public Map() {
+    public Map(Dimension size) {
         this.setFocusable(true);
         this.requestFocusInWindow();
+        this.spacing = size.height / 20;
     }
 
     public void paint(Graphics g) {
@@ -31,9 +32,9 @@ public class Map extends JPanel {
                 int x = i;
                 int y = j;
                 g.setColor(Color.LIGHT_GRAY);
-                g.fillRect(x * spacing, y * spacing, spacing-2, spacing-2);
+                g.fillRect(x * spacing, y * spacing, spacing - 2, spacing - 2);
                 g.setColor(Color.BLACK);
-                g.drawRect(x * spacing, y * spacing, spacing-2, spacing-2);
+                g.drawRect(x * spacing, y * spacing, spacing - 2, spacing - 2);
             }
         }
 
@@ -201,12 +202,12 @@ public class Map extends JPanel {
         this.repaint();
     }
 
-    public void levelLayout(int width, int heigth){
+    public void levelLayout(int width, int heigth) {
 
         ArrayList<Integer> pointSet = null;
-        do{
+        do {
 
-        }while (pointSet.size()<4);
+        } while (pointSet.size() < 4);
     }
 
 

@@ -69,58 +69,79 @@ public class Mob extends Movable implements Deletable, Activable, Moving, Runnab
     public void run(){
         try{thread.sleep(1000);} catch (Exception e){}
         while (true) {
-            int x; //x if diffX>diffY
-            int y; //x if diffx<diffY
-            px=askPX();
-            py=askPY();
-            int diffX=px-this.posX;
-            int diffY=py-this.posY;
-            System.out.print(px);
-            System.out.print(" ; ");
-            System.out.println(py);
-            GameObject obstacle;
+            if (!askPauseState()) {
+                int x; //x if diffX>diffY
+                int y; //x if diffx<diffY
+                px = askPX();
+                py = askPY();
+                int diffX = px - this.posX;
+                int diffY = py - this.posY;
+                GameObject obstacle;
 
-            if (diffX>0){ x=1; }
-            else{ x=-1; }
-
-            if (diffY>0){ y=1; }
-            else{ y=-1; }
-
-            if (Math.abs(diffX)>Math.abs(diffY)){
-                obstacle= (observers2.get(0)).detect(this.posX+x,this.posY);
-                if (obstacle==null){
-                        this.posX+=x;
+                if (diffX > 0) {
+                    x = 1;
+                } else {
+                    x = -1;
                 }
-                else if(obstacle instanceof Player){
-                    ((Player) obstacle).activate(this.dammage);
+
+                if (diffY > 0) {
+                    y = 1;
+                } else {
+                    y = -1;
                 }
-                else{
-                    obstacle= (observers2.get(0)).detect(this.posX,this.posY+y);
-                    if (obstacle==null){
-                        this.posY+=y;
+
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    obstacle = (observers2.get(0)).detect(this.posX + x, this.posY);
+                    if (obstacle == null) {
+                        this.posX += x;
+                        y = 0;
+                    } else if (obstacle instanceof Player) {
+                        ((Player) obstacle).activate(this.dammage);
+                        y = 0;
+                    } else {
+                        obstacle = (observers2.get(0)).detect(this.posX, this.posY + y);
+                        if (obstacle == null) {
+                            this.posY += y;
+                            x = 0;
+                        }
+                    }
+
+                } else {
+                    obstacle = (observers2.get(0)).detect(this.posX, this.posY + y);
+                    if (obstacle == null) {
+                        this.posY += y;
+                        x = 0;
+                    } else if (obstacle instanceof Player) {
+                        ((Player) obstacle).activate(this.dammage);
+                        x = 0;
+                    } else {
+                        obstacle = (observers2.get(0)).detect(this.posX + x, this.posY);
+                        if (obstacle == null) {
+                            this.posX += x;
+                            y = 0;
+                        }
+                    }
+
+                }
+
+                if (x == 0) {
+                    if (y == 1) {
+                        direction = SOUTH;
+                    } else {
+                        direction = NORTH;
+                    }
+                } else {
+                    if (x == 1) {
+                        direction = EAST;
+                    } else {
+                        direction = WEST;
                     }
                 }
-
-            }
-            else{
-                obstacle= (observers2.get(0)).detect(this.posX,this.posY+y);
-                if (obstacle==null){
-                    this.posY+=y;
-                }
-                else if(obstacle instanceof Player){
-                    ((Player) obstacle).activate(this.dammage);
-                }
-                else{
-                    obstacle= (observers2.get(0)).detect(this.posX+x,this.posY);
-                    if (obstacle==null){
-                        this.posX+=x;
-                    }
-                }
-
             }
             refresh();
             try{thread.sleep(1000);} catch (Exception e){}
         }
+
     }
 
     @Override
@@ -143,6 +164,11 @@ public class Mob extends Movable implements Deletable, Activable, Moving, Runnab
     @Override
     public int askPY(){
         return (observers2.get(0)).getPlayerY();
+    }
+
+    @Override
+    public boolean askPauseState(){
+        return (observers2.get(0)).getPauseState();
     }
 
 }

@@ -1,5 +1,6 @@
 package Model;
 
+import View.Resumer;
 import View.Window;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.io.FileReader;
 
 //import org.omg.CosNaming.IstringHelper;
 
-public class Game implements DeletableObserver, MovingObserver {
+public class Game implements DeletableObserver, MovingObserver, ResumerObserver {
     private ArrayList<GameObject> objects;
 
     private Window window;
@@ -22,6 +23,8 @@ public class Game implements DeletableObserver, MovingObserver {
     private boolean running=true;
     private int numberOfBreakableBlocks = 40;
     boolean pauseState = false;
+
+    Window escapeMenu;
 
     public Game(Window window) {
         this.window = window;
@@ -81,11 +84,6 @@ public class Game implements DeletableObserver, MovingObserver {
         }
 
 
-        /*
-        Thread t1 = new Thread(new MyTimer(this));
-        t1.start();
-        */
-
 
 
     }
@@ -128,37 +126,7 @@ public class Game implements DeletableObserver, MovingObserver {
         }
         notifyView();
     }
-/*
-    public void followPlayer(int playerTarget, int playerObject){  //Methode pour suivre le player
-        Movable player1 = ((Movable) objects.get(playerTarget));
-        int TargetX = player1.getPosX();
-        int TargetY = player1.getPosY();
 
-        Movable player2 = ((Movable) objects.get(playerObject));
-        int ObjX = player2.getPosX();
-        int ObjY = player2.getPosY();
-
-        int diffX=TargetX-ObjX;
-        int diffY=TargetY-ObjY;
-
-        if (Math.abs(diffX)>Math.abs(diffY)){
-            if (diffX>0){
-                movePlayer(1, 0, playerObject);
-            }
-            else{
-                movePlayer(-1, 0, playerObject);
-            }
-        }
-        else {
-            if (diffY>0){
-                movePlayer(0, 1, playerObject);
-            }
-            else{
-                movePlayer(0, -1, playerObject);
-            }
-        }
-    }
-    */
 
     public void action(int playerNumber) {
         Powered player = ((Powered) objects.get(playerNumber));
@@ -179,6 +147,12 @@ public class Game implements DeletableObserver, MovingObserver {
 
     public void add(GameObject object){
         objects.add(object);
+        if (object instanceof Deletable){
+            ((Deletable) object).attachDeletable(this);
+        }
+        if (object instanceof Moving){
+            ((Moving) object).attachMoving(this);
+        }
     }
 
     public void notifyView() {
@@ -295,6 +269,11 @@ public class Game implements DeletableObserver, MovingObserver {
 
     public void pauseGame (){
         this.pauseState = !this.pauseState;
+        if (pauseState){
+            escapeMenu = new Window(2);
+            this.escapeMenu.attachResumer(this);
+        }
+
     }
 
     public boolean getPauseState(){
@@ -303,8 +282,6 @@ public class Game implements DeletableObserver, MovingObserver {
 
     public void playerPos(int playerNumber) {
         Player player = ((Player) objects.get(playerNumber));
-        System.out.println(player.getPosX() + ":" + player.getPosY());
-
     }
 
     public int getPlayerX(){
@@ -316,6 +293,9 @@ public class Game implements DeletableObserver, MovingObserver {
         return posY;
     }
 
+    public void resume(){
+        pauseGame();
+    }
 
 
 }

@@ -7,24 +7,18 @@ public class Projectile extends Movable implements Deletable,  Directable, Runna
 
     private int direction;
     private Thread thread;
-    private ArrayList<GameObject> objects;
-    private Activable aimedObject = null;
-    private Game game;
     private int dammage;
-    private int projectileNumber;
     private ArrayList<DeletableObserver> observers = new ArrayList<DeletableObserver>();
     private ArrayList<MovingObserver> observers2 = new ArrayList<MovingObserver>();
     Powered launcher;
 
-    public Projectile(int x, int y, int direction, int dammage, Powered launcher, Game game) {
+    public Projectile(int x, int y, int direction, int dammage, Powered launcher) {
         super(x, y, 1, 5);
         this.direction=direction;
         this.dammage=dammage;
         this.launcher=launcher;
         this.thread = new Thread(this);
         thread.start();
-        this.attachDeletable(game);
-        this.attachMoving(game);
     }
 
 
@@ -32,27 +26,29 @@ public class Projectile extends Movable implements Deletable,  Directable, Runna
     public synchronized void run() {
         try{thread.sleep(200);} catch (Exception e){}
         while (true) {
-            int frontX=this.getFrontX();
-            int frontY=this.getFrontY();
-            GameObject target= askMovingObserver(frontX,frontY);
-            if (target instanceof Activable) {
-                if (launcher instanceof  Player) {
-                    int xp = ((Activable) target).activate(dammage);
-                    ((Player) launcher).xp(xp);
-                } else {
-                    ((Activable) target).activate(dammage);
-                }
+            if (!askPauseState()) {
+                int frontX = this.getFrontX();
+                int frontY = this.getFrontY();
+                GameObject target = askMovingObserver(frontX, frontY);
+                if (target instanceof Activable) {
+                    if (launcher instanceof Player) {
+                        int xp = ((Activable) target).activate(dammage);
+                        ((Player) launcher).xp(xp);
+                    } else {
+                        ((Activable) target).activate(dammage);
+                    }
 
-            }
-            if (target == null) {
-                this.move();
-                refresh();
-                this.sleep(200);
-            } else{
-                this.sleep(200);
-                this.crush();
-                refresh();
-                return;
+                }
+                if (target == null) {
+                    this.move();
+                    refresh();
+                    this.sleep(200);
+                } else {
+                    this.sleep(200);
+                    this.crush();
+                    refresh();
+                    return;
+                }
             }
         }
     }
@@ -142,5 +138,10 @@ public class Projectile extends Movable implements Deletable,  Directable, Runna
     public int askPX(){return (observers2.get(0)).getPlayerX();}
     @Override
     public int askPY(){return (observers2.get(0)).getPlayerY();}
+
+    @Override
+    public boolean askPauseState(){
+        return (observers2.get(0)).getPauseState();
+    }
 
 }
