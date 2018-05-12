@@ -217,7 +217,9 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
     public GameObject detect(int x, int y){
         for (GameObject object : objects) {
             if (object.isAtPosition(x, y)) {
-                return object;
+                if (object.isObstacle()) {
+                    return object;
+                }
             }
         }
         return null;
