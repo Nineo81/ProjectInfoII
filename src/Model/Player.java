@@ -94,6 +94,8 @@ public class Player extends MovingObject implements Activable, Runnable, Modifie
         return xp;
     }
 
+    public void setLevel(int level){this.level=level;}
+
     public int getLevel(){ return level; }
 
     public int getLevelXp(){ return levelXp; }

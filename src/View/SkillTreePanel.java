@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 
 import Model.Player;
+import Model.SkillTree;
 
 import javax.swing.*;
 
@@ -30,9 +31,6 @@ public class SkillTreePanel extends JPanel implements ActionListener {
 
     Player player;
 
-    int remainigLevels=2;
-
-
 
     public SkillTreePanel(Window menu){
         this.setFocusable(true);
@@ -51,10 +49,9 @@ public class SkillTreePanel extends JPanel implements ActionListener {
         life.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                if (remainigLevels>0){
-                    //player.addmaxlife
-                    //player.useLevel
-                    remainigLevels--;
+                if (player.getLevel()>0){
+                    player.getSkillTree().upLife();
+                    player.setLevel(player.getLevel()-1);
                 }
             }
         });
@@ -70,10 +67,9 @@ public class SkillTreePanel extends JPanel implements ActionListener {
         mana.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                if (remainigLevels>0){
-                    //player.addmaxmana
-                    //player.useLevel
-                    remainigLevels--;
+                if (player.getLevel()>0){
+                    player.getSkillTree().upMana();
+                    player.setLevel(player.getLevel()-1);
                 }
             }
         });
@@ -95,7 +91,7 @@ public class SkillTreePanel extends JPanel implements ActionListener {
 
 
 
-
+    public void setPlayer(Player player){this.player = player;}
 
 
 

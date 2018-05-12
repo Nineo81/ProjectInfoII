@@ -76,6 +76,7 @@ public class Window implements SizeableObserver, Resumer {
     public void setGameObjects(Vector<GameObject> objects) {
         this.map.setObjects(objects);
         this.inventory=((Player)objects.get(0)).getInventory();
+        this.skillTreePanel.setPlayer(((Player)objects.get(0)));
         this.map.redraw();
     }
 
