@@ -5,6 +5,7 @@ import Model.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Vector;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -12,7 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class Map extends JPanel {
-    private ArrayList<GameObject> objects = null;
+    private Vector<GameObject> objects = null;
     private int spacing = 30;
     private Dimension size = new Dimension(1000,800);
     private ArrayList<int[]> wallMatrix = new ArrayList<int[]>();
@@ -383,7 +384,7 @@ public class Map extends JPanel {
         }
     }
 
-    public void setObjects(ArrayList<GameObject> objects) {
+    public void setObjects(Vector<GameObject> objects) {
         this.objects = objects;
     }
 

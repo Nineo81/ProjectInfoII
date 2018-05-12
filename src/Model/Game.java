@@ -4,6 +4,7 @@ import View.Window;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Vector;
 import java.util.function.*;
 import java.util.Random;
 import java.io.FileReader;
@@ -13,7 +14,7 @@ import java.io.FileReader;
 //import org.omg.CosNaming.IstringHelper;
 
 public class Game implements DeletableObserver, LevelableObserver, MovingObserver {
-    private ArrayList<GameObject> objects = new ArrayList<GameObject>();
+    private Vector<GameObject> objects = new Vector<GameObject>();
     SamplePredicate<GameObject> filter = new SamplePredicate<>();
 
     private Window window;
@@ -140,7 +141,7 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
         window.update();
     }
 
-    public ArrayList<GameObject> getGameObjects() {
+    public Vector<GameObject> getGameObjects() {
         return this.objects;
     }
 

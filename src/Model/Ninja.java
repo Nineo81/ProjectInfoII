@@ -1,6 +1,6 @@
 package Model;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 public class Ninja extends Player implements DeletableObserver,Powered{
 
@@ -17,7 +17,7 @@ public class Ninja extends Player implements DeletableObserver,Powered{
 
 
 
-    public void action(ArrayList<GameObject> objects){
+    public synchronized void action(Vector<GameObject> objects){
         Activable aimedObject = null;
         for(GameObject object : objects){
             if(object.isAtPosition(this.getFrontX(),this.getFrontY())){
@@ -34,7 +34,7 @@ public class Ninja extends Player implements DeletableObserver,Powered{
         }
     }
 
-    public void action1(ArrayList<GameObject> objects){
+    public synchronized void action1(Vector<GameObject> objects){
         if (mana>=10) {
             int x = 0;
             int y = 0;
@@ -49,7 +49,7 @@ public class Ninja extends Player implements DeletableObserver,Powered{
         }
     }
 
-    public void action2(ArrayList<GameObject> objects){
+    public synchronized void action2(Vector<GameObject> objects){
         if (mana>=25) {
             int frontX=this.getFrontX();
             int frontY=this.getFrontY();
@@ -70,7 +70,7 @@ public class Ninja extends Player implements DeletableObserver,Powered{
         }
     }
 
-    public void action3(ArrayList<GameObject> objects){
+    public synchronized void action3(Vector<GameObject> objects){
         int x = this.getPosX();
         int y = this.getPosY();
         for(GameObject object : objects){
