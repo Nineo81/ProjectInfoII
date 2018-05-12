@@ -25,8 +25,11 @@ public class Map extends JPanel {
 
     public void paint(Graphics g) {
         this.spacing=(this.size.height-30)/20;
+
         int n=0;
+
         for (int i = 0; i < 20; i++) { // base grid
+
             for (int j = 0; j < 20; j++) {
                 int x = i;
                 int y = j;
@@ -41,6 +44,8 @@ public class Map extends JPanel {
         }
 
         for (GameObject object : this.objects) {
+
+
             int x = object.getPosX();
             int y = object.getPosY();
             int color = object.getColor();
