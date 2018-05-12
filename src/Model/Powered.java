@@ -1,13 +1,13 @@
 package Model;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 public interface Powered {
-    public void action(ArrayList<GameObject> objects);
+    public void action(Vector<GameObject> objects);
 
-    public void action1(ArrayList<GameObject> objects);
+    public void action1(Vector<GameObject> objects);
 
-    public void action2(ArrayList<GameObject> objects);
+    public void action2(Vector<GameObject> objects);
 
-    //public void action3(ArrayList<GameObject> objects);
+    public void action3(Vector<GameObject> objects);
 }

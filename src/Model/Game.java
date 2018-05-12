@@ -4,6 +4,7 @@ import View.Window;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Vector;
 import java.util.function.*;
 import java.util.Random;
 import java.io.FileReader;
@@ -13,7 +14,7 @@ import java.io.FileReader;
 //import org.omg.CosNaming.IstringHelper;
 
 public class Game implements DeletableObserver, LevelableObserver, MovingObserver {
-    private ArrayList<GameObject> objects = new ArrayList<GameObject>();
+    private Vector<GameObject> objects = new Vector<GameObject>();
     SamplePredicate<GameObject> filter = new SamplePredicate<>();
 
     private Window window;
@@ -120,6 +121,12 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
         player.action2(objects);
     }
 
+    public void action3(int playerNumber) {
+        Powered player = ((Powered) objects.get(playerNumber));
+        player.action3(objects);
+        notifyView();
+    }
+
     public void add(GameObject object){
         objects.add(object);
         if (object instanceof Deletable){
@@ -134,15 +141,18 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
         window.update();
     }
 
-    public ArrayList<GameObject> getGameObjects() {
+    public Vector<GameObject> getGameObjects() {
         return this.objects;
     }
 
     @Override
-    synchronized public void delete(Deletable ps, ArrayList<GameObject> loot) {
+    synchronized public void delete(Deletable ps, GameObject loot) {
         objects.remove(ps);
-        if (loot != null) {
-            objects.addAll(loot);
+        if(loot!=null){
+            Random rand = new Random();
+            if(rand.nextInt(2)==1){
+                objects.add(loot);
+            }
         }
         notifyView();
     }

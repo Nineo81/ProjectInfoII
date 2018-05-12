@@ -5,6 +5,7 @@ import Model.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Vector;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -12,7 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class Map extends JPanel {
-    private ArrayList<GameObject> objects = null;
+    private Vector<GameObject> objects = null;
     private int spacing = 30;
     private Dimension size = new Dimension(1000,800);
     private ArrayList<int[]> wallMatrix = new ArrayList<int[]>();
@@ -201,182 +202,6 @@ public class Map extends JPanel {
                             e.printStackTrace();
                         }
                 }
-                /*if(wallType[0]==1){
-                    if(wallType[1]==1){
-                        if(wallType[2]==1){
-                            //Cas {1,1,1,0}
-                            try {
-                                Image picture = ImageIO.read(new File("images/WallDown.png"));
-                                Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                g.drawImage(scaled, x * spacing, y * spacing, null);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } fait
-                        }
-                        else{
-                            if(wallType[3]==1){
-                                //Cas {1,1,0,1}
-                                try {
-                                    Image picture = ImageIO.read(new File("images/WallUp.png"));
-                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                    g.drawImage(scaled, x * spacing, y * spacing, null);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } fait
-                            }
-                            else{
-                                //Cas {1,1,0,0}
-                                try {
-                                    Image picture = ImageIO.read(new File("images/NarrowHorizontal.png"));
-                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                    g.drawImage(scaled, x * spacing, y * spacing, null);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } fait
-                            }
-                        }
-                    }
-                    else{
-                        if(wallType[2]==1){
-                            if(wallType[3]==1){
-                                //Cas {1,0,1,1}
-                                try {
-                                    Image picture = ImageIO.read(new File("images/WallLeft.png"));
-                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                    g.drawImage(scaled, x * spacing, y * spacing, null);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } fait
-                            }
-                            else{
-                                //Cas {1,0,1,0}
-                                try {
-                                    Image picture = ImageIO.read(new File("images/CornerUpLeft.png"));
-                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                    g.drawImage(scaled, x * spacing, y * spacing, null);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } fait
-                            }
-                        }
-                        else{
-                            if(wallType[3]==1){
-                                //Cas {1,0,0,1}
-                                try {
-                                    Image picture = ImageIO.read(new File("images/CornerDownLeft.png"));
-                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                    g.drawImage(scaled, x * spacing, y * spacing, null);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } fait
-                            }
-                            else{
-                                //Cas {1,0,0,0}
-                                try {
-                                    Image picture = ImageIO.read(new File("images/NarrowCornerLeft.png"));
-                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                    g.drawImage(scaled, x * spacing, y * spacing, null);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } fait
-                            }
-                        }
-                    }
-                }
-                else{
-                    if(wallType[1]==1){
-                        if(wallType[2]==1){
-                            if(wallType[3]==1){
-                                //Cas {0,1,1,1}
-                                try {
-                                    Image picture = ImageIO.read(new File("images/WallRight.png"));
-                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                    g.drawImage(scaled, x * spacing, y * spacing, null);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } fait
-                            }
-                            else{
-                                //Cas {0,1,1,0}
-                                try {
-                                    Image picture = ImageIO.read(new File("images/CornerUpRight.png"));
-                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                    g.drawImage(scaled, x * spacing, y * spacing, null);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } fait
-                            }
-                        }
-                        else{
-                            if(wallType[3]==1){
-                                //Cas {0,1,0,1}
-                                try {
-                                    Image picture = ImageIO.read(new File("images/CornerDownRight.png"));
-                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                    g.drawImage(scaled, x * spacing, y * spacing, null);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } fait
-                            }
-                            else{
-                                //Cas {0,1,0,0}
-                                try {
-                                    Image picture = ImageIO.read(new File("images/NarrowCornerRight.png"));
-                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                    g.drawImage(scaled, x * spacing, y * spacing, null);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } fait
-                            }
-                        }
-                    }
-                    else{
-                        if(wallType[2]==1){
-                            if(wallType[3]==1){
-                                //Cas {0,0,1,1}
-                                try {
-                                    Image picture = ImageIO.read(new File("images/NarrowVertical.png"));
-                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                    g.drawImage(scaled, x * spacing, y * spacing, null);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } fait
-                            }
-                            else{
-                                //Cas {0,0,1,0}
-                                try {
-                                    Image picture = ImageIO.read(new File("images/NarrowCornerDown.png"));
-                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                    g.drawImage(scaled, x * spacing, y * spacing, null);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } fait
-                            }
-                        }
-                        else{
-                            if(wallType[3]==1){
-                                //Cas {0,0,0,1}
-                                try {
-                                    Image picture = ImageIO.read(new File("images/NarrowCornerUp.png"));
-                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                    g.drawImage(scaled, x * spacing, y * spacing, null);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } fait
-                            }
-                            else{
-                                //Cas {0,0,0,0}
-                                try {
-                                    Image picture = ImageIO.read(new File("images/Pillar.png"));
-                                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
-                                    g.drawImage(scaled, x * spacing, y * spacing, null);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } fait
-                            }
-                        }
-                    }
-                }*/
                 n++;
             }
 
@@ -393,6 +218,16 @@ public class Map extends JPanel {
             if (object instanceof Stair){
                 try {
                     Image picture = ImageIO.read(new File("images/stone_stairs_down.png"));
+                    Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
+                    g.drawImage(scaled, x * spacing, y * spacing, null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (object instanceof Bow){
+                try {
+                    Image picture = ImageIO.read(new File("images/bow1.png"));
                     Image scaled = picture.getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);
                     g.drawImage(scaled, x * spacing, y * spacing, null);
                 } catch (IOException e) {
@@ -549,7 +384,7 @@ public class Map extends JPanel {
         }
     }
 
-    public void setObjects(ArrayList<GameObject> objects) {
+    public void setObjects(Vector<GameObject> objects) {
         this.objects = objects;
     }
 

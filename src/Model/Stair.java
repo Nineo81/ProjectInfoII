@@ -2,14 +2,14 @@ package Model;
 
 import java.util.ArrayList;
 
-public class Stair extends Block implements Levelable, Activable{
+public class Stair extends Block implements Levelable{
     private ArrayList<LevelableObserver> observers = new ArrayList<LevelableObserver>();
 
     public Stair(int X, int Y) {
         super(X, Y, 3);
     }
 
-    public int activate(int damage){
+    public int takeIt(){
         notifyLevelableObserver();
         return 0;
     }
@@ -27,11 +27,5 @@ public class Stair extends Block implements Levelable, Activable{
         for(LevelableObserver o:observers){
             o.nextLevel();
         }
-    }
-    public int getLife(){
-        return 0;
-    }
-    public int getMaxLife(){
-        return 0;
     }
 }

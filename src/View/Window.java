@@ -5,7 +5,7 @@ import Model.SizeableObserver;
 
 import java.awt.Color;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
+import java.util.Vector;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
@@ -25,7 +25,7 @@ public class Window implements SizeableObserver {
         window.setVisible(true);
     }
 
-    public void setGameObjects(ArrayList<GameObject> objects) {
+    public void setGameObjects(Vector<GameObject> objects) {
         this.map.setObjects(objects);
         this.map.redraw();
     }
