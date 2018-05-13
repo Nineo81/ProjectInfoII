@@ -30,9 +30,10 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
 
     public Game(Window window) {
         this.window = window;
-        Ninja player = new Ninja(0, 0, 10, 100, this);
+        Ninja player = new Ninja(0, 0, 30, 100, this);
         objects.add(player);
         filter.varc1 = player;
+        //window.setPlayer(player);
         nextLevel();
         //Thread t1 = new Thread(new MyTimer(this));
         //t1.start();
@@ -131,7 +132,7 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
         notifyView();
     }
 
-    public void nextLevel(){
+    public void nextLevel() {
         objects.removeIf(filter);
 
         window.setGameObjects(this.getGameObjects());
@@ -141,26 +142,28 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
 
         Random rand = new Random();
 
-        int px=getPlayerX(); int py=getPlayerY(); boolean occupied=true;
-        while (occupied){
-            occupied=false;
+        int px = getPlayerX();
+        int py = getPlayerY();
+        boolean occupied = true;
+        while (occupied) {
+            occupied = false;
             for (GameObject object : objects) {
                 if (object.isAtPosition(px, py)) {
-                    occupied=true;
+                    occupied = true;
                     break;
                 }
             }
-            if (occupied){
-                px=rand.nextInt(10);
-                py=rand.nextInt(10);
+            if (occupied) {
+                px = rand.nextInt(10);
+                py = rand.nextInt(10);
             }
         }
 
-        ((Player)objects.get(0)).move(px,py);
+        ((Player) objects.get(0)).move(px, py);
 
         //mob spawning
-        int n=0;
-        while (n<numberOfMobs) {
+        int n = 0;
+        while (n < numberOfMobs) {
             int x = rand.nextInt(16) + 2;
             int y = rand.nextInt(16) + 2;
             int lifepoints = rand.nextInt(3) + 3;
@@ -172,22 +175,40 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
                     occupied = true;
                     break;
                 }
-                if ((Math.abs(getPlayerX() - x) + Math.abs(getPlayerY() - y)) < 6) {
+                if ((Math.abs(this.getPlayerX() - x) + Math.abs(this.getPlayerY() - y)) < 6) {
                     occupied = true;
                     break;
                 }
             }
             if (!occupied) {
                 n++;
-                Mob mob = new Mob( x, y, lifepoints);
-                mob.attachDeletable(this); mob.attachMoving(this);
+                Mob mob = new Mob(x, y, lifepoints);
+                mob.attachDeletable(this);
+                mob.attachMoving(this);
                 objects.add(mob);
             }
         }
 
-        Stair stair = new Stair(10,10);
-        stair.attachLevelable(this);
-        objects.add(stair);
+        do {
+            int x = rand.nextInt(16) + 2;
+            int y = rand.nextInt(16) + 2;
+            occupied = false;
+            for (GameObject object : objects) {
+                if (object.isAtPosition(x, y)) {
+                    occupied = true;
+                    break;
+                }
+                if ((Math.abs(10 - x) + Math.abs(10 - y)) < 6) {
+                    occupied = true;
+                    break;
+                }
+            }
+            if (occupied == false) {
+                Stair stair = new Stair(x, y);
+                stair.attachLevelable(this);
+                objects.add(stair);
+            }
+        } while (occupied == true);
     }
 
     public void mapReader (int[][] room) {

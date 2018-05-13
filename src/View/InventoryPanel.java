@@ -27,6 +27,7 @@ public class InventoryPanel  extends JPanel implements ActionListener, Modifier,
     Thread thread;
     Window menu;
     ImageIcon bow;
+    ImageIcon potion;
 
 
     public  InventoryPanel(Window menu) {
@@ -72,19 +73,27 @@ public class InventoryPanel  extends JPanel implements ActionListener, Modifier,
         int y=100;
 
         bow = new ImageIcon("images/bow1.png");
+        potion = new ImageIcon("images/potion.png");
+
 
         while (n<inventory.getBag().size()){
-            JButton itemButton = new JButton(this.bow);
+            GameObject item=  inventory.getBag().get(n);
+            ItemButton itemButton;
+            if (item instanceof  Bow) {
+                itemButton = new ItemButton(this.bow);
+            }
+            else { itemButton = new ItemButton(this.potion);}
+            itemButton.setItem(item);
             itemButton.setBounds(x, y,  100, 100);
             itemButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e){
-                    //
+                    Window itemFrame= new Window(5);
+                    itemFrame.attachItemObserver(player, itemButton.getItem());
                 }
             });
 
             this.add(itemButton);
 
-            System.out.println("fuck");
 
             x+=150;
             if (x>1000){

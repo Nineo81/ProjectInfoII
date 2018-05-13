@@ -6,11 +6,12 @@ public class SkillTree implements Modifier {
     private ArrayList<ModifierObserver> observers = new ArrayList<ModifierObserver>();
 
     public void upLife(){
-        notifyModifierObserver(new int[]{0,1,0,0,0,0});
+        notifyModifierObserver(new int[]{20,20,0,0,0,0});
+
     }
 
     public void upMana(){
-        notifyModifierObserver(new int[]{0,0,0,1,0,0});
+        notifyModifierObserver(new int[]{0,0,0,30,0,0});
     }
 
     @Override

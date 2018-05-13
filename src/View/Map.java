@@ -21,7 +21,11 @@ public class Map extends JPanel {
     private Dimension size = new Dimension(1000,800);
     private ArrayList<int[]> wallMatrix = new ArrayList<int[]>();
 
-    Image ground,left_knight,right_knight,back_knight,front_knight,bow,stairs,empty,WallUp,WallDown,WallLeft,WallRight,orc,CornerDownLeft,CornerDownRight,CornerUpLeft,CornerUpRight,NarrowCornerDown,NarrowCornerLeft,NarrowCornerRight,NarrowCornerUp,NarrowHorizontal,NarrowVertical,Pillar;
+    private Image ground,left_knight,right_knight,back_knight,front_knight,bow,stairs,empty,WallUp,
+            WallDown,WallLeft,WallRight,orc,CornerDownLeft,CornerDownRight,CornerUpLeft,CornerUpRight,
+            NarrowCornerDown,NarrowCornerLeft,NarrowCornerRight,NarrowCornerUp,NarrowHorizontal,
+            NarrowVertical,Pillar,ArrowUp,ArrowDown,ArrowRight,ArrowLeft,Potion;
+
 
     public Map() {
         this.setFocusable(true);
@@ -130,6 +134,10 @@ public class Map extends JPanel {
                 g.drawImage(bow, x * spacing, y * spacing, null);
             }
 
+            if (object instanceof Potion){
+                g.drawImage(Potion, x * spacing, y * spacing, null);
+            }
+
             // Decouper en fontions
             if (object instanceof Directable) {
                 int direction = ((Directable) object).getDirection();
@@ -150,6 +158,27 @@ public class Map extends JPanel {
                     case Directable.SOUTH:
                         deltaY = (spacing - 2) / 2;
                         break;
+                }
+                if (object instanceof Projectile){
+                    switch(direction){
+                        case Directable.EAST:
+                            g.drawImage(ArrowRight, x * spacing, y * spacing, null);
+
+                            break;
+                        case Directable.NORTH:
+                            g.drawImage(ArrowUp, x * spacing, y * spacing, null);
+
+                            break;
+                        case Directable.WEST:
+
+                            g.drawImage(ArrowLeft, x * spacing, y * spacing, null);
+
+                            break;
+                        case Directable.SOUTH:
+                            g.drawImage(ArrowDown, x * spacing, y * spacing, null);
+
+                            break;
+                    }
                 }
                 if (object instanceof Player) {
                     //int direction = ((Directable) object).getDirection();
@@ -223,27 +252,28 @@ public class Map extends JPanel {
                         int level = ((Player) object).getLevel();
                         int levelXp = ((Player) object).getLevelXp();
 
-                        g.setFont(new Font("TimesRoman", Font.BOLD, 25));
+                        g.setFont(new Font("TimesRoman", Font.BOLD, spacing));
                         g.setColor(Color.BLACK);
-                        g.drawString("LIFE", 1050, 85);
+                        g.drawString("LIFE", 22*spacing, spacing);
                         g.setColor(Color.DARK_GRAY);
-                        g.fillRect(1050, 100, 250, 50);
+                        g.fillRect(22*spacing, 2*spacing, 8*spacing, spacing);
                         g.setColor(Color.GREEN);
-                        g.fillRect(1050, 100, Math.round(((float) life / (float) maxLife) * 250), 50);
+                        g.fillRect(22*spacing, 2*spacing, Math.round(((float) life / (float) maxLife) * 8*spacing), spacing);
 
                         g.setColor(Color.BLACK);
-                        g.drawString("MANA", 1050, 235);
+                        g.drawString("MANA", 22*spacing, 4*spacing);
                         g.setColor(Color.DARK_GRAY);
-                        g.fillRect(1050, 250, 250, 50);
+                        g.fillRect(22*spacing, 5*spacing, 8*spacing, spacing);
                         g.setColor(Color.BLUE);
-                        g.fillRect(1050, 250, Math.round(((float) mana / (float) maxMana) * 250), 50);
+                        g.fillRect(22*spacing, 5*spacing, Math.round(((float) mana / (float) maxMana) * 8*spacing), spacing);
 
                         g.setColor(Color.BLACK);
-                        g.drawString("LEVEL : " + String.valueOf(level), 1050, 900);
+                        g.drawString("LEVEL : " + String.valueOf(level), 22*spacing, 7*spacing);
                         g.setColor(Color.DARK_GRAY);
-                        g.fillRect(1050, 915, 250, 5);
+                        g.fillRect(22*spacing, 8*spacing, 8*spacing, spacing/4);
                         g.setColor(Color.YELLOW);
-                        g.fillRect(1050, 915, Math.round(((float) xp / (float) levelXp) * 250), 5);
+                        g.fillRect(22*spacing, 8*spacing, Math.round(((float) xp / (float) levelXp) * 8*spacing), spacing/4);
+
                     }
                 }
             }
@@ -306,18 +336,20 @@ public class Map extends JPanel {
 
     private void loadImages(){
         try{this.left_knight = (ImageIO.read(new File("images/left_knight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
-            try{this.back_knight = (ImageIO.read(new File("images/back_knight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+
+        try{this.back_knight = (ImageIO.read(new File("images/back_knight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.right_knight = (ImageIO.read(new File("images/right_knight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.front_knight = (ImageIO.read(new File("images/front_knight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.bow = (ImageIO.read(new File("images/bow1.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
-            try{this.ground = (ImageIO.read(new File("images/Ground.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.ground = (ImageIO.read(new File("images/Ground.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.orc = (ImageIO.read(new File("images/Orc.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
-            try{this.stairs = (ImageIO.read(new File("images/stone_stairs_down.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
-                try{this.empty = (ImageIO.read(new File("images/void.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
-                    try{this.WallDown = (ImageIO.read(new File("images/WallDown.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
-                        try{this.WallUp = (ImageIO.read(new File("images/WallUp.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){System.out.print("bite");}
-                            try{this.WallLeft = (ImageIO.read(new File("images/WallLeft.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
-                                try{this.WallRight = (ImageIO.read(new File("images/WallRight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.stairs = (ImageIO.read(new File("images/stone_stairs_down.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.empty = (ImageIO.read(new File("images/void.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.WallDown = (ImageIO.read(new File("images/WallDown.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.WallUp = (ImageIO.read(new File("images/WallUp.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){System.out.print("bite");}
+        try{this.WallLeft = (ImageIO.read(new File("images/WallLeft.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.WallRight = (ImageIO.read(new File("images/WallRight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+
         try{this.CornerDownLeft = (ImageIO.read(new File("images/CornerDownLeft.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.CornerDownRight = (ImageIO.read(new File("images/CornerDownRight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.CornerUpLeft = (ImageIO.read(new File("images/CornerUpLeft.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
@@ -330,8 +362,11 @@ public class Map extends JPanel {
         try{this.NarrowVertical = (ImageIO.read(new File("images/NarrowVertical.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.Pillar = (ImageIO.read(new File("images/Pillar.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
 
-
-
+        try{this.ArrowUp = (ImageIO.read(new File("images/ArrowUp.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.ArrowRight = (ImageIO.read(new File("images/ArrowRight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.ArrowLeft = (ImageIO.read(new File("images/ArrowLeft.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.ArrowDown = (ImageIO.read(new File("images/ArrowDown.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+        try{this.Potion = (ImageIO.read(new File("images/potion.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
 
     }
 }

@@ -17,6 +17,10 @@ public class Inventory implements Modifier{
         return bag;
     }
 
+    public void delete(GameObject object){
+        bag.remove(object);
+    }
+
     @Override
     public void attachModifier(ModifierObserver po) {
         observers.add(po);

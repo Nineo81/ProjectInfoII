@@ -37,8 +37,6 @@ public class EscapeMenu  extends JPanel {
             public void actionPerformed(ActionEvent e){
                 Window inventory= new Window(4);
                 inventory.attachResumer(menu.getObserver());
-                System.out.print("1 : ");
-                System.out.println((menu.getObserver()).getClass().getName());
             }
         });
 
@@ -47,11 +45,18 @@ public class EscapeMenu  extends JPanel {
         skillTreeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 Window skillTree= new Window(3);
+                skillTree.attachResumer(menu.getObserver());
             }
         });
 
         quitButton = new JButton("Quit to main menu");
         quitButton.setBounds(500, 620,  400, 80);
+        quitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                System.exit(0);
+            }
+        });
+
 
         this.add(resumeButton);
         this.add(inventoryButton);

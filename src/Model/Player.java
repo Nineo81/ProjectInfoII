@@ -5,6 +5,7 @@ import Model.Inventory;
 
 public class Player extends MovingObject implements Activable, Runnable, ModifierObserver {
 
+
     private int maxLife;
     private int life;
     protected int mana;
@@ -18,11 +19,14 @@ public class Player extends MovingObject implements Activable, Runnable, Modifie
     private int xp=0;
     private int level=1;
     private int levelXp=100;
+    private int usableLevel=0;
     private Thread thread;
     Game game;
 
     public Player(int x, int y,int life, int mana, Game game) {
         super(x, y, life, 2);
+        inventory.attachModifier(this);
+        this.skillTree.attachModifier(this);
         this.maxLife=life;
         this.life = life;
         this.maxMana=mana;
@@ -60,6 +64,7 @@ public class Player extends MovingObject implements Activable, Runnable, Modifie
         if (this.xp>=levelXp){
             this.xp-=levelXp;
             level++;
+            usableLevel++;
             levelXp=levelXp*4;
         }
     }
@@ -68,7 +73,7 @@ public class Player extends MovingObject implements Activable, Runnable, Modifie
     public void run(){
         try{
             while (true) {
-                if (mana < maxMana) {
+                if ((mana < maxMana)&&(!game.getPauseState())) {
                     mana += 1;
                 }
                 this.thread.sleep(150);
@@ -106,6 +111,17 @@ public class Player extends MovingObject implements Activable, Runnable, Modifie
 
     public SkillTree getSkillTree(){return skillTree;}
 
+    public int getUsableLevel(){return usableLevel;}
+
+    public void upLife(){
+        this.maxLife +=1;
+    }
+
+    public void useLevel(){
+        usableLevel--;
+    }
+
+
     public void statsUpdate(int[] modifier){
         if(this.life + modifier[0] <= this.maxLife){
             this.life += modifier[0];
@@ -124,5 +140,4 @@ public class Player extends MovingObject implements Activable, Runnable, Modifie
         xp(modifier[4]);
         this.weaponDammage = modifier[5];
     }
-
 }
