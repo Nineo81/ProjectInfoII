@@ -1,5 +1,6 @@
 package Model;
 
+import View.Resumer;
 import View.Window;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.io.FileReader;
 
 //import org.omg.CosNaming.IstringHelper;
 
-public class Game implements DeletableObserver, LevelableObserver, MovingObserver {
+public class Game implements DeletableObserver, LevelableObserver, MovingObserver, ResumerObserver {
     private Vector<GameObject> objects = new Vector<GameObject>();
     SamplePredicate<GameObject> filter = new SamplePredicate<>();
 
@@ -25,11 +26,14 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
     private boolean running=true;
     boolean pauseState = false;
 
+    Window escapeMenu;
+
     public Game(Window window) {
         this.window = window;
         Ninja player = new Ninja(0, 0, 10, 100, this);
         objects.add(player);
         filter.varc1 = player;
+        window.setPlayer(player);
         nextLevel();
         //Thread t1 = new Thread(new MyTimer(this));
         //t1.start();
@@ -74,35 +78,6 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
         notifyView();
     }
 
-    /*public void followPlayer(int playerTarget, int playerObject){  //Methode pour suivre le player
-        MovingObject player1 = ((MovingObject) objects.get(playerTarget));
-        int TargetX = player1.getPosX();
-        int TargetY = player1.getPosY();
-
-        MovingObject player2 = ((MovingObject) objects.get(playerObject));
-        int ObjX = player2.getPosX();
-        int ObjY = player2.getPosY();
-
-        int diffX=TargetX-ObjX;
-        int diffY=TargetY-ObjY;
-
-        if (Math.abs(diffX)>Math.abs(diffY)){
-            if (diffX>0){
-                movePlayer(1, 0, playerObject);
-            }
-            else{
-                movePlayer(-1, 0, playerObject);
-            }
-        }
-        else {
-            if (diffY>0){
-                movePlayer(0, 1, playerObject);
-            }
-            else{
-                movePlayer(0, -1, playerObject);
-            }
-        }
-    }*/
 
     public void action(int playerNumber) {
         Powered player = ((Powered) objects.get(playerNumber));
@@ -146,7 +121,7 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
     }
 
     @Override
-    synchronized public void delete(Deletable ps, GameObject loot) {
+    public synchronized void delete(Deletable ps, GameObject loot) {
         objects.remove(ps);
         if(loot!=null){
             Random rand = new Random();
@@ -198,7 +173,7 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
                     occupied = true;
                     break;
                 }
-                if ((Math.abs(10 - x) + Math.abs(10 - y)) < 6) {
+                if ((Math.abs(this.getPlayerX() - x) + Math.abs(this.getPlayerY() - y)) < 6) {
                     occupied = true;
                     break;
                 }
@@ -211,9 +186,27 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
             }
         }
 
-        Stair stair = new Stair(10,10);
-        stair.attachLevelable(this);
-        objects.add(stair);
+
+        do{
+            int x = rand.nextInt(16) + 2;
+            int y = rand.nextInt(16) + 2;
+            occupied = false;
+            for (GameObject object : objects) {
+                if (object.isAtPosition(x, y)) {
+                     occupied = true;
+                     break;
+                }
+                if ((Math.abs(10 - x) + Math.abs(10 - y)) < 6) {
+                     occupied = true;
+                     break;
+                }
+            }
+            if (occupied==false) {
+                Stair stair = new Stair(x,y);
+                stair.attachLevelable(this);
+                objects.add(stair);
+            }
+        }while(occupied==true);
     }
 
     public void mapReader (int[][] room) {
@@ -243,7 +236,9 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
     public GameObject detect(int x, int y){
         for (GameObject object : objects) {
             if (object.isAtPosition(x, y)) {
-                return object;
+                if (object.isObstacle()) {
+                    return object;
+                }
             }
         }
         return null;
@@ -251,6 +246,11 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
 
     public void pauseGame (){
         this.pauseState = !this.pauseState;
+        if (pauseState){
+            escapeMenu = new Window(2);
+            this.escapeMenu.attachResumer(this);
+        }
+
     }
 
     public boolean getPauseState(){
@@ -259,8 +259,6 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
 
     public void playerPos(int playerNumber) {
         Player player = ((Player) objects.get(playerNumber));
-        System.out.println(player.getPosX() + ":" + player.getPosY());
-
     }
 
     public int getPlayerX(){
@@ -271,5 +269,10 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
         int posY = ((Player) objects.get(0)).getPosY();
         return posY;
     }
+
+    public void resume(){
+        pauseGame();
+    }
+
 
 }

@@ -2,6 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.Observer;
+import java.util.Random;
 
 public class Mob extends MovingObject implements Deletable, Activable, Moving, Runnable{
 
@@ -10,6 +11,7 @@ public class Mob extends MovingObject implements Deletable, Activable, Moving, R
     private Thread thread;
     private ArrayList<DeletableObserver> observers = new ArrayList<DeletableObserver>();
     private ArrayList<MovingObserver> observers2 = new ArrayList<MovingObserver>();
+    private Random rand=new Random();
     int dammage;
     int px;
     int py;
@@ -61,9 +63,17 @@ public class Mob extends MovingObject implements Deletable, Activable, Moving, R
         int i = 0;
         for (DeletableObserver o : observers) {
             i++;
-            Bow bow = new Bow(this.posX,this.posY,1);
-            bow.attachDeletable(o);
-            o.delete(this, bow);
+            int v=rand.nextInt(2);
+            Loot loot=null;
+            if(v==1){
+                loot = new Bow(this.posX,this.posY,1);
+                loot.attachDeletable(o);
+            }
+            else{
+                loot = new Potion(this.posX,this.posY,1,0,rand.nextInt(10));
+            }
+
+            o.delete(this,loot);
         }
     }
 
@@ -76,8 +86,6 @@ public class Mob extends MovingObject implements Deletable, Activable, Moving, R
                 int y; //x if diffx<diffY
                 px = askPX();
                 py = askPY();
-                this.previousPosX = this.posX;
-                this.previousPosY = this.posY;
                 int diffX = px - this.posX;
                 int diffY = py - this.posY;
                 GameObject obstacle;
