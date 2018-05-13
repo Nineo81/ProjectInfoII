@@ -1,14 +1,14 @@
 package Model;
 
-public class Bow extends Loot{
+public class Potion extends Loot {
+    private int[] stat = {0,0,0,0,0,0};
 
-    private int[] stat = {0,0,0,0,0,4};
-
-    public Bow(int x,int y,int color){
+    public Potion(int x,int y,int color,int type,int value){
         super(x,y,color);
         this.weaponDamage = 3;
         this.lifeBoost =0;
         this.manaBoost =0;
+        this.stat[type]=value;
     }
 
     public int[] getStat(){return this.stat;}

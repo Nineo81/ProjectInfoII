@@ -33,6 +33,7 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
         Ninja player = new Ninja(0, 0, 10, 100, this);
         objects.add(player);
         filter.varc1 = player;
+        window.setPlayer(player);
         nextLevel();
         //Thread t1 = new Thread(new MyTimer(this));
         //t1.start();
@@ -172,7 +173,7 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
                     occupied = true;
                     break;
                 }
-                if ((Math.abs(10 - x) + Math.abs(10 - y)) < 6) {
+                if ((Math.abs(this.getPlayerX() - x) + Math.abs(this.getPlayerY() - y)) < 6) {
                     occupied = true;
                     break;
                 }
@@ -185,9 +186,26 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
             }
         }
 
-        Stair stair = new Stair(10,10);
-        stair.attachLevelable(this);
-        objects.add(stair);
+        do{
+            int x = rand.nextInt(16) + 2;
+            int y = rand.nextInt(16) + 2;
+            occupied = false;
+            for (GameObject object : objects) {
+                if (object.isAtPosition(x, y)) {
+                     occupied = true;
+                     break;
+                }
+                if ((Math.abs(10 - x) + Math.abs(10 - y)) < 6) {
+                     occupied = true;
+                     break;
+                }
+            }
+            if (occupied==false) {
+                Stair stair = new Stair(x,y);
+                stair.attachLevelable(this);
+                objects.add(stair);
+            }
+        }while(occupied==true);
     }
 
     public void mapReader (int[][] room) {

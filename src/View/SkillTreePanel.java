@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 
 import Model.Player;
+import Model.SkillTree;
 
 import javax.swing.*;
 
@@ -16,7 +17,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class SkillTreePanel  extends JPanel implements ActionListener {
+public class SkillTreePanel extends JPanel implements ActionListener {
 
     private JButton resumeButton;
     private JButton firstAttack;
@@ -27,17 +28,16 @@ public class SkillTreePanel  extends JPanel implements ActionListener {
     private JButton lifeRegen;
     private JButton manaRegen;
     private JButton mana;
-
-    Player player;
-
-    int remainigLevels=2;
+    private Player player;
 
 
-
-    public  SkillTreePanel(Window menu){
+    public SkillTreePanel(Window menu,Player player){
+        this.player=player;
         this.setFocusable(true);
         this.requestFocusInWindow();
         int maxLife=3;
+        RemoteUpdate control = new RemoteUpdate();
+        Command UpdateLifeCommand = new UpdateLifeCommand(player);
 
         this.setLayout(null);
 
@@ -46,37 +46,28 @@ public class SkillTreePanel  extends JPanel implements ActionListener {
         resumeButton.addActionListener(new ResumeActionListener(menu));
         this.add(resumeButton);
 
-        life = new JButton( "HEALTH");
-        life.setBounds(300, 50, 300, 80);
-        life.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                if (remainigLevels>0){
-                    //player.addmaxlife
-                    //player.useLevel
-                    remainigLevels--;
-                }
-            }
-        });
-        this.add(life);
 
         JLabel lifeText = new JLabel();
         lifeText.setText("MAX HEALTH : " + String.valueOf(5));
         lifeText.setBounds(650,70,120,40);
         this.add(lifeText);
 
-        mana = new JButton( "MANA");
-        mana.setBounds(300, 150, 300, 80);
-        mana.addActionListener(new ActionListener() {
+        life = new JButton( "HEALTH");
+        life.setBounds(300, 50, 300, 80);
+        life.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                if (remainigLevels>0){
-                    //player.addmaxmana
-                    //player.useLevel
-                    remainigLevels--;
-                }
+
+            public void actionPerformed(ActionEvent e) {
+                control.setCommand(UpdateLifeCommand);
+                control.pressButton();
+
             }
         });
+        this.add(life);
+
+        mana = new JButton( "MANA");
+        mana.setBounds(300, 150, 300, 80);
+        mana.addActionListener(e -> player.upLife());
         this.add(mana);
 
         JLabel manaText = new JLabel();
@@ -92,12 +83,6 @@ public class SkillTreePanel  extends JPanel implements ActionListener {
 
 
     }
-
-
-
-
-
-
 
     @Override
     public void actionPerformed(ActionEvent e) {

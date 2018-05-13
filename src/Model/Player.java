@@ -1,9 +1,11 @@
 package Model;
 
+
 import Model.SkillTree;
 import Model.Inventory;
 
 public class Player extends MovingObject implements Activable, Runnable, ModifierObserver {
+
 
     private int maxLife;
     private int life;
@@ -14,6 +16,7 @@ public class Player extends MovingObject implements Activable, Runnable, Modifie
     private int weaponDammage= 0;
     int baseDammage;
     Inventory inventory=new Inventory();
+
     private SkillTree skillTree=new SkillTree();
     private int xp=0;
     private int level=1;
@@ -23,6 +26,8 @@ public class Player extends MovingObject implements Activable, Runnable, Modifie
 
     public Player(int x, int y,int life, int mana, Game game) {
         super(x, y, life, 2);
+        inventory.attachModifier(this);
+        skillTree.attachModifier(this);
         this.maxLife=life;
         this.life = life;
         this.maxMana=mana;
@@ -106,6 +111,11 @@ public class Player extends MovingObject implements Activable, Runnable, Modifie
 
     public SkillTree getSkillTree(){return skillTree;}
 
+
+    public void upLife(){
+        this.maxLife +=1;
+    }
+
     public void statsUpdate(int[] modifier){
         if(this.life + modifier[0] <= this.maxLife){
             this.life += modifier[0];
@@ -124,5 +134,4 @@ public class Player extends MovingObject implements Activable, Runnable, Modifie
         xp(modifier[4]);
         this.weaponDammage = modifier[5];
     }
-
 }

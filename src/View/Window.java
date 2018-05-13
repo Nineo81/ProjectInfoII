@@ -6,6 +6,7 @@ import Model.SizeableObserver;
 import Model.ResumerObserver;
 import Model.Player;
 import View.SkillTreePanel;
+import Model.*;
 
 import java.awt.Color;
 import java.awt.event.KeyListener;
@@ -20,9 +21,13 @@ public class Window implements SizeableObserver, Resumer {
     private Map map = new Map();
     int type;
 
+    private Inventory inventory;
+    private Player player;
+
+
     private EscapeMenu escapeMenu = new EscapeMenu(this);
-    private SkillTreePanel skillTreePanel = new SkillTreePanel(this);
-    private View.InventoryPanel inventory = new View.InventoryPanel(this);
+    private View.InventoryPanel inventoryPanel = new View.InventoryPanel(this);
+
     JFrame window = new JFrame("Game");
     private ResizeListener sizing = new ResizeListener();
 
@@ -59,7 +64,7 @@ public class Window implements SizeableObserver, Resumer {
             skillTree.addComponentListener(sizing);
             sizing.attachSizeable(this);
             skillTree.getContentPane().setBackground(Color.gray);
-            skillTree.getContentPane().add(this.skillTreePanel);
+            skillTree.getContentPane().add(new SkillTreePanel(this,this.player));
             skillTree.setVisible(true);
             this.window = skillTree;
         }
@@ -78,8 +83,11 @@ public class Window implements SizeableObserver, Resumer {
 
     public void setGameObjects(Vector<GameObject> objects) {
         this.map.setObjects(objects);
+
         this.map.redraw();
     }
+
+    public void setPlayer(Player player){this.player=player;}
 
     public void update() {
         this.map.redraw();
@@ -103,6 +111,7 @@ public class Window implements SizeableObserver, Resumer {
             //more dicks
         }
 
+
     }
 
     public void close(){
@@ -111,6 +120,7 @@ public class Window implements SizeableObserver, Resumer {
     }
 
     public void drawWall(){this.map.wallConstructor();}
+
 
     public void setInventory(){
         this.inventory.attachModifier(((Player)(((Game) observers.get(0)).getGameObjects()).get(0)));
@@ -129,6 +139,6 @@ public class Window implements SizeableObserver, Resumer {
     @Override
     public void attachResumer(ResumerObserver ro){observers.add(ro);}
 
-    public ResumerObserver getObserver(){return observers.get(0);}
 
+    public ResumerObserver getObserver(){return observers.get(0);}
 }
