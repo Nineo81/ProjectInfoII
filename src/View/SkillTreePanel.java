@@ -30,7 +30,7 @@ public class SkillTreePanel  extends JPanel implements ActionListener {
 
     Player player;
 
-    int remainigLevels=2;
+    int remainigLevels=3;
 
 
 
@@ -38,6 +38,7 @@ public class SkillTreePanel  extends JPanel implements ActionListener {
         this.setFocusable(true);
         this.requestFocusInWindow();
         int maxLife=3;
+        int Life=5;
 
         this.setLayout(null);
 
@@ -45,6 +46,11 @@ public class SkillTreePanel  extends JPanel implements ActionListener {
         resumeButton.setBounds(50, 50,  150, 80);
         resumeButton.addActionListener(new ResumeActionListener(menu));
         this.add(resumeButton);
+
+        JTextArea lifeText = new JTextArea();
+        lifeText.setText("MAX HEALTH : " + String.valueOf(Life));
+        lifeText.setBounds(650,70,120,40);
+        this.add(lifeText);
 
         life = new JButton( "HEALTH");
         life.setBounds(300, 50, 300, 80);
@@ -54,16 +60,14 @@ public class SkillTreePanel  extends JPanel implements ActionListener {
                 if (remainigLevels>0){
                     //player.addmaxlife
                     //player.useLevel
+                    int n=Life;
+                    int Life=n-1;
                     remainigLevels--;
+                    lifeText.setText("MAX HEALTH : " + String.valueOf((Life)));
                 }
             }
         });
         this.add(life);
-
-        JLabel lifeText = new JLabel();
-        lifeText.setText("MAX HEALTH : " + String.valueOf(5));
-        lifeText.setBounds(650,70,120,40);
-        this.add(lifeText);
 
         mana = new JButton( "MANA");
         mana.setBounds(300, 150, 300, 80);

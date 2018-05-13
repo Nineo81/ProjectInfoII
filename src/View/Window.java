@@ -121,7 +121,7 @@ public class Window implements SizeableObserver, Resumer {
     @Override
     public void resumeGame(){
         close();
-        if (observers.size()>0) {
+        if ((observers.size()>0)&&(this.type==2)) {
             (observers.get(0)).resume();
         }
     }
