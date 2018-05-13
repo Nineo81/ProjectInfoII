@@ -21,6 +21,7 @@ public class Player extends MovingObject implements Activable, Runnable, Modifie
     public Player(int x, int y,int life, int mana, Game game) {
         super(x, y, life, 2);
         inventory.attachModifier(this);
+        skillTree.attachModifier(this);
         this.maxLife=life;
         this.life = life;
         this.maxMana=mana;
@@ -103,6 +104,10 @@ public class Player extends MovingObject implements Activable, Runnable, Modifie
     public Inventory getInventory(){return inventory;}
 
     public SkillTree getSkillTree(){return skillTree;}
+
+    public void upLife(){
+        this.maxLife +=1;
+    }
 
     public void statsUpdate(int[] modifier){
         if(this.life + modifier[0] <= this.maxLife){

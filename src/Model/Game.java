@@ -33,6 +33,7 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
         Ninja player = new Ninja(0, 0, 10, 100, this);
         objects.add(player);
         filter.varc1 = player;
+        window.setPlayer(player);
         nextLevel();
         //Thread t1 = new Thread(new MyTimer(this));
         //t1.start();

@@ -15,10 +15,10 @@ public class Window implements SizeableObserver, Resumer {
     private Map map = new Map();
     int type;
     private Inventory inventory;
+    private Player player;
 
 
     private EscapeMenu escapeMenu = new EscapeMenu(this);
-    private SkillTreePanel skillTreePanel = new SkillTreePanel(this);
     private View.InventoryPanel inventoryPanel = new View.InventoryPanel(this);
     JFrame window = new JFrame("Game");
     private ResizeListener sizing = new ResizeListener();
@@ -56,7 +56,7 @@ public class Window implements SizeableObserver, Resumer {
             skillTree.addComponentListener(sizing);
             sizing.attachSizeable(this);
             skillTree.getContentPane().setBackground(Color.gray);
-            skillTree.getContentPane().add(this.skillTreePanel);
+            skillTree.getContentPane().add(new SkillTreePanel(this,this.player));
             skillTree.setVisible(true);
             this.window = skillTree;
         }
@@ -76,9 +76,10 @@ public class Window implements SizeableObserver, Resumer {
     public void setGameObjects(Vector<GameObject> objects) {
         this.map.setObjects(objects);
         this.inventory=((Player)objects.get(0)).getInventory();
-        this.skillTreePanel.setPlayer(((Player)objects.get(0)));
         this.map.redraw();
     }
+
+    public void setPlayer(Player player){this.player=player;}
 
     public void update() {
         this.map.redraw();
