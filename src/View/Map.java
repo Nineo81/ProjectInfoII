@@ -3,6 +3,10 @@ package View;
 import Model.*;
 
 import java.awt.*;
+import java.util.Observer;
+
+import javax.swing.JPanel;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
@@ -10,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
 
 public class Map extends JPanel {
     private Vector<GameObject> objects = null;

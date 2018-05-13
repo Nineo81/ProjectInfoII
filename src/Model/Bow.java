@@ -2,6 +2,8 @@ package Model;
 
 public class Bow extends Loot{
 
+    private int[] stat = {0,0,0,0,0,4};
+
     public Bow(int x,int y,int color){
         super(x,y,color);
         this.weaponDamage = 3;

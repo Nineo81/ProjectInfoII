@@ -16,7 +16,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class SkillTree  extends JPanel implements ActionListener {
+public class SkillTreePanel  extends JPanel implements ActionListener {
 
     private JButton resumeButton;
     private JButton firstAttack;
@@ -34,7 +34,7 @@ public class SkillTree  extends JPanel implements ActionListener {
 
 
 
-    public  SkillTree(Window menu){
+    public  SkillTreePanel(Window menu){
         this.setFocusable(true);
         this.requestFocusInWindow();
         int maxLife=3;

@@ -12,7 +12,7 @@ public class BlockBreakable extends Block implements Deletable, Activable {
         this.life = lifepoints;
         this.maxLife=lifepoints;
     }
-
+    
     public int activate(int dammage){
         if (life <= dammage){
             crush();

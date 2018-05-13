@@ -1,8 +1,11 @@
 package View;
 
+import Model.Game;
 import Model.GameObject;
 import Model.SizeableObserver;
 import Model.ResumerObserver;
+import Model.Player;
+import View.SkillTreePanel;
 
 import java.awt.Color;
 import java.awt.event.KeyListener;
@@ -18,7 +21,7 @@ public class Window implements SizeableObserver, Resumer {
     int type;
 
     private EscapeMenu escapeMenu = new EscapeMenu(this);
-    private SkillTree skillTree = new SkillTree(this);
+    private SkillTreePanel skillTreePanel = new SkillTreePanel(this);
     private View.InventoryPanel inventory = new View.InventoryPanel(this);
     JFrame window = new JFrame("Game");
     private ResizeListener sizing = new ResizeListener();
@@ -56,20 +59,20 @@ public class Window implements SizeableObserver, Resumer {
             skillTree.addComponentListener(sizing);
             sizing.attachSizeable(this);
             skillTree.getContentPane().setBackground(Color.gray);
-            skillTree.getContentPane().add(this.skillTree);
+            skillTree.getContentPane().add(this.skillTreePanel);
             skillTree.setVisible(true);
             this.window = skillTree;
         }
         else if(type==4) {
-            JFrame inventory = new JFrame("Inventory");
-            inventory.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            inventory.setBounds(200, 0, 1400, 1020);
-            inventory.addComponentListener(sizing);
+            JFrame inventoryFrame = new JFrame("Inventory");
+            inventoryFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            inventoryFrame.setBounds(200, 0, 1400, 1020);
+            inventoryFrame.addComponentListener(sizing);
             sizing.attachSizeable(this);
-            inventory.getContentPane().setBackground(Color.gray);
-            inventory.getContentPane().add(this.inventory);
-            inventory.setVisible(true);
-            this.window = inventory;
+            inventoryFrame.getContentPane().setBackground(Color.gray);
+            inventoryFrame.getContentPane().add(this.inventory);
+            inventoryFrame.setVisible(true);
+            this.window = inventoryFrame;
         }
     }
 
@@ -109,6 +112,10 @@ public class Window implements SizeableObserver, Resumer {
 
     public void drawWall(){this.map.wallConstructor();}
 
+    public void setInventory(){
+        this.inventory.attachModifier(((Player)(((Game) observers.get(0)).getGameObjects()).get(0)));
+    }
+
 
 
     @Override
@@ -121,5 +128,7 @@ public class Window implements SizeableObserver, Resumer {
 
     @Override
     public void attachResumer(ResumerObserver ro){observers.add(ro);}
+
+    public ResumerObserver getObserver(){return observers.get(0);}
 
 }
