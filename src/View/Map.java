@@ -133,9 +133,11 @@ public class Map extends JPanel {
                 g.drawImage(bow, x * spacing, y * spacing, null);
             }
 
+
             if (object instanceof Potion){
                 g.drawImage(Potion, x * spacing, y * spacing, null);
             }
+
 
             // Decouper en fontions
             if (object instanceof Directable) {
@@ -158,6 +160,7 @@ public class Map extends JPanel {
                         deltaY = (spacing - 2) / 2;
                         break;
                 }
+
                 if (object instanceof Projectile){
                     switch(direction){
                         case Directable.EAST:
@@ -179,6 +182,7 @@ public class Map extends JPanel {
                             break;
                     }
                 }
+
                 if (object instanceof Player) {
                     //int direction = ((Directable) object).getDirection();
 
@@ -286,6 +290,16 @@ public class Map extends JPanel {
         this.repaint();
     }
 
+
+    public void levelLayout(int width, int heigth) {
+
+        ArrayList<Integer> pointSet = null;
+        do {
+
+        } while (pointSet.size() < 4);
+    }
+
+
     protected void paintComponent(Graphics g,Image image, int x, int y) {
         super.paintComponent(g);
         g.drawImage(image, x, y, this); // see javadoc for more info on the parameters
@@ -353,5 +367,6 @@ public class Map extends JPanel {
         try{this.ArrowLeft = (ImageIO.read(new File("images/ArrowLeft.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.ArrowDown = (ImageIO.read(new File("images/ArrowDown.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.Potion = (ImageIO.read(new File("images/brilliant_blue.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+
     }
 }

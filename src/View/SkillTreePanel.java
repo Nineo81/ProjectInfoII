@@ -46,6 +46,7 @@ public class SkillTreePanel extends JPanel implements ActionListener {
         resumeButton.addActionListener(new ResumeActionListener(menu));
         this.add(resumeButton);
 
+
         JLabel lifeText = new JLabel();
         lifeText.setText("MAX HEALTH : " + String.valueOf(5));
         lifeText.setBounds(650,70,120,40);
@@ -55,9 +56,11 @@ public class SkillTreePanel extends JPanel implements ActionListener {
         life.setBounds(300, 50, 300, 80);
         life.addActionListener(new ActionListener() {
             @Override
+
             public void actionPerformed(ActionEvent e) {
                 control.setCommand(UpdateLifeCommand);
                 control.pressButton();
+
             }
         });
         this.add(life);

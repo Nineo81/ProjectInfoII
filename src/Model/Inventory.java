@@ -9,7 +9,12 @@ public class Inventory implements Modifier{
 
     public void addItem(GameObject object){
         bag.add(object);
-        System.out.println(object.getClass().getName());
+        System.out.print(object.getClass().getName());
+        System.out.println(" grabbed!");
+    }
+
+    public Vector<GameObject> getBag(){
+        return bag;
     }
 
     @Override
@@ -24,3 +29,4 @@ public class Inventory implements Modifier{
         }
     }
 }
+

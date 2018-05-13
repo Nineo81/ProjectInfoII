@@ -186,7 +186,6 @@ public class Game implements DeletableObserver, LevelableObserver, MovingObserve
             }
         }
 
-
         do{
             int x = rand.nextInt(16) + 2;
             int y = rand.nextInt(16) + 2;

@@ -5,3 +5,4 @@ public interface Modifier {
 
     void notifyModifierObserver(int[] stats);
 }
+

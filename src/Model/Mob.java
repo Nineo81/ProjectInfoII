@@ -71,6 +71,7 @@ public class Mob extends MovingObject implements Deletable, Activable, Moving, R
             }
             else{
                 loot = new Potion(this.posX,this.posY,1,0,rand.nextInt(10));
+                loot.attachDeletable(o);
             }
 
             o.delete(this,loot);
