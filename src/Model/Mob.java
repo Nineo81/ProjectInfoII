@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Observer;
 import java.util.Random;
 
+
 public class Mob extends MovingObject implements Deletable, Activable, Moving, Runnable{
 
     private int maxLife;
@@ -11,7 +12,9 @@ public class Mob extends MovingObject implements Deletable, Activable, Moving, R
     private Thread thread;
     private ArrayList<DeletableObserver> observers = new ArrayList<DeletableObserver>();
     private ArrayList<MovingObserver> observers2 = new ArrayList<MovingObserver>();
+
     private Random rand=new Random();
+
     int dammage;
     int px;
     int py;

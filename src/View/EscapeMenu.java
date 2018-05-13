@@ -36,6 +36,9 @@ public class EscapeMenu  extends JPanel {
         inventoryButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 Window inventory= new Window(4);
+                inventory.attachResumer(menu.getObserver());
+                System.out.print("1 : ");
+                System.out.println((menu.getObserver()).getClass().getName());
             }
         });
 

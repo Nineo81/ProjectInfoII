@@ -1,6 +1,10 @@
 package Model;
 
-public class Player extends MovingObject implements Activable, Runnable, ModifierObserver{
+import Model.SkillTree;
+import Model.Inventory;
+
+public class Player extends MovingObject implements Activable, Runnable, ModifierObserver {
+
 
     private int maxLife;
     private int life;
@@ -10,7 +14,7 @@ public class Player extends MovingObject implements Activable, Runnable, Modifie
     private int baseDammageMultiplier = 1;
     private int weaponDammage= 0;
     int baseDammage;
-    private Inventory inventory=new Inventory();
+    Inventory inventory=new Inventory();
     private SkillTree skillTree=new SkillTree();
     private int xp=0;
     private int level=1;

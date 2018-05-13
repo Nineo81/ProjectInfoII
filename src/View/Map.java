@@ -26,6 +26,7 @@ public class Map extends JPanel {
             NarrowCornerDown,NarrowCornerLeft,NarrowCornerRight,NarrowCornerUp,NarrowHorizontal,
             NarrowVertical,Pillar,ArrowUp,ArrowDown,ArrowRight,ArrowLeft,Potion;
 
+
     public Map() {
         this.setFocusable(true);
         this.requestFocusInWindow();
@@ -272,6 +273,7 @@ public class Map extends JPanel {
                         g.fillRect(22*spacing, 8*spacing, 8*spacing, spacing/4);
                         g.setColor(Color.YELLOW);
                         g.fillRect(22*spacing, 8*spacing, Math.round(((float) xp / (float) levelXp) * 8*spacing), spacing/4);
+
                     }
                 }
             }
@@ -285,6 +287,15 @@ public class Map extends JPanel {
     public void redraw() {
         this.repaint();
     }
+
+    public void levelLayout(int width, int heigth) {
+
+        ArrayList<Integer> pointSet = null;
+        do {
+
+        } while (pointSet.size() < 4);
+    }
+
 
     protected void paintComponent(Graphics g,Image image, int x, int y) {
         super.paintComponent(g);
@@ -325,6 +336,7 @@ public class Map extends JPanel {
 
     private void loadImages(){
         try{this.left_knight = (ImageIO.read(new File("images/left_knight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+
         try{this.back_knight = (ImageIO.read(new File("images/back_knight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.right_knight = (ImageIO.read(new File("images/right_knight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.front_knight = (ImageIO.read(new File("images/front_knight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
@@ -337,6 +349,7 @@ public class Map extends JPanel {
         try{this.WallUp = (ImageIO.read(new File("images/WallUp.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){System.out.print("bite");}
         try{this.WallLeft = (ImageIO.read(new File("images/WallLeft.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.WallRight = (ImageIO.read(new File("images/WallRight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+
         try{this.CornerDownLeft = (ImageIO.read(new File("images/CornerDownLeft.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.CornerDownRight = (ImageIO.read(new File("images/CornerDownRight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.CornerUpLeft = (ImageIO.read(new File("images/CornerUpLeft.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
@@ -348,10 +361,12 @@ public class Map extends JPanel {
         try{this.NarrowHorizontal = (ImageIO.read(new File("images/NarrowHorizontal.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){System.out.print("penis");}
         try{this.NarrowVertical = (ImageIO.read(new File("images/NarrowVertical.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.Pillar = (ImageIO.read(new File("images/Pillar.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+
         try{this.ArrowUp = (ImageIO.read(new File("images/ArrowUp.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.ArrowRight = (ImageIO.read(new File("images/ArrowRight.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.ArrowLeft = (ImageIO.read(new File("images/ArrowLeft.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.ArrowDown = (ImageIO.read(new File("images/ArrowDown.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
         try{this.Potion = (ImageIO.read(new File("images/brilliant_blue.png"))).getScaledInstance(spacing, spacing, Image.SCALE_DEFAULT);}catch (IOException e){}
+
     }
 }

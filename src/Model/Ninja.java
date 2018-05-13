@@ -76,8 +76,8 @@ public class Ninja extends Player implements DeletableObserver,Powered{
         for(GameObject object : objects){
             if (object.isAtPosition(x,y)){
                 if (object instanceof Loot){
-                    this.getInventory().addItem(object);
                     ((Loot) object).pickUp();
+                    this.inventory.addItem(object);
                 }
                 else if (object instanceof Stair){
                     ((Stair) object).takeIt();
