@@ -85,7 +85,7 @@ public class ItemPanel extends JPanel implements ActionListener, Modifier{
             text= new JLabel("Dammage : "+String.valueOf(((Bow) item).getStat()[5]));
         }
         else if(item instanceof Potion){
-            //text= new JLabel("Health: "+String.valueOf((((Potion) item).getStat())[0])+" Mana: "+String.valueOf((((Potion) item).getStat())[2]));
+            text= new JLabel("Health: "+String.valueOf((((Potion) item).getStat())[0])+" Mana: "+String.valueOf((((Potion) item).getStat())[2]));
         }
 
 

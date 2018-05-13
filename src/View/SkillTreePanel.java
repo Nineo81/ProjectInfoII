@@ -41,9 +41,9 @@ public class SkillTreePanel extends JPanel implements ActionListener, Modifier, 
     SkillTree skillTree;
 
     int Life;
-    int axLife;
+    int MaxLife;
     int Mana;
-    int maxMana;
+    int MaxMana;
     int Level;
     int usableLevel;
 
@@ -57,6 +57,7 @@ public class SkillTreePanel extends JPanel implements ActionListener, Modifier, 
         //Command UpdateLifeCommand = new UpdateLifeCommand(player);
         thread = new Thread(this);
         thread.start();
+
 
 
 
@@ -74,13 +75,16 @@ public class SkillTreePanel extends JPanel implements ActionListener, Modifier, 
         } catch (Exception e) {
         }
 
+        MaxLife=player.getMaxLife();
+        MaxMana=player.getMaxMana();
+
         resumeButton = new JButton("Back");
         resumeButton.setBounds(50, 50,  150, 80);
         resumeButton.addActionListener(new ResumeActionListener(menu));
         this.add(resumeButton);
 
         JTextArea lifeText = new JTextArea();
-        lifeText.setText("MAX HEALTH : " + String.valueOf(5));
+        lifeText.setText("MAX HEALTH : " + String.valueOf(player.getMaxLife()));
 
         lifeText.setBounds(650,70,120,40);
         this.add(lifeText);
@@ -94,11 +98,17 @@ public class SkillTreePanel extends JPanel implements ActionListener, Modifier, 
                     player.getSkillTree().upLife();
                     usableLevel--;
                     player.useLevel();
+                    lifeText.setText("MAX HEALTH : " + String.valueOf(MaxLife+20));
                 }
 
             }
         });
         this.add(life);
+
+        JLabel manaText = new JLabel();
+        manaText.setText("MAX MANA : " + String.valueOf(MaxMana));
+        manaText.setBounds(650,170,100,40);
+        this.add(manaText);
 
         mana = new JButton( "MANA");
         mana.setBounds(300, 150, 300, 80);
@@ -110,6 +120,7 @@ public class SkillTreePanel extends JPanel implements ActionListener, Modifier, 
                     player.getSkillTree().upMana();
                     usableLevel--;
                     player.useLevel();
+                    manaText.setText("MAX MANA : " + String.valueOf(MaxMana+30));
                 }
 
             }
@@ -117,10 +128,7 @@ public class SkillTreePanel extends JPanel implements ActionListener, Modifier, 
 
         this.add(mana);
 
-        JLabel manaText = new JLabel();
-        manaText.setText("MAX MANA : " + String.valueOf(3));
-        manaText.setBounds(650,170,100,40);
-        this.add(manaText);
+
     }
 
 
